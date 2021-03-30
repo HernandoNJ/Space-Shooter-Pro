@@ -3,9 +3,22 @@
 public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject laserPrefab;
+    
     [SerializeField] private float speed = 7f;
     [SerializeField] private float fireRate = 2.0f;
+    [SerializeField] private int lives = 3;
+
+    private SpawnManager spawnManager;
+    
     private float canFire = 0f;
+ 
+    private void Start()
+    {
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        
+        if (spawnManager == null)
+            Debug.LogError("There is no SpawnManager script in spawnManager");
+    }
 
     private void Update()
     {
@@ -44,6 +57,16 @@ public class Player : MonoBehaviour
 
         Vector3 laserPos = transform.position + new Vector3(0, 1.4f, 0);
         Instantiate(laserPrefab, laserPos, Quaternion.identity);
-        Debug.Log(Time.time);
+    }
+
+    public void Damage(int damage)
+    {
+        lives -= damage;
+
+        if (lives == 0)
+        {
+            spawnManager.OnPlayerDestroyed();
+            Destroy(gameObject);
+        }
     }
 }

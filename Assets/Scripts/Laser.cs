@@ -3,7 +3,8 @@
 public class Laser : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-    void Update()
+    
+    private void Update()
     {
         MoveLaserUp();
 
