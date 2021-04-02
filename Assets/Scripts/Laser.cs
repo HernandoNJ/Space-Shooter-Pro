@@ -8,13 +8,18 @@ public class Laser : MonoBehaviour
     {
         MoveLaserUp();
 
-        if (transform.position.y >= 7.5f) 
+        if (transform.position.y >= 7.5f)
+        {
             Destroy(gameObject);
+
+            if (transform.parent != null)
+                Destroy(transform.parent.gameObject);
+        }
     }
 
     public void MoveLaserUp()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
+        transform.Translate(Vector2.up * speed * Time.deltaTime);
     }
 
 }

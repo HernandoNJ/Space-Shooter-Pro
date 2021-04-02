@@ -3,22 +3,29 @@
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float speed = 4f;
-   
-    void Update()
+    [SerializeField] private Player player;
+
+    private void Start()
+    {
+        player = GameObject.Find("Player").GetComponent<Player>();
+        if (player == null)
+            Debug.LogError("There is not Player script in player");
+    }
+
+    private void Update()
     {
         MoveEnemy();
     }
+    
     private void MoveEnemy()
     {
-        // move down 4 units/sec
-        transform.Translate(Vector3.down * speed * Time.deltaTime);
+        transform.Translate(Vector2.down * speed * Time.deltaTime);
 
-        // if bottom of screen
         if (transform.position.y <= -5.0f)
         {
             // place enemy at top (reuse the enemy) in random pos.x
             float randomXPos = Random.Range(-8.0f, 8.0f);
-            transform.position = new Vector3(randomXPos, 5.0f, 0f);
+            transform.position = new Vector2(randomXPos, 5.0f);
         }
     }
 
@@ -26,20 +33,15 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player player = other.GetComponent<Player>();
-            if (player != null)
-            {
-                player.Damage(1);
-                Destroy(gameObject);
-            }
-            else Debug.Log("There is not Player script in other");
+            player.Damage(1);
+            Destroy(gameObject);
         }
 
         if (other.CompareTag("Laser"))
         {
+            player.AddScore(10);  // add 10 to score
             Destroy(gameObject);
             Destroy(other.gameObject);
-            Debug.Log("Laser destroyed");
         }
     }
 }

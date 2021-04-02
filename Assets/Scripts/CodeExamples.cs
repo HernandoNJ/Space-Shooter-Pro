@@ -91,7 +91,7 @@
 //    float horizontal = Input.GetAxis("Horizontal");
 //    float vertical = Input.GetAxis("Vertical");
 
-//    Vector3 moveDirection = new Vector3(horizontal, vertical, 0).normalized;
+//    Vector2 moveDirection = new Vector2(horizontal, vertical, 0).normalized;
 
 //    transform.Translate(moveDirection * speed * Time.deltaTime);
 
@@ -99,16 +99,16 @@
 //    float xPos = transform.position.x;
 //    float yPos = transform.position.y;
 
-//    if (yPos >= 0f) transform.position = new Vector3(xPos, 0f, 0f);
-//    else if (yPos <= -3.5f) transform.position = new Vector3(xPos, -3.5f, 0f); 
+//    if (yPos >= 0f) transform.position = new Vector2(xPos, 0f, 0f);
+//    else if (yPos <= -3.5f) transform.position = new Vector2(xPos, -3.5f, 0f); 
 
-//    if (xPos >= 10.4f) transform.position = new Vector3(-10.4f, yPos, 0f);
-//    else if (xPos <= -10.4f) transform.position = new Vector3(10.4f, yPos, 0f); 
+//    if (xPos >= 10.4f) transform.position = new Vector2(-10.4f, yPos, 0f);
+//    else if (xPos <= -10.4f) transform.position = new Vector2(10.4f, yPos, 0f); 
 
 // *** Restriction 2 ***
 //float xClamp = Mathf.Clamp(transform.position.x, -10f, 10f);
 //float yClamp = Mathf.Clamp(transform.position.y, -3f, 0f);
-//transform.position = new Vector3(xClamp, yClamp, 0);
+//transform.position = new Vector2(xClamp, yClamp, 0);
 //} ------------------------------------
 
 
