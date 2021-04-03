@@ -11,12 +11,19 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
+        
+    }
+
+    public void StartSpawnning()
+    {
         StartCoroutine(SpawnEnemiesRoutine());
         StartCoroutine(SpawnPowerupRoutine());
     }
 
     IEnumerator SpawnEnemiesRoutine()
     {
+        yield return new WaitForSeconds(2f);
+
         while (isPlayerAlive)
         {
             float xRandomPos = Random.Range(-9.5f, 9.5f);
@@ -25,18 +32,20 @@ public class SpawnManager : MonoBehaviour
             GameObject newEnemy = Instantiate(enemyPrefab, enemySpawnPos, Quaternion.identity);
             newEnemy.transform.parent = enemySpawnner.transform;
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(2f);
         }
     }
 
     IEnumerator SpawnPowerupRoutine()
     {
+        yield return new WaitForSeconds(4f);
+
         while (isPlayerAlive)
         {
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
             int randomPowerup = Random.Range(0, 3);
             Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(1,4));
+            yield return new WaitForSeconds(Random.Range(3,10));
         }
     }
 

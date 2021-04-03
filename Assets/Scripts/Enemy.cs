@@ -4,12 +4,15 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float speed = 4f;
     [SerializeField] private Player player;
+    [SerializeField] private Animator anim;
 
     private void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
-        if (player == null)
-            Debug.LogError("There is not Player script in player");
+        if (player == null) Debug.LogError("There is not Player script in player");
+
+        anim = GetComponent<Animator>();
+        if (anim == null) Debug.LogError("anim is null in Enemy script");
     }
 
     private void Update()
@@ -21,7 +24,7 @@ public class Enemy : MonoBehaviour
     {
         transform.Translate(Vector2.down * speed * Time.deltaTime);
 
-        if (transform.position.y <= -5.0f)
+        if (transform.position.y <= -6.0f)
         {
             // place enemy at top (reuse the enemy) in random pos.x
             float randomXPos = Random.Range(-8.0f, 8.0f);
@@ -34,16 +37,18 @@ public class Enemy : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player.Damage(1);
-            Destroy(gameObject);
+            speed = 0f;
+            anim.SetTrigger("OnEnemyDeath");
+            Destroy(gameObject, 2.0f);
         }
 
         if (other.CompareTag("Laser"))
         {
             player.AddScore(10);  // add 10 to score
-            Destroy(gameObject);
+            speed = 0f;
+            anim.SetTrigger("OnEnemyDeath");
             Destroy(other.gameObject);
+            Destroy(gameObject, 2.0f);
         }
     }
 }
-
-
