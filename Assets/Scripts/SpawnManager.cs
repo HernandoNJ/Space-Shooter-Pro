@@ -45,7 +45,7 @@ public class SpawnManager : MonoBehaviour
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
             int randomPowerup = Random.Range(0, 3);
             Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(3,10));
+            yield return new WaitForSeconds(Random.Range(5,10));
         }
     }
 

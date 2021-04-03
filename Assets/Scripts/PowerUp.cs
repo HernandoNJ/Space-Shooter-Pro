@@ -2,7 +2,7 @@
 
 public class PowerUp : MonoBehaviour
 {
-    [SerializeField] private float speed = 3f;
+    [SerializeField] private float speed = 2f;
 
     // 0: tripleshot 1: speed 2: shield
     [SerializeField] private int powerupID; 

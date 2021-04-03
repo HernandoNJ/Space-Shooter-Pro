@@ -3,23 +3,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private GameObject laserPrefab;
-    [SerializeField] private GameObject tripleLaserPrefab;
-    [SerializeField] private GameObject blueShieldSprite;
+    [SerializeField] private GameObject laserPrefab, tripleLaserPrefab, blueShieldSprite, leftEngine, rightEngine;
     [SerializeField] private UIManager uiManager;
 
-    [SerializeField] private float speed = 7f;
-    [SerializeField] private float fireRate = 2.0f;
-    [SerializeField] private int lives = 3;
-    [SerializeField] private int score;
+    [SerializeField] private float speed = 7f, fireRate = 2.0f;
+    [SerializeField] private int lives = 3, score;
 
     private SpawnManager spawnManager;
 
-    private float speedMultiplier = 2f;
-    private float canFire = 0f;
-    private bool tripleLaserActive;
-    private bool speedBoostActive;
-    private bool shieldActive;
+    private float speedMultiplier = 2f, canFire = 0f;
+    private bool tripleLaserActive, speedBoostActive, shieldActive;
 
     private void Start()
     {
@@ -35,7 +28,8 @@ public class Player : MonoBehaviour
             Debug.LogError("No UI Manager found. Null");
 
         blueShieldSprite.SetActive(false);
-
+        leftEngine.SetActive(false);
+        rightEngine.SetActive(false);
     }
 
     private void Update()
@@ -102,7 +96,12 @@ public class Player : MonoBehaviour
         }
 
         lives -= damage;
+
         uiManager.UpdateLives(lives);
+
+        if (lives == 2) leftEngine.SetActive(true);
+        if (lives == 1) rightEngine.SetActive(true);
+        
         if (lives == 0)
         {
             spawnManager.OnPlayerDestroyed();

@@ -38,7 +38,8 @@ public class Enemy : MonoBehaviour
         {
             player.Damage(1);
             speed = 0f;
-            anim.SetTrigger("OnEnemyDeath");
+            anim.SetTrigger("OnEnemyDestroyed");
+            gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
             Destroy(gameObject, 2.0f);
         }
 
@@ -46,9 +47,11 @@ public class Enemy : MonoBehaviour
         {
             player.AddScore(10);  // add 10 to score
             speed = 0f;
-            anim.SetTrigger("OnEnemyDeath");
+            anim.SetTrigger("OnEnemyDestroyed");
+            gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
             Destroy(other.gameObject);
             Destroy(gameObject, 2.0f);
         }
     }
 }
+
