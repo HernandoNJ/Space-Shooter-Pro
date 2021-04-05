@@ -828,6 +828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac81410d3e50ca40b9c5c1cc3dc31cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   laserPrefab: {fileID: 806219380596265371, guid: 5b7522317acac9c4bb49731546f5260c,
     type: 3}
   tripleLaserPrefab: {fileID: 7795628346074341365, guid: c296bc5c491b5464981c312906c0bf4b,
@@ -836,11 +837,13 @@ MonoBehaviour:
   leftEngine: {fileID: 205087585}
   rightEngine: {fileID: 2083380923}
   uiManager: {fileID: 0}
-  laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  speed: 7
+  playerSpeed: 5
+  speedUpSpeed: 2
+  leftShiftSpeedMult: 1.5
   fireRate: 0.3
   lives: 3
   score: 0
+  playerSp: 
 --- !u!61 &754821443
 BoxCollider2D:
   m_ObjectHideFlags: 0

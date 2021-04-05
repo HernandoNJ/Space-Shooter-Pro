@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject doubleLaserPrefab;
 
-    [SerializeField] private float speed = 4f;
+    [SerializeField] private float enemySpeed = 2f;
 
     private float fireRate = 3f;
     private float canFire = -1;
@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
     
     private void MoveEnemy()
     {
-        transform.Translate(Vector2.down * speed * Time.deltaTime);
+        transform.Translate(Vector2.down * enemySpeed * Time.deltaTime);
 
         if (transform.position.y <= -6.0f)
         {
@@ -71,7 +71,7 @@ public class Enemy : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             player.Damage(1);
-            speed = 0f;
+            enemySpeed = 0f;
             anim.SetTrigger("OnEnemyDestroyed");
             audioSource.Play();
             Destroy(gameObject, 2.0f);
@@ -82,7 +82,7 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
             player.AddScore(10);  
             anim.SetTrigger("OnEnemyDestroyed");
-            speed = 0f;
+            enemySpeed = 0f;
             audioSource.Play();
             Destroy(GetComponent<Collider2D>());
             Destroy(gameObject, 2.0f);
