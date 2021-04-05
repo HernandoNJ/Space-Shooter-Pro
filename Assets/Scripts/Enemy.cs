@@ -65,6 +65,9 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.transform.parent != null && other.transform.parent.tag == "EnemyLaser") 
+            return;
+
         if (other.CompareTag("Player"))
         {
             player.Damage(1);
