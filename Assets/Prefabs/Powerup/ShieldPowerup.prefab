@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a5f109a52e0e844be7a25aa51f5438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerupSound: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
   speed: 2
   powerupID: 2
 --- !u!61 &-1180434433170018289

@@ -1,10 +1,18 @@
 ﻿using UnityEngine;
 
+// Bug: Enemies are destroying themselves with double laser - changing tag not working
+
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float speed = 4f;
     [SerializeField] private Player player;
     [SerializeField] private Animator anim;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private GameObject doubleLaserPrefab;
+
+    [SerializeField] private float speed = 4f;
+
+    private float fireRate = 3f;
+    private float canFire = -1;
 
     private void Start()
     {
@@ -13,11 +21,15 @@ public class Enemy : MonoBehaviour
 
         anim = GetComponent<Animator>();
         if (anim == null) Debug.LogError("anim is null in Enemy script");
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) Debug.LogError("audioSource is null in Enemy script");
     }
 
     private void Update()
     {
         MoveEnemy();
+        ShotDoubleLaser();
     }
     
     private void MoveEnemy()
@@ -32,6 +44,25 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void ShotDoubleLaser()
+    {
+        if (Time.time > canFire)
+        {
+            fireRate = Random.Range(3f, 7f);
+            canFire = Time.time + fireRate;
+
+            GameObject enemyDoubleLaser =
+                Instantiate(doubleLaserPrefab, transform.position, Quaternion.identity);
+
+            Laser[] laserScripts = enemyDoubleLaser.GetComponentsInChildren<Laser>();
+
+            for (int i = 0; i < laserScripts.Length; i++)
+            {
+                laserScripts[i].SetIsEnemyLaser();
+            }
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -39,17 +70,18 @@ public class Enemy : MonoBehaviour
             player.Damage(1);
             speed = 0f;
             anim.SetTrigger("OnEnemyDestroyed");
-            gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+            audioSource.Play();
             Destroy(gameObject, 2.0f);
         }
 
         if (other.CompareTag("Laser"))
         {
-            player.AddScore(10);  // add 10 to score
-            speed = 0f;
-            anim.SetTrigger("OnEnemyDestroyed");
-            gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
             Destroy(other.gameObject);
+            player.AddScore(10);  
+            anim.SetTrigger("OnEnemyDestroyed");
+            speed = 0f;
+            audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
             Destroy(gameObject, 2.0f);
         }
     }

@@ -5,11 +5,13 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject laserPrefab, tripleLaserPrefab, blueShieldSprite, leftEngine, rightEngine;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private AudioClip laserSound;
 
     [SerializeField] private float speed = 7f, fireRate = 2.0f;
     [SerializeField] private int lives = 3, score;
 
     private SpawnManager spawnManager;
+    private AudioSource audioSource;
 
     private float speedMultiplier = 2f, canFire = 0f;
     private bool tripleLaserActive, speedBoostActive, shieldActive;
@@ -17,6 +19,12 @@ public class Player : MonoBehaviour
     private void Start()
     {
         transform.position = new Vector2(0f, -3.0f);
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            Debug.LogError("There is no AudioSource component in Player script");
+
+        audioSource.clip = laserSound;
 
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
@@ -75,6 +83,8 @@ public class Player : MonoBehaviour
         // canFire = 5 + 0.7f = 5.7f
         canFire = Time.time + fireRate;
 
+        audioSource.Play();
+
         if (tripleLaserActive)
         {
             Instantiate(tripleLaserPrefab, transform.position, Quaternion.identity);
@@ -86,7 +96,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Damage(int damage)
+    public void Damage(float damage)
     {
         if (shieldActive)
         {
@@ -95,7 +105,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        lives -= damage;
+        lives -= (int)damage;
 
         uiManager.UpdateLives(lives);
 

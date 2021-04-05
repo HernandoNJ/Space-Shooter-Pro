@@ -2,10 +2,16 @@
 
 public class PowerUp : MonoBehaviour
 {
+    [SerializeField] AudioClip powerupSound;
+    
     [SerializeField] private float speed = 2f;
 
     // 0: tripleshot 1: speed 2: shield
-    [SerializeField] private int powerupID; 
+    [SerializeField] private int powerupID;
+
+    private void Start()
+    {
+    }
 
     void Update()
     {
@@ -24,6 +30,8 @@ public class PowerUp : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            AudioSource.PlayClipAtPoint(powerupSound, transform.position);
+
             Player player = other.GetComponent<Player>();
             
             if (player != null)
@@ -36,8 +44,7 @@ public class PowerUp : MonoBehaviour
                     default: Debug.Log("Default message in switch"); break;
                 }
             }
-            else
-                Debug.LogError("There is no Player script in player (other)");
+            else Debug.LogError("There is no Player script in player (other)");
 
             Destroy(gameObject);
         }
