@@ -131,7 +131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 75979869}
   - component: {fileID: 75979870}
-  - component: {fileID: 75979871}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -203,25 +202,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &75979871
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75979868}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 072574a22fc90334b9ff8e808d42945d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &76028080
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,15 +813,15 @@ MonoBehaviour:
     type: 3}
   tripleLaserPrefab: {fileID: 7795628346074341365, guid: c296bc5c491b5464981c312906c0bf4b,
     type: 3}
-  blueShieldSprite: {fileID: 75979868}
+  shield: {fileID: 75979868}
   leftEngine: {fileID: 205087585}
   rightEngine: {fileID: 2083380923}
   uiManager: {fileID: 0}
   playerSpeed: 5
   speedUpSpeed: 2
   leftShiftSpeedMult: 1.5
-  fireRate: 0.3
-  lives: 3
+  fireRate: 0.2
+  lives: 4
   score: 0
   playerSp: 
 --- !u!61 &754821443
@@ -1241,6 +1221,75 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!1001 &1017092802
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802712885769818538, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436756374531474028, guid: b7a90ffbd399d994f86c440d0a49f170,
+        type: 3}
+      propertyPath: m_Name
+      value: ShieldPowerup
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b7a90ffbd399d994f86c440d0a49f170, type: 3}
 --- !u!1 &1146244806
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,8 +1509,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1229722931}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.008, y: 0.012, z: 0}
-  m_LocalScale: {x: 0.9260704, y: 0.9201762, z: 1.0009872}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.93, y: 0.93, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5

@@ -6,26 +6,26 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip laserSound;
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private GameObject tripleLaserPrefab;
-    [SerializeField] private GameObject blueShieldSprite;
+    [SerializeField] private GameObject shield;
     [SerializeField] private GameObject leftEngine;
     [SerializeField] private GameObject rightEngine;
     [SerializeField] private UIManager uiManager;
 
-    [SerializeField] private float playerSpeed = 5f; 
+    [SerializeField] private float playerSpeed = 5f;
     [SerializeField] private float speedUpSpeed = 2f;
     [SerializeField] private float leftShiftSpeedMult = 1.5f;
-    [SerializeField] private float fireRate = 2.0f; 
-    [SerializeField] private int lives = 3, score;
+    [SerializeField] private float fireRate = 2.0f;
+    [SerializeField] private int lives = 4;
+    [SerializeField] private int score;
     [SerializeField] private string playerSp;
 
     private SpawnManager spawnManager;
     private AudioSource audioSource;
 
-    private float  canFire = 0f;
-    private bool tripleLaserActive; 
-    private bool speedBoostActive; 
-    private bool shieldActive; 
-    
+    private float canFire = 0f;
+    private bool tripleLaserActive;
+    private bool speedBoostActive;
+
     private void Start()
     {
         transform.position = new Vector2(0f, -3.0f);
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
         if (uiManager == null)
             Debug.LogError("No UI Manager found. Null");
 
-        blueShieldSprite.SetActive(false);
+        shield.SetActive(false);
         leftEngine.SetActive(false);
         rightEngine.SetActive(false);
     }
@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire)
         {
             // player must wait until Time.time = 5.8f to shoot again
-            FireLaser(); 
+            FireLaser();
         }
 
         MovePlayer();
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
         // Player movement constraints
         float xPos = transform.position.x;
         float yPos = transform.position.y;
-        
+
         if (yPos >= 0f) transform.position = new Vector2(xPos, 0f);
         else if (yPos <= -3.5f) transform.position = new Vector2(xPos, -3.5f);
 
@@ -119,27 +119,51 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Damage(float damage)
+    public void Damage(int damage)
     {
-        if (shieldActive)
-        {
-            shieldActive = false;
-            blueShieldSprite.SetActive(false);
-            return;
-        }
-
-        lives -= (int)damage;
+        lives -= damage;
+        Debug.Log("Player lives: " + lives);
+        Debug.Break();
 
         uiManager.UpdateLives(lives);
 
-        if (lives == 2) leftEngine.SetActive(true);
-        if (lives == 1) rightEngine.SetActive(true);
-        
-        if (lives == 0)
+        switch (lives)
         {
-            spawnManager.OnPlayerDestroyed();
-            Destroy(gameObject);
+            case 3:
+                shield.GetComponent<Renderer>().material.color = new Color(1,1,1,0.8f);
+                break;
+            case 2:
+                shield.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.6f);
+                leftEngine.SetActive(true);
+                break;
+            case 1:
+                shield.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.3f);
+                rightEngine.SetActive(true);
+                break;
+            case 0:
+                spawnManager.OnPlayerDestroyed();
+                Destroy(gameObject);
+                break;
         }
+
+        //switch (lives)
+        //{
+        //    case 3:
+        //        shield.GetComponent<Renderer>().material.color = Color.gray;
+        //        break;
+        //    case 2:
+        //        shield.GetComponent<Renderer>().material.color = Color.yellow;
+        //        leftEngine.SetActive(true);
+        //        break;
+        //    case 1:
+        //        shield.GetComponent<Renderer>().material.color = Color.red;
+        //        rightEngine.SetActive(true);
+        //        break;
+        //    case 0:
+        //        spawnManager.OnPlayerDestroyed();
+        //        Destroy(gameObject);
+        //        break;
+        //}
     }
 
     public void AddScore(int points)
@@ -175,8 +199,7 @@ public class Player : MonoBehaviour
 
     public void ActivateShield()
     {
-        shieldActive = true;
-        blueShieldSprite.SetActive(true);
+        shield.SetActive(true);
     }
     #endregion
 }

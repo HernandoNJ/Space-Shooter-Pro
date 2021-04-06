@@ -51,7 +51,7 @@ MonoBehaviour:
   player: {fileID: 0}
   anim: {fileID: 0}
   audioSource: {fileID: 0}
-  doubleLaserPrefab: {fileID: 1350072225759426204, guid: 43c007708f2552b429debd83ee2f5fee,
+  doubleLaserPrefab: {fileID: 7809545642097186471, guid: 5f378fc9f8df473499fc83ec7a5b8006,
     type: 3}
   enemySpeed: 2
 --- !u!212 &6433858707350764813

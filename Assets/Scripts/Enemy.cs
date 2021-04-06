@@ -51,21 +51,14 @@ public class Enemy : MonoBehaviour
             fireRate = Random.Range(3f, 7f);
             canFire = Time.time + fireRate;
 
-            GameObject enemyDoubleLaser =
-                Instantiate(doubleLaserPrefab, transform.position, Quaternion.identity);
-
-            Laser[] laserScripts = enemyDoubleLaser.GetComponentsInChildren<Laser>();
-
-            for (int i = 0; i < laserScripts.Length; i++)
-            {
-                laserScripts[i].SetIsEnemyLaser();
-            }
+            Instantiate(doubleLaserPrefab, transform.position, Quaternion.identity);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.transform.parent != null && other.transform.parent.tag == "EnemyLaser") 
+        // Ignore collision if other is an Enemy
+        if (other.transform.parent != null && other.transform.parent.CompareTag("EnemyLaser")) 
             return;
 
         if (other.CompareTag("Player"))
@@ -74,19 +67,20 @@ public class Enemy : MonoBehaviour
             enemySpeed = 0f;
             anim.SetTrigger("OnEnemyDestroyed");
             audioSource.Play();
-            Destroy(gameObject, 2.0f);
-        }
-
-        if (other.CompareTag("Laser"))
-        {
-            Destroy(other.gameObject);
-            player.AddScore(10);  
-            anim.SetTrigger("OnEnemyDestroyed");
-            enemySpeed = 0f;
-            audioSource.Play();
             Destroy(GetComponent<Collider2D>());
+            gameObject.SetActive(false); // added because enemy was hitting the player twice
             Destroy(gameObject, 2.0f);
         }
+    }
+
+    // Called by a laser when hit
+    public void OnEnemyDestroyed()
+    {
+        anim.SetTrigger("OnEnemyDestroyed");
+        enemySpeed = 0f;
+        audioSource.Play();
+        Destroy(GetComponent<Collider2D>());
+        Destroy(gameObject, 2.0f);
     }
 }
 
