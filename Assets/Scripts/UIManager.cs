@@ -8,8 +8,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text gameOverText;  
     [SerializeField] private Text restartText;  
     [SerializeField] private Image livesImage;  
-    [SerializeField] private Sprite[] livesSprites;  
+    [SerializeField] private GameObject emptyAmmoImage;  
     [SerializeField] private GameManager gameManager;  
+    [SerializeField] private Sprite[] livesSprites;
 
     void Start()
     {
@@ -19,6 +20,14 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: 0"; 
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
+        emptyAmmoImage.SetActive(false);
+    }
+
+    private void Update()
+    {
+        Debug.Log("Remove code lines");
+        if (Input.GetKeyDown(KeyCode.R)) OnEmptyAmmo();
+        if (Input.GetKeyDown(KeyCode.T)) OnFullAmmo();
     }
 
     public void UpdateScore(int playerScore)
@@ -32,6 +41,18 @@ public class UIManager : MonoBehaviour
         
         if (currentLives == 0)
             GameOverSequence();
+    }
+
+    public void OnEmptyAmmo()
+    {
+        emptyAmmoImage.SetActive(true);
+        emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", true);
+    }
+
+    public void OnFullAmmo()
+    {
+        emptyAmmoImage.SetActive(false);
+        emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", false);
     }
 
     public void GameOverSequence()

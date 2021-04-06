@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+//Limit the lasers fired by the player to only 15 shots.
+//When the player is out of ammo, provide feedback through on-screen elements or sound effects. (ie: beep or ammo count displayed on screen)
+
+
 public class Player : MonoBehaviour
 {
     [SerializeField] private AudioClip laserSound;
