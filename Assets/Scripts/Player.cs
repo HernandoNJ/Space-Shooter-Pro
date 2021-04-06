@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float fireRate = 2.0f;
     [SerializeField] private int lives = 4;
     [SerializeField] private int score;
-    [SerializeField] private int ammoAmount;
+    [SerializeField] private int ammoCount;
 
     private SpawnManager spawnManager;
     private AudioSource audioSource;
@@ -50,7 +50,9 @@ public class Player : MonoBehaviour
         rightEngine.SetActive(false);
 
         //Limit the lasers fired by the player to only 15 shots.
-        ammoAmount = 15;
+        ammoCount = 15;
+        uiManager.UpdateAmmo(ammoCount);
+        
     }
 
     private void Update()
@@ -111,7 +113,7 @@ public class Player : MonoBehaviour
             // If player shots
                 // decrease ammo amount
             
-        if(ammoAmount == 0)
+        if(ammoCount == 0)
         {
             uiManager.OnEmptyAmmo();
             return;
@@ -126,14 +128,16 @@ public class Player : MonoBehaviour
         if (tripleLaserActive)
         {
             Instantiate(tripleLaserPrefab, transform.position, Quaternion.identity);
-            ammoAmount -= 1;
+            ammoCount -= 1;
+            if (ammoCount > 0) uiManager.UpdateAmmo(ammoCount);
         }
         // Shot one laser
         else
         {
             Vector2 laserPos = transform.position + new Vector3(0, 1.0f);
             Instantiate(laserPrefab, laserPos, Quaternion.identity);
-            ammoAmount -= 1;
+            ammoCount -= 1;
+            if(ammoCount > 0) uiManager.UpdateAmmo(ammoCount);
         }
     }
 
@@ -145,6 +149,7 @@ public class Player : MonoBehaviour
 
         uiManager.UpdateLives(lives);
 
+        // Change shield color
         switch (lives)
         {
             case 3:
@@ -219,5 +224,27 @@ public class Player : MonoBehaviour
     {
         shield.SetActive(true);
     }
+    //Create a powerup to fill the ammo count allowing the player to fire again
+    // Create pic
+    // Create anim
+    // Create powerup prefab
+        // Set the ammoAmount value to 15
+        // update ammo value with ui.updateammo
+        // Call onfullammo in UI
+        // Increase powerup array value in spawnmanager
+        // attach poweru☺p.cs
+        // Create a new case in powerup.cs switch in ontrigger
+        // setup powerup sound in prefab
+        // set powerup id
+        // Update info in Start for UI with ShowStartAmmo (when game starts or restarted
+        //
+        
+    public void RefillAmmoPowerup()
+    {
+        ammoCount = 15;
+        uiManager.UpdateAmmo(ammoCount);
+        uiManager.OnFullAmmo();
+    }
+
     #endregion
 }

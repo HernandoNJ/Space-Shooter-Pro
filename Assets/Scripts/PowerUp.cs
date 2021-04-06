@@ -5,9 +5,7 @@ public class PowerUp : MonoBehaviour
     [SerializeField] AudioClip powerupSound;
     
     [SerializeField] private float speed = 2f;
-
-    // 0: tripleshot 1: speed 2: shield
-    [SerializeField] private int powerupID;
+    [SerializeField] private int powerupID; 
 
     private void Start()
     {
@@ -15,13 +13,13 @@ public class PowerUp : MonoBehaviour
 
     void Update()
     {
-        MoveTripleShotPowerup();
+        MovePowerup();
 
         if (transform.position.y < -6f)
             Destroy(gameObject);
     }
 
-    private void MoveTripleShotPowerup()
+    private void MovePowerup()
     {
         transform.Translate(Vector2.down * speed * Time.deltaTime);
     }
@@ -41,6 +39,7 @@ public class PowerUp : MonoBehaviour
                     case 0: player.ActivateTripleLaser(); break;
                     case 1: player.ActivateSpeedBoost(); break;
                     case 2: player.ActivateShield(); break;
+                    case 3: player.RefillAmmoPowerup();break;
                     default: Debug.Log("Default message in switch"); break;
                 }
             }

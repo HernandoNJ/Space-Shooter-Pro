@@ -9,11 +9,6 @@ public class SpawnManager : MonoBehaviour
 
     private bool isPlayerAlive = true;
 
-    private void Start()
-    {
-        
-    }
-
     public void StartSpawnning()
     {
         StartCoroutine(SpawnEnemiesRoutine());
@@ -32,7 +27,7 @@ public class SpawnManager : MonoBehaviour
             GameObject newEnemy = Instantiate(enemyPrefab, enemySpawnPos, Quaternion.identity);
             newEnemy.transform.parent = enemySpawnner.transform;
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
         }
     }
 
@@ -43,9 +38,9 @@ public class SpawnManager : MonoBehaviour
         while (isPlayerAlive)
         {
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
-            int randomPowerup = Random.Range(0, 3);
+            int randomPowerup = Random.Range(0, 4); // Modify value to 4
             Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(5,10));
+            yield return new WaitForSeconds(Random.Range(4,7));
         }
     }
 

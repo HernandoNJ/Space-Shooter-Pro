@@ -4,10 +4,12 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private Text ammoText;  
     [SerializeField] private Text scoreText;  
     [SerializeField] private Text gameOverText;  
     [SerializeField] private Text restartText;  
     [SerializeField] private Image livesImage;  
+    [SerializeField] private GameObject ammoCounter;  
     [SerializeField] private GameObject emptyAmmoImage;  
     [SerializeField] private GameManager gameManager;  
     [SerializeField] private Sprite[] livesSprites;
@@ -23,11 +25,16 @@ public class UIManager : MonoBehaviour
         OnFullAmmo();
     }
 
-    private void Update()
+    public void ShowStartAmmo(int playerAmmoCount)
     {
-        Debug.Log("Remove code lines");
-        if (Input.GetKeyDown(KeyCode.R)) OnEmptyAmmo();
-        if (Input.GetKeyDown(KeyCode.T)) OnFullAmmo();
+        ammoText.text = playerAmmoCount.ToString();
+        emptyAmmoImage.SetActive(false);
+        ammoCounter.SetActive(true);
+    }
+
+    public void UpdateAmmo(int playerAmmoCount)
+    {
+        ammoText.text = playerAmmoCount.ToString();
     }
 
     public void UpdateScore(int playerScore)
@@ -47,12 +54,14 @@ public class UIManager : MonoBehaviour
     {
         emptyAmmoImage.SetActive(true);
         emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", true);
+        ammoCounter.SetActive(false);
     }
 
     public void OnFullAmmo()
     {
         emptyAmmoImage.SetActive(false);
         emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", false);
+        ammoCounter.SetActive(true);
     }
 
     public void GameOverSequence()
