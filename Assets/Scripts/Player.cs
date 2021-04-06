@@ -1,10 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-//Limit the lasers fired by the player to only 15 shots.
-//When the player is out of ammo, provide feedback through on-screen elements or sound effects. (ie: beep or ammo count displayed on screen)
-
-
 public class Player : MonoBehaviour
 {
     [SerializeField] private AudioClip laserSound;
@@ -15,20 +11,20 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject rightEngine;
     [SerializeField] private UIManager uiManager;
 
+    [SerializeField] private bool tripleLaserActive;
+    [SerializeField] private bool speedBoostActive;
+    [SerializeField] private float canFire = 0f;
     [SerializeField] private float playerSpeed = 5f;
     [SerializeField] private float speedUpSpeed = 2f;
     [SerializeField] private float leftShiftSpeedMult = 1.5f;
+    [SerializeField] private float totalSpeed;
     [SerializeField] private float fireRate = 2.0f;
     [SerializeField] private int lives = 4;
     [SerializeField] private int score;
-    [SerializeField] private string playerSp;
+    [SerializeField] private int ammoAmount;
 
     private SpawnManager spawnManager;
     private AudioSource audioSource;
-
-    private float canFire = 0f;
-    private bool tripleLaserActive;
-    private bool speedBoostActive;
 
     private void Start()
     {
@@ -52,18 +48,21 @@ public class Player : MonoBehaviour
         shield.SetActive(false);
         leftEngine.SetActive(false);
         rightEngine.SetActive(false);
+
+        //Limit the lasers fired by the player to only 15 shots.
+        ammoAmount = 15;
     }
 
     private void Update()
     {
+        MovePlayer();
+
         // if Time.time = 5, Time.time > 0f => true
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire)
         {
             // player must wait until Time.time = 5.8f to shoot again
             FireLaser();
         }
-
-        MovePlayer();
     }
 
     private void MovePlayer()
@@ -76,25 +75,23 @@ public class Player : MonoBehaviour
         // Increase speed with speedUp powerup
         if (speedBoostActive)
         {
-            float speedBoost = playerSpeed * speedUpSpeed;
-            transform.Translate(moveDirection * speedBoost * Time.deltaTime);
-            playerSp = speedBoost.ToString();
+            totalSpeed = playerSpeed * speedUpSpeed;
+            transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
         }
         // Increase speed with Left shift key
         else if (Input.GetKey(KeyCode.LeftShift))
         {
-            float LeftShiftSpeedBoost = playerSpeed * leftShiftSpeedMult;
-            transform.Translate(moveDirection * LeftShiftSpeedBoost * Time.deltaTime);
-            playerSp = LeftShiftSpeedBoost.ToString();
+            totalSpeed = playerSpeed * leftShiftSpeedMult;
+            transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
         }
         // Normal Player movement
         else
         {
+            totalSpeed = playerSpeed; // Just for testing
             transform.Translate(moveDirection * playerSpeed * Time.deltaTime);
-            playerSp = playerSpeed.ToString();
         }
 
-        // Player movement constraints
+        // Set up player movement constraints 
         float xPos = transform.position.x;
         float yPos = transform.position.y;
 
@@ -107,19 +104,36 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
+        //When the player is out of ammo,display empty ammo anim in UI
+            // If ammo = 0
+                // return
+                // play empty ammo anim in UI
+            // If player shots
+                // decrease ammo amount
+            
+        if(ammoAmount == 0)
+        {
+            uiManager.OnEmptyAmmo();
+            return;
+        }     
+
         // canFire = 5 + 0.7f = 5.7f
         canFire = Time.time + fireRate;
 
         audioSource.Play();
 
+        // Shot triple laser
         if (tripleLaserActive)
         {
             Instantiate(tripleLaserPrefab, transform.position, Quaternion.identity);
+            ammoAmount -= 1;
         }
+        // Shot one laser
         else
         {
             Vector2 laserPos = transform.position + new Vector3(0, 1.0f);
             Instantiate(laserPrefab, laserPos, Quaternion.identity);
+            ammoAmount -= 1;
         }
     }
 

@@ -218,7 +218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &76028081
 Transform:
   m_ObjectHideFlags: 0
@@ -817,13 +817,17 @@ MonoBehaviour:
   leftEngine: {fileID: 205087585}
   rightEngine: {fileID: 2083380923}
   uiManager: {fileID: 0}
+  tripleLaserActive: 0
+  speedBoostActive: 0
+  canFire: 0
   playerSpeed: 5
   speedUpSpeed: 2
   leftShiftSpeedMult: 1.5
+  totalSpeed: 0
   fireRate: 0.2
   lives: 4
   score: 0
-  playerSp: 
+  ammoAmount: 15
 --- !u!61 &754821443
 BoxCollider2D:
   m_ObjectHideFlags: 0

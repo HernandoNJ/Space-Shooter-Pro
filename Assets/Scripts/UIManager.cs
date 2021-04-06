@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: 0"; 
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
-        emptyAmmoImage.SetActive(false);
+        OnFullAmmo();
     }
 
     private void Update()
