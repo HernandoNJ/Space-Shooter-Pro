@@ -60,7 +60,6 @@ public class UIManager : MonoBehaviour
     public void OnFullAmmo()
     {
         emptyAmmoImage.SetActive(false);
-        emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", false);
         ammoCounter.SetActive(true);
     }
 
@@ -77,9 +76,9 @@ public class UIManager : MonoBehaviour
         while (true)
         {
             gameOverText.text = "Game Over";
-            yield return new WaitForSeconds(0.7f);
+            yield return new WaitForSeconds(0.35f);
             gameOverText.text = "";
-            yield return new WaitForSeconds(0.7f);
+            yield return new WaitForSeconds(0.35f);
         }
     }
 }

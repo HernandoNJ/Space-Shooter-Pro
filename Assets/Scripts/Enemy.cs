@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-// Bug: Enemies are destroying themselves with double laser - changing tag not working
-
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Player player;
@@ -83,4 +81,6 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject, 2.0f);
     }
 }
+
+// FIXED: Enemies are destroying themselves with double laser - changing tag not working
 

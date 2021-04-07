@@ -4,7 +4,7 @@ public class PowerUp : MonoBehaviour
 {
     [SerializeField] AudioClip powerupSound;
     
-    [SerializeField] private float speed = 2f;
+    [SerializeField] private float speed = 3f;
     [SerializeField] private int powerupID; 
 
     private void Start()
@@ -28,7 +28,7 @@ public class PowerUp : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            AudioSource.PlayClipAtPoint(powerupSound, transform.position);
+            AudioSource.PlayClipAtPoint(powerupSound, transform.position, 0.3f);
 
             Player player = other.GetComponent<Player>();
             
@@ -40,6 +40,7 @@ public class PowerUp : MonoBehaviour
                     case 1: player.ActivateSpeedBoost(); break;
                     case 2: player.ActivateShield(); break;
                     case 3: player.RefillAmmoPowerup();break;
+                    case 4: player.RecoverHealth(); break;
                     default: Debug.Log("Default message in switch"); break;
                 }
             }

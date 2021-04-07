@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Instantiate(asteroidPrefab, new Vector3(0, 2, 0), Quaternion.identity);
+        Time.timeScale = 1.0f;
     }
 
     private void Update()
@@ -23,5 +24,6 @@ public class GameManager : MonoBehaviour
     public void OnGameOver()
     {
         isGameOver = true;
+        Time.timeScale = 0.4f;
     }
 }

@@ -38,7 +38,7 @@ public class SpawnManager : MonoBehaviour
         while (isPlayerAlive)
         {
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
-            int randomPowerup = Random.Range(0, 4); // Modify value to 4
+            int randomPowerup = Random.Range(0, 5); // Modify value to 5
             Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(4,7));
         }
