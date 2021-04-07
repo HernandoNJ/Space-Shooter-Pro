@@ -183,7 +183,6 @@ public class Player : MonoBehaviour
 
     public void ActivateShield()
     {
-        // TODO: create a bool isShieldActive to use in ChangeShieldColor only if true
         isShieldActive = true;
         shield.SetActive(true);
         lives = 3;
@@ -211,7 +210,7 @@ public class Player : MonoBehaviour
                 case 0:
                     spawnManager.OnPlayerDestroyed();
                     Destroy(gameObject);
-                    break; 
+                    break;
             }
         }
         // INFO: a new mechanic can be created to reduce shield keeping player lives. If so, set isShieldActive to false where needed
@@ -236,42 +235,13 @@ public class Player : MonoBehaviour
         //}
     }
 
-    //Create a powerup to fill the ammo count allowing the player to fire again
-    // Create pic
-    // Create anim
-    // Create powerup prefab
-    // Set the ammoAmount value to 15
-    // update ammo value with ui.updateammo
-    // Call onfullammo in UI
-    // Increase powerup array value in spawnmanager
-    // attach poweru☺p.cs
-    // Create a new case in powerup.cs switch in ontrigger
-    // setup powerup sound in prefab
-    // set powerup id
-    // Update info in Start for UI with ShowStartAmmo (when game starts or restarted
-    //
-    public void RefillAmmoPowerup()
+    public void RefillAmmo()
     {
         ammoCount = 15;
         uiManager.UpdateAmmo(ammoCount);
         uiManager.OnFullAmmo();
     }
 
-    // INFO (Task list) -> Create a health collectable that heals the player by 1
-    // Create a pic
-    // Create animation
-    // turn into prefab
-    // Add powerup script
-    // setup id and sound
-    // Create RecoverHealth function
-    // setup case in powerup.cs
-    // Create code in recoverhealth function
-    // +1 lives
-    // Update the player visuals to reflect this
-    // ui manager update lives
-    // Update spawn powerup routine random value to 5
-
-    // Update the player visuals to reflect this
     public void RecoverHealth()
     {
         if (lives >= 3) return;
@@ -280,12 +250,28 @@ public class Player : MonoBehaviour
         ChangeShieldColor();
     }
 
+    //Create a new form of projectile such as a new multidirection shot
+    // Replace the standard fire to 5 seconds
+    // Spawns rarely
+
+    // Create pic
+    // Create prefab
+    // Create mechanic
+    // Create script
+    // gameobject array laser
+    // for each obj in array
+    // random float to rotate
+    // Instantiate
+    // transform.translate(forw * speed * t.delt)
+    public void MultipleShot()
+    {
+
+    }
+
+
+
     #endregion
 }
-
-// INFO improvements: shield, powerup sound
-// Improved shield mechanic -> restore lives, shield color and engines
-// powerup sound improved (reduced)
 
 // TODO: decide if reparing engines with new shield
 // TODO: make a moving background

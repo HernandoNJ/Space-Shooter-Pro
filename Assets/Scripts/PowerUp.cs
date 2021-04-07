@@ -39,7 +39,7 @@ public class PowerUp : MonoBehaviour
                     case 0: player.ActivateTripleLaser(); break;
                     case 1: player.ActivateSpeedBoost(); break;
                     case 2: player.ActivateShield(); break;
-                    case 3: player.RefillAmmoPowerup();break;
+                    case 3: player.RefillAmmo();break;
                     case 4: player.RecoverHealth(); break;
                     default: Debug.Log("Default message in switch"); break;
                 }
