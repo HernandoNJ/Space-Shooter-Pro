@@ -12,6 +12,8 @@ public class Asteroid : MonoBehaviour
         if (spawnManager == null) Debug.LogError("SpawnManager is null in Asteroid");
 
         if (explosionPrefab == null) Debug.LogError("Explosion prefab is null in Asteroid");
+
+        transform.position = Vector3.up * 3f;
     }
 
     void Update()

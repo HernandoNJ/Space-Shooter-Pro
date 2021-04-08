@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 5928534575759264743}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupSound: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
-  speed: 3
+  speed: 1.5
   powerupID: 4
 --- !u!212 &6617150097811435994
 SpriteRenderer:
@@ -157,7 +157,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.36, y: 4.36}
+    oldSize: {x: 5.12, y: 5.12}
     newSize: {x: 4.36, y: 4.36}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

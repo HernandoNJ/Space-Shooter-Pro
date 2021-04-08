@@ -24,6 +24,6 @@ public class GameManager : MonoBehaviour
     public void OnGameOver()
     {
         isGameOver = true;
-        Time.timeScale = 0.4f;
+        Time.timeScale = 0.21f;
     }
 }
