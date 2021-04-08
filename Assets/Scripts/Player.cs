@@ -11,8 +11,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject rightEngine;
     [SerializeField] private UIManager uiManager;
 
-    [SerializeField] private bool tripleLaserActive;
-    [SerializeField] private bool speedBoostActive;
+    [SerializeField] private bool hasAmmo;
+    [SerializeField] private bool isTripleLaserActive;
+    [SerializeField] private bool isSpeedBoostActive;
     [SerializeField] private bool isShieldActive;
     [SerializeField] private float canFire = 0f;
     [SerializeField] private float playerSpeed = 5f;
@@ -51,9 +52,9 @@ public class Player : MonoBehaviour
         rightEngine.SetActive(false);
 
         //Limit the lasers fired by the player to only 15 shots.
-        ammoCount = 15;
+        hasAmmo = true;
+        //ammoCount = 15;
         uiManager.UpdateAmmo(ammoCount);
-
     }
 
     private void Update()
@@ -61,7 +62,7 @@ public class Player : MonoBehaviour
         MovePlayer();
 
         // if Time.time = 5, Time.time > 0f => true
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo)
         {
             // player must wait until Time.time = 5.8f to shoot again
             FireLaser();
@@ -76,7 +77,7 @@ public class Player : MonoBehaviour
         Vector2 moveDirection = new Vector2(horizontal, vertical).normalized;
 
         // Increase speed with speedUp powerup
-        if (speedBoostActive)
+        if (isSpeedBoostActive)
         {
             totalSpeed = playerSpeed * speedUpSpeed;
             transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
@@ -107,38 +108,26 @@ public class Player : MonoBehaviour
 
     private void FireLaser()
     {
-        //INFO -> When the player is out of ammo,display empty ammo anim in UI
-        // If ammo = 0
-        // return
-        // play empty ammo anim in UI
-        // If player shots
-        // decrease ammo amount
-
-        if (ammoCount == 0)
-        {
-            uiManager.OnEmptyAmmo();
-            return;
-        }
-
-        // canFire = 5 + 0.7f = 5.7f
-        canFire = Time.time + fireRate;
-
-        audioSource.Play();
-
+        // FIX: code logic modified due to a bug, improving code
         // Shot triple laser
-        if (tripleLaserActive)
-        {
+        if (isTripleLaserActive)
             Instantiate(tripleLaserPrefab, transform.position, Quaternion.identity);
-            ammoCount -= 1;
-            if (ammoCount > 0) uiManager.UpdateAmmo(ammoCount);
-        }
         // Shot one laser
         else
         {
             Vector2 laserPos = transform.position + new Vector3(0, 1.0f);
             Instantiate(laserPrefab, laserPos, Quaternion.identity);
-            ammoCount -= 1;
-            if (ammoCount > 0) uiManager.UpdateAmmo(ammoCount);
+        }
+        audioSource.Play();
+        ammoCount--;
+        canFire = Time.time + fireRate; // canFire = 5 + 0.7f = 5.7f
+
+        if (ammoCount >= 1) 
+            uiManager.UpdateAmmo(ammoCount);
+        else
+        {
+            uiManager.OnEmptyAmmo();
+            hasAmmo = false;
         }
     }
 
@@ -159,26 +148,26 @@ public class Player : MonoBehaviour
     #region Powerups
     public void ActivateTripleLaser()
     {
-        tripleLaserActive = true;
+        isTripleLaserActive = true;
         StartCoroutine(TripleLaserRoutine());
     }
 
     IEnumerator TripleLaserRoutine()
     {
         yield return new WaitForSeconds(5f);
-        tripleLaserActive = false;
+        isTripleLaserActive = false;
     }
 
     public void ActivateSpeedBoost()
     {
-        speedBoostActive = true;
+        isSpeedBoostActive = true;
         StartCoroutine(SpeedBoostRoutine());
     }
 
     IEnumerator SpeedBoostRoutine()
     {
         yield return new WaitForSeconds(5f);
-        speedBoostActive = false;
+        isSpeedBoostActive = false;
     }
 
     public void ActivateShield()
@@ -197,14 +186,14 @@ public class Player : MonoBehaviour
             switch (lives)// Change shield color
             {
                 case 3:
-                    shield.GetComponent<Renderer>().material.color = Color.cyan;
+                    shield.GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 1f, 0.7f);
                     break;
                 case 2:
-                    shield.GetComponent<Renderer>().material.color = Color.yellow;
+                    shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.5f, 0f, 0.7f);
                     leftEngine.SetActive(true);
                     break;
                 case 1:
-                    shield.GetComponent<Renderer>().material.color = Color.magenta;
+                    shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.2f, 0f, 0.6f);
                     rightEngine.SetActive(true);
                     break;
                 case 0:
@@ -213,31 +202,12 @@ public class Player : MonoBehaviour
                     break;
             }
         }
-        // INFO: a new mechanic can be created to reduce shield keeping player lives. If so, set isShieldActive to false where needed
-
-        //switch (lives)
-        //{
-        //    case 3:
-        //        shield.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.8f);
-        //        break;
-        //    case 2:
-        //        shield.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.6f);
-        //        leftEngine.SetActive(true);
-        //        break;
-        //    case 1:
-        //        shield.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 0.3f);
-        //        rightEngine.SetActive(true);
-        //        break;
-        //    case 0:
-        //        spawnManager.OnPlayerDestroyed();
-        //        Destroy(gameObject);
-        //        break;
-        //}
     }
 
     public void RefillAmmo()
     {
         ammoCount = 15;
+        hasAmmo = true;
         uiManager.UpdateAmmo(ammoCount);
         uiManager.OnFullAmmo();
     }
@@ -275,3 +245,4 @@ public class Player : MonoBehaviour
 
 // TODO: decide if reparing engines with new shield
 // TODO: make a moving background
+// INFO: a new mechanic can be created to reduce shield keeping player lives. If so, set isShieldActive to false where needed

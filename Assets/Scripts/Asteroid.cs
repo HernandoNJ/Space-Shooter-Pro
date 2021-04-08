@@ -2,7 +2,7 @@
 
 public class Asteroid : MonoBehaviour
 {
-    [SerializeField] private float rotateSpeeed = 20f;
+    [SerializeField] private float rotateSpeeed = 10f;
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private SpawnManager spawnManager;
 

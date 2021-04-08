@@ -53,6 +53,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   doubleLaserPrefab: {fileID: 7809545642097186471, guid: 5f378fc9f8df473499fc83ec7a5b8006,
     type: 3}
+  isEnemyAlive: 0
   enemySpeed: 2
 --- !u!212 &6433858707350764813
 SpriteRenderer:
@@ -161,7 +162,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
+    oldSize: {x: 2.24, y: 2.82}
     newSize: {x: 5.12, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

@@ -34,10 +34,10 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 27
+    value: 20
   threshold:
     overrideState: 1
-    value: 0.6
+    value: 0.2
   softKnee:
     overrideState: 0
     value: 0.414
@@ -1401,7 +1401,7 @@ MonoBehaviour:
     value: 9
   keyValue:
     overrideState: 1
-    value: 11
+    value: 18.1
   eyeAdaptation:
     overrideState: 0
     value: 0

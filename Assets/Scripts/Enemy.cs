@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject doubleLaserPrefab;
 
+    [SerializeField] private bool isEnemyAlive;
     [SerializeField] private float enemySpeed = 2f;
 
     private float fireRate = 3f;
@@ -22,6 +23,8 @@ public class Enemy : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) Debug.LogError("audioSource is null in Enemy script");
+
+        isEnemyAlive = true;
     }
 
     private void Update()
@@ -44,7 +47,7 @@ public class Enemy : MonoBehaviour
 
     public void ShotDoubleLaser()
     {
-        if (Time.time > canFire)
+        if (Time.time > canFire && isEnemyAlive)
         {
             fireRate = Random.Range(3f, 7f);
             canFire = Time.time + fireRate;
@@ -74,6 +77,7 @@ public class Enemy : MonoBehaviour
     // Called by a laser when hit
     public void OnEnemyDestroyed()
     {
+        isEnemyAlive = false;
         anim.SetTrigger("OnEnemyDestroyed");
         enemySpeed = 0f;
         audioSource.Play();
@@ -82,5 +86,7 @@ public class Enemy : MonoBehaviour
     }
 }
 
-// FIXED: Enemies are destroying themselves with double laser - changing tag not working
+/* FIXED: Enemies are destroying themselves with double laser - changing tag not working
+ * FIXED: Enemy shoting after destroyed
+ */
 

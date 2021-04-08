@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 4652780341901449863}
   - component: {fileID: 5049507012140932012}
   m_Layer: 0
-  m_Name: DL2
+  m_Name: EnemyDoubleLaser
   m_TagString: EnemyLaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
