@@ -112,6 +112,16 @@ public class Player : MonoBehaviour
 
         if (xPos >= 10.4f) transform.position = new Vector2(-10.4f, yPos);
         else if (xPos <= -10.4f) transform.position = new Vector2(10.4f, yPos);
+
+        if (totalSpeed > 5)
+        {
+            uiManager.thrusterBarImage.fillAmount += 0.003f;
+        }
+        else if(totalSpeed <= 5)
+        {
+            uiManager.thrusterBarImage.fillAmount = 0.5f;
+        }
+        
     }
 
     private void FireLaser()
@@ -143,6 +153,7 @@ public class Player : MonoBehaviour
 
         if (ammoCount >= 1) 
             uiManager.UpdateAmmo(ammoCount);
+
         else
         {
             uiManager.OnEmptyAmmo();
@@ -263,5 +274,5 @@ public class Player : MonoBehaviour
 }
 
 // TODO: decide if reparing engines with new shield
-// TODO: make a moving background
+// DONE: make a moving background
 // INFO: a new mechanic can be created to reduce shield keeping player lives. If so, set isShieldActive to false where needed

@@ -9,10 +9,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text gameOverText;  
     [SerializeField] private Text restartText;  
     [SerializeField] private Image livesImage;  
+    //[SerializeField] private Image thrusterBarImage;  
     [SerializeField] private GameObject ammoCounter;  
     [SerializeField] private GameObject emptyAmmoImage;  
     [SerializeField] private GameManager gameManager;  
     [SerializeField] private Sprite[] livesSprites;
+
+    public Image thrusterBarImage;
 
     void Start()
     {
