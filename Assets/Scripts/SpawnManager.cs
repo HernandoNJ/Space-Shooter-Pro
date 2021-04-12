@@ -6,32 +6,61 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject enemySpawnner;
     [SerializeField] private GameObject[] powerups;
+    [SerializeField] private int enemiesInWave;
+    [SerializeField] private int waveNumber;
+    [SerializeField] private int enemiesAmount;
+    [SerializeField] private float startTime;
 
     private bool isPlayerAlive = true;
+    private bool isWaveRunning;
+
+    private void Start()
+    {
+        waveNumber = 1;
+        isWaveRunning = true;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && isWaveRunning == false && enemiesAmount == 0)
+        {
+            StartCoroutine(SpawnEnemiesWaveRoutine());
+        }
+    }
+
+    public void DecreaseEnemiesAmount()
+    {
+        enemiesAmount--;
+    }
 
     public void StartSpawnning()
     {
-        StartCoroutine(SpawnEnemiesRoutine());
+        StartCoroutine(SpawnEnemiesWaveRoutine());
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnMultipleShot());
     }
 
-    
-
-    IEnumerator SpawnEnemiesRoutine()
+    IEnumerator SpawnEnemiesWaveRoutine()
     {
-        yield return new WaitForSeconds(2f);
+        startTime = Time.time;
 
-        while (isPlayerAlive)
+        while (Time.time - startTime < (waveNumber * 5f))
         {
+            Debug.Log("Time - startTime " + (Time.time - startTime));
+
             float xRandomPos = Random.Range(-9.5f, 9.5f);
             Vector2 enemySpawnPos = new Vector2(xRandomPos, 5f);
 
             GameObject newEnemy = Instantiate(enemyPrefab, enemySpawnPos, Quaternion.identity);
             newEnemy.transform.parent = enemySpawnner.transform;
 
-            yield return new WaitForSeconds(4f);
+            enemiesAmount++;
+
+            yield return new WaitForSeconds(1f);
         }
+
+        waveNumber++;
+        isWaveRunning = false;
     }
 
     IEnumerator SpawnPowerupRoutine()
@@ -41,9 +70,9 @@ public class SpawnManager : MonoBehaviour
         while (isPlayerAlive)
         {
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
-            int randomPowerup = Random.Range(0, 5); 
+            int randomPowerup = Random.Range(0, 5);
             Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(4,7));
+            yield return new WaitForSeconds(Random.Range(4, 7));
         }
     }
 

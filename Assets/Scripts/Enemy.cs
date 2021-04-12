@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject doubleLaserPrefab;
+    [SerializeField] private SpawnManager spawnManager;
 
     [SerializeField] private bool isEnemyAlive;
     [SerializeField] private float enemySpeed = 2f;
@@ -27,6 +28,9 @@ public class Enemy : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null) Debug.LogError("audioSource is null in Enemy script");
 
+        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        if (spawnManager == null) Debug.LogError("spawnmanager is null in Enemy script");
+
         isEnemyAlive = true;
 
         //leftRightSpeed = 1;
@@ -34,8 +38,8 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        //MoveEnemy();
-        MoveEnemy2();
+        MoveEnemy();
+        //MoveEnemy2();
         ShotDoubleLaser();
     }
 
@@ -58,7 +62,7 @@ public class Enemy : MonoBehaviour
 
         if (transform.position.x >= 4f)
         {
-            enemyDirection = -1; 
+            enemyDirection = -1;
         }
 
         if (transform.position.x <= -4f)
@@ -112,6 +116,10 @@ public class Enemy : MonoBehaviour
         audioSource.Play();
         Destroy(GetComponent<Collider2D>());
         Destroy(gameObject, 2.0f);
+    }
+    private void OnDestroy()
+    {
+        spawnManager.DecreaseEnemiesAmount();
     }
 }
 

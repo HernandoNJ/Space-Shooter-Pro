@@ -36,6 +36,7 @@ public class Laser : MonoBehaviour
             Destroy(gameObject);
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null) enemy.OnEnemyDestroyed();
+
         }
     }
 }
