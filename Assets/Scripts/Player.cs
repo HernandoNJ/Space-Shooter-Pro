@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
     private SpawnManager spawnManager;
     private AudioSource audioSource;
 
+    private bool isLeftShiftKeyPressed;
+
     #endregion
 
     private void Start()
@@ -63,10 +65,15 @@ public class Player : MonoBehaviour
         hasAmmo = true;
         //ammoCount = 15;
         uiManager.UpdateAmmo(ammoCount);
+        uiManager.thrusterBarImage.fillAmount = 0.5f;
     }
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.LeftShift))
+            isLeftShiftKeyPressed = true;
+        else isLeftShiftKeyPressed = false;
+            
         MovePlayer();
 
         // if Time.time = 5, Time.time > 0f => true
@@ -89,18 +96,21 @@ public class Player : MonoBehaviour
         {
             totalSpeed = playerSpeed * speedUpSpeed;
             transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
+            IncreaseThrusterBar();
         }
         // Increase speed with Left shift key
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else if (isLeftShiftKeyPressed)
         {
             totalSpeed = playerSpeed * leftShiftSpeedMult;
             transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
+            IncreaseThrusterBar();
         }
         // Normal Player movement
         else
         {
             totalSpeed = playerSpeed; // Just for testing
             transform.Translate(moveDirection * playerSpeed * Time.deltaTime);
+            DecreaseThrusterBar();
         }
 
         // Set up player movement constraints 
@@ -112,22 +122,26 @@ public class Player : MonoBehaviour
 
         if (xPos >= 10.4f) transform.position = new Vector2(-10.4f, yPos);
         else if (xPos <= -10.4f) transform.position = new Vector2(10.4f, yPos);
+    }
 
-        if (totalSpeed > 5)
-        {
-            uiManager.thrusterBarImage.fillAmount += 0.003f;
-        }
-        else if(totalSpeed <= 5)
-        {
-            uiManager.thrusterBarImage.fillAmount = 0.5f;
-        }
+    private void IncreaseThrusterBar()
+    {
+        uiManager.thrusterBarImage.fillAmount += 0.005f;
+    }
+
+    private void DecreaseThrusterBar()
+    {
+        if ((!isLeftShiftKeyPressed || !isSpeedBoostActive))
+            uiManager.thrusterBarImage.fillAmount -= 0.005f;
         
+        if (uiManager.thrusterBarImage.fillAmount <= 0.5f)
+            uiManager.thrusterBarImage.fillAmount = 0.5f;
     }
 
     private void FireLaser()
     {
         // FIX: code logic modified due to a bug, improving code
-        
+
         // Fire MultipleShot
         if (isMultipleShotActive)
         {
@@ -151,7 +165,7 @@ public class Player : MonoBehaviour
         audioSource.Play();
         ammoCount--;
 
-        if (ammoCount >= 1) 
+        if (ammoCount >= 1)
             uiManager.UpdateAmmo(ammoCount);
 
         else
