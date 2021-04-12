@@ -55,6 +55,8 @@ MonoBehaviour:
     type: 3}
   isEnemyAlive: 0
   enemySpeed: 2
+  rotAngleZ: 0
+  leftRightSpeed: 2
 --- !u!212 &6433858707350764813
 SpriteRenderer:
   m_ObjectHideFlags: 0

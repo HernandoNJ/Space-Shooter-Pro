@@ -9,6 +9,9 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private bool isEnemyAlive;
     [SerializeField] private float enemySpeed = 2f;
+    [SerializeField] private float rotAngleZ;
+    [SerializeField] private int leftRightSpeed;
+    [SerializeField] private int enemyDirection = 1;
 
     private float fireRate = 3f;
     private float canFire = -1;
@@ -25,17 +28,43 @@ public class Enemy : MonoBehaviour
         if (audioSource == null) Debug.LogError("audioSource is null in Enemy script");
 
         isEnemyAlive = true;
+
+        //leftRightSpeed = 1;
     }
 
     private void Update()
     {
-        MoveEnemy();
+        //MoveEnemy();
+        MoveEnemy2();
         ShotDoubleLaser();
     }
-    
+
     private void MoveEnemy()
     {
         transform.Translate(Vector2.down * enemySpeed * Time.deltaTime);
+
+        if (transform.position.y <= -6.0f)
+        {
+            // place enemy at top (reuse the enemy) in random pos.x
+            float randomXPos = Random.Range(-8.0f, 8.0f);
+            transform.position = new Vector2(randomXPos, 5.0f);
+        }
+    }
+
+    private void MoveEnemy2()
+    {
+        Vector2 vec = new Vector2(leftRightSpeed * enemyDirection, -1 * enemySpeed);
+        transform.Translate(vec * Time.deltaTime);
+
+        if (transform.position.x >= 4f)
+        {
+            enemyDirection = -1; 
+        }
+
+        if (transform.position.x <= -4f)
+        {
+            enemyDirection = 1;
+        }
 
         if (transform.position.y <= -6.0f)
         {
@@ -59,7 +88,7 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Ignore collision if other is an Enemy
-        if (other.transform.parent != null && other.transform.parent.CompareTag("EnemyLaser")) 
+        if (other.transform.parent != null && other.transform.parent.CompareTag("EnemyLaser"))
             return;
 
         if (other.CompareTag("Player"))
@@ -89,4 +118,6 @@ public class Enemy : MonoBehaviour
 /* FIXED: Enemies are destroying themselves with double laser - changing tag not working
  * FIXED: Enemy shoting after destroyed
  */
+
+//transform.Translate(Vector2.down * enemySpeed * Time.deltaTime);
 

@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
         uiManager.UpdateLives(lives);
         ChangeShieldColor();
         if (lives == 0) Destroy(gameObject);
-        Camera.main.GetComponent<CameraEffects>().Shake();
+        //Camera.main.GetComponent<CameraEffects>().Shake();
     }
 
     public void AddScore(int points)
