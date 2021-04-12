@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    #region Variables
+
     [SerializeField] private AudioClip laserSound;
+    [SerializeField] private GameObject multipleShotPrefab;
+    [SerializeField] private GameObject firepoint;
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private GameObject tripleLaserPrefab;
     [SerializeField] private GameObject shield;
@@ -12,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private UIManager uiManager;
 
     [SerializeField] private bool hasAmmo;
+    [SerializeField] private bool isMultipleShotActive;
     [SerializeField] private bool isTripleLaserActive;
     [SerializeField] private bool isSpeedBoostActive;
     [SerializeField] private bool isShieldActive;
@@ -21,12 +26,15 @@ public class Player : MonoBehaviour
     [SerializeField] private float leftShiftSpeedMult = 1.5f;
     [SerializeField] private float totalSpeed;
     [SerializeField] private float fireRate = 2.0f;
+    [SerializeField] private float MultipleShotFireRate = 5.0f;
     [SerializeField] private int lives = 3;
     [SerializeField] private int score;
     [SerializeField] private int ammoCount;
 
     private SpawnManager spawnManager;
     private AudioSource audioSource;
+
+    #endregion
 
     private void Start()
     {
@@ -109,18 +117,29 @@ public class Player : MonoBehaviour
     private void FireLaser()
     {
         // FIX: code logic modified due to a bug, improving code
+        
+        // Fire MultipleShot
+        if (isMultipleShotActive)
+        {
+            canFire = Time.time + MultipleShotFireRate;
+            Instantiate(multipleShotPrefab, firepoint.transform.position, Quaternion.identity);
+            isMultipleShotActive = false;
+        }
         // Shot triple laser
-        if (isTripleLaserActive)
+        else if (isTripleLaserActive)
+        {
+            canFire = Time.time + fireRate;
             Instantiate(tripleLaserPrefab, transform.position, Quaternion.identity);
+        }
         // Shot one laser
         else
         {
+            canFire = Time.time + fireRate;
             Vector2 laserPos = transform.position + new Vector3(0, 1.0f);
             Instantiate(laserPrefab, laserPos, Quaternion.identity);
         }
         audioSource.Play();
         ammoCount--;
-        canFire = Time.time + fireRate; // canFire = 5 + 0.7f = 5.7f
 
         if (ammoCount >= 1) 
             uiManager.UpdateAmmo(ammoCount);
@@ -145,7 +164,7 @@ public class Player : MonoBehaviour
         uiManager.UpdateScore(score);
     }
 
-    #region Powerups
+    #region Activate powerups mechanics
     public void ActivateTripleLaser()
     {
         isTripleLaserActive = true;
@@ -233,12 +252,12 @@ public class Player : MonoBehaviour
     // random float to rotate
     // Instantiate
     // transform.translate(forw * speed * t.delt)
-    public void MultipleShot()
+    public void ActivateMultipleShot()
     {
-
+        isMultipleShotActive = true;
+        ammoCount++;
+        uiManager.UpdateAmmo(ammoCount);
     }
-
-
 
     #endregion
 }

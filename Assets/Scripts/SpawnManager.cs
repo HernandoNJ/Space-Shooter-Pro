@@ -13,7 +13,10 @@ public class SpawnManager : MonoBehaviour
     {
         StartCoroutine(SpawnEnemiesRoutine());
         StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(SpawnMultipleShot());
     }
+
+    
 
     IEnumerator SpawnEnemiesRoutine()
     {
@@ -38,9 +41,21 @@ public class SpawnManager : MonoBehaviour
         while (isPlayerAlive)
         {
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
-            int randomPowerup = Random.Range(0, 5); // Modify value to 5
+            int randomPowerup = Random.Range(0, 5); 
             Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(4,7));
+        }
+    }
+
+    IEnumerator SpawnMultipleShot()
+    {
+        yield return new WaitForSeconds(20);
+
+        while (isPlayerAlive)
+        {
+            Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
+            Instantiate(powerups[5], powerupPos, Quaternion.identity);
+            yield return new WaitForSeconds(20);
         }
     }
 

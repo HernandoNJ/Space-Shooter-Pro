@@ -7,10 +7,6 @@ public class PowerUp : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private int powerupID; 
 
-    private void Start()
-    {
-    }
-
     void Update()
     {
         MovePowerup();
@@ -41,6 +37,7 @@ public class PowerUp : MonoBehaviour
                     case 2: player.ActivateShield(); break;
                     case 3: player.RefillAmmo();break;
                     case 4: player.RecoverHealth(); break;
+                    case 5: player.ActivateMultipleShot(); break;
                     default: Debug.Log("Default message in switch"); break;
                 }
             }
