@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Instantiate(asteroidPrefab, new Vector3(0, 2, 0), Quaternion.identity);
+        //Instantiate(asteroidPrefab, new Vector3(0, 2, 0), Quaternion.identity);
         Time.timeScale = 1.0f;
     }
 
