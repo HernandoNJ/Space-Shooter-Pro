@@ -65,7 +65,6 @@ public class Player : MonoBehaviour
         hasAmmo = true;
         //ammoCount = 15;
         uiManager.UpdateAmmo(ammoCount);
-        uiManager.thrusterBarImage.fillAmount = 0.5f;
     }
 
     private void Update()
@@ -91,26 +90,33 @@ public class Player : MonoBehaviour
 
         Vector2 moveDirection = new Vector2(horizontal, vertical).normalized;
 
+        /* Ask for a parameter in increase and decrease methods in UIManager*
+         * If left shift key or Speedup powerup
+         * uiManager.IncreaseFillBar
+         * How to increase fill bar?
+         * uiManager.func(float fill) * 
+         */
+
         // Increase speed with speedUp powerup
         if (isSpeedBoostActive)
         {
             totalSpeed = playerSpeed * speedUpSpeed;
             transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
-            IncreaseThrusterBar();
+            uiManager.IncreaseThrusterBar(0.004f);
         }
         // Increase speed with Left shift key
         else if (isLeftShiftKeyPressed)
         {
             totalSpeed = playerSpeed * leftShiftSpeedMult;
             transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
-            IncreaseThrusterBar();
+            uiManager.IncreaseThrusterBar(0.004f);
         }
         // Normal Player movement
         else
         {
             totalSpeed = playerSpeed; // Just for testing
             transform.Translate(moveDirection * playerSpeed * Time.deltaTime);
-            DecreaseThrusterBar();
+            uiManager.DecreaseThrusterBar(0.004f);
         }
 
         // Set up player movement constraints 
@@ -122,20 +128,6 @@ public class Player : MonoBehaviour
 
         if (xPos >= 10.4f) transform.position = new Vector2(-10.4f, yPos);
         else if (xPos <= -10.4f) transform.position = new Vector2(10.4f, yPos);
-    }
-
-    private void IncreaseThrusterBar()
-    {
-        uiManager.thrusterBarImage.fillAmount += 0.005f;
-    }
-
-    private void DecreaseThrusterBar()
-    {
-        if ((!isLeftShiftKeyPressed || !isSpeedBoostActive))
-            uiManager.thrusterBarImage.fillAmount -= 0.005f;
-        
-        if (uiManager.thrusterBarImage.fillAmount <= 0.5f)
-            uiManager.thrusterBarImage.fillAmount = 0.5f;
     }
 
     private void FireLaser()

@@ -9,13 +9,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text gameOverText;  
     [SerializeField] private Text restartText;  
     [SerializeField] private Image livesImage;  
-    //[SerializeField] private Image thrusterBarImage;  
+    [SerializeField] private Image thrusterBar;  
     [SerializeField] private GameObject ammoCounter;  
     [SerializeField] private GameObject emptyAmmoImage;  
     [SerializeField] private GameManager gameManager;  
     [SerializeField] private Sprite[] livesSprites;
 
-    public Image thrusterBarImage;
+    /*  Create a private reference for image *
+     *  Drag and drop image in editor *
+     *  Start image fill to 0.5f *
+     *  Create methods to increase and decrease fill *
+     *  Create logic in Player movement
+     *  Fill and empty image with methods called from player
+     *  Set the lowest value to 0.5f
+    */
 
     void Start()
     {
@@ -25,7 +32,9 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: 0"; 
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
+        
         OnFullAmmo();
+        thrusterBar.fillAmount = 0.5f;
     }
 
     public void ShowStartAmmo(int playerAmmoCount)
@@ -64,6 +73,22 @@ public class UIManager : MonoBehaviour
     {
         emptyAmmoImage.SetActive(false);
         ammoCounter.SetActive(true);
+    }
+
+    public void IncreaseThrusterBar(float fillAmount)
+    {
+        if (thrusterBar.fillAmount >= 1.0f)
+            return;
+
+        thrusterBar.fillAmount += fillAmount;
+    }
+
+    public void DecreaseThrusterBar(float emptyAmount)
+    {
+        if (thrusterBar.fillAmount <= 0.5f)
+            return;
+
+        thrusterBar.fillAmount -= emptyAmount;
     }
 
     public void GameOverSequence()
