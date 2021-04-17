@@ -48,15 +48,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ea57e820cb9f848b1c4aa18d40aeb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   anim: {fileID: 0}
   audioSource: {fileID: 0}
   doubleLaserPrefab: {fileID: 7809545642097186471, guid: 5f378fc9f8df473499fc83ec7a5b8006,
     type: 3}
+  player: {fileID: 0}
+  fireLaserPoint: {fileID: 0}
+  spawnManager: {fileID: 0}
   isEnemyAlive: 0
   enemySpeed: 2
   rotAngleZ: 0
+  timeToRotate: 0
   leftRightSpeed: 2
+  enemyDirection: 1
 --- !u!212 &6433858707350764813
 SpriteRenderer:
   m_ObjectHideFlags: 0

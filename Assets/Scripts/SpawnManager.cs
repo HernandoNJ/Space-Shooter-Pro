@@ -56,7 +56,7 @@ public class SpawnManager : MonoBehaviour
 
             enemiesAmount++;
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
         }
 
         waveNumber++;
