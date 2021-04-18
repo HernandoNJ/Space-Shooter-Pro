@@ -187,10 +187,35 @@ public class Player : MonoBehaviour
     {
         lives -= damage;
         UpdateLives();
-        ChangeShieldColor();
+        UpdateDamage();
 
         if (lives == 0)
         { Destroy(gameObject); }
+    }
+
+    public void UpdateDamage()
+    {
+        if (isShieldActive)
+        { ChangeShieldColor(); }
+        else
+        {
+            if(lives == 3){
+                leftEngine.SetActive(false);
+                rightEngine.SetActive(false);
+            }
+            if (lives == 2)
+            { leftEngine.SetActive(true); }
+            
+            else if (lives == 1)
+            {
+                leftEngine.SetActive(true);
+                rightEngine.SetActive(true);
+            }
+        }
+
+        // TODO
+        // With or without shield
+        //  Shield neither health powerup turn off the damaged engines
     }
 
     public void UpdateLives()
@@ -249,26 +274,23 @@ public class Player : MonoBehaviour
 
     public void ChangeShieldColor()
     {
-        if (isShieldActive)
+        switch (lives)
         {
-            switch (lives)// Change shield color
-            {
-                case 3:
-                    shield.GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 1f, 0.7f);
-                    break;
-                case 2:
-                    shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.5f, 0f, 0.7f);
-                    leftEngine.SetActive(true);
-                    break;
-                case 1:
-                    shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.2f, 0f, 0.6f);
-                    rightEngine.SetActive(true);
-                    break;
-                case 0:
-                    spawnManager.OnPlayerDestroyed();
-                    Destroy(gameObject);
-                    break;
-            }
+            case 3:
+                shield.GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 1f, 0.7f);
+                break;
+            case 2:
+                shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.5f, 0f, 0.7f);
+                leftEngine.SetActive(true);
+                break;
+            case 1:
+                shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.2f, 0f, 0.6f);
+                rightEngine.SetActive(true);
+                break;
+            case 0:
+                spawnManager.OnPlayerDestroyed();
+                Destroy(gameObject);
+                break;
         }
     }
 
@@ -301,7 +323,7 @@ public class Player : MonoBehaviour
         if (lives >= 3) return;
         lives++;
         UpdateLives();
-        ChangeShieldColor();
+        UpdateDamage();
     }
 
     #endregion
