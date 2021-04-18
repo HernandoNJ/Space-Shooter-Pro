@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Animator anim;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject doubleLaserPrefab;
+    [SerializeField] private GameObject shield;
     [SerializeField] private Player player;
     [SerializeField] private SpawnManager spawnManager;
 
@@ -33,6 +34,9 @@ public class Enemy : MonoBehaviour
 
         isEnemyAlive = true;
         leftRightSpeed = 1;
+        shield.SetActive(false); 
+        // TODO: write logic for enemy shield
+        
     }
 
     private void Update()
