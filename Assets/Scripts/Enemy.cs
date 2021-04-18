@@ -10,16 +10,12 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private bool isEnemyAlive;
     [SerializeField] private float speed = 2f;
+    [SerializeField] private float timeTime;
     [SerializeField] private int leftRightSpeed;
     [SerializeField] private int enemyDirection = 1;
 
     private float fireRate = 3f;
     private float canFire = -1;
-
-    public int rotateCounter;
-    public float canMove;
-    public bool isRotating;
-    public float timeTime;
 
     private void Start()
     {
@@ -37,24 +33,18 @@ public class Enemy : MonoBehaviour
 
         isEnemyAlive = true;
         leftRightSpeed = 1;
-        canMove = 3;
-
     }
 
     private void Update()
     {
         timeTime = Time.time;
-
-        if (!isRotating) { MoveEnemy3(); }
-        else RotateEnemy();
-
+        MoveEnemy();
         ShotDoubleLaser();
     }
 
     private void MoveEnemy()
     {
         transform.Translate(Vector2.down * speed * Time.deltaTime);
-
         CheckBottomPosition();
     }
 
@@ -76,41 +66,6 @@ public class Enemy : MonoBehaviour
         CheckBottomPosition();
     }
 
-    /* f (tt > timeToMove * moveAgain)
-          tt    tm    mov   !mov      m+r +
-           1    3 * 1 true   1          1
-           2    3     true   1          1
-           3.1  3     false  true            1
-           4.1
-       * 
-       * 
-       */
-
-    private void MoveEnemy3()
-    {
-        if (Time.time < canMove)
-        {
-            transform.Translate(Vector2.down * speed * Time.deltaTime);
-        }
-        else isRotating = true;
-
-        CheckBottomPosition();
-    }
-
-    private void RotateEnemy()
-    {
-        rotateCounter += 5;
-        transform.Rotate(Vector3.forward * 5f);
-        transform.Translate(Vector3.down * speed * Time.deltaTime);
-
-        if (rotateCounter == 360)
-        {
-            rotateCounter = 0; // without this line, next time it will be 365
-            isRotating = false;
-            canMove = Time.time + 2;
-        }
-    }
-
     private void CheckBottomPosition()
     {
         if (transform.position.y <= -6.0f)
@@ -122,17 +77,6 @@ public class Enemy : MonoBehaviour
 
     public void ShotDoubleLaser()
     {
-        // cf = 0
-        // tt = 2
-        // if tt>cf0 --> true
-        // shoot
-        // cf = tt +2 = 4
-        // ***
-        // cf = 4
-        // tt = 2.1
-        // if tt2.1 > cf4 --> false
-        // if tt3.5 > cf4 --> false
-
         if (Time.time > canFire && isEnemyAlive)
         {
             Instantiate(doubleLaserPrefab, transform.position, Quaternion.Euler(Vector2.down));
@@ -176,9 +120,3 @@ public class Enemy : MonoBehaviour
         spawnManager.DecreaseEnemiesAmount();
     }
 }
-
-/* FIXED: Enemies are destroying themselves with double laser - changing tag not working
- * FIXED: Enemy shooting after destroyed
- * 
- */
-

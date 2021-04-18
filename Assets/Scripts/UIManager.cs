@@ -4,24 +4,29 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Text ammoText;  
-    [SerializeField] private Text scoreText;  
-    [SerializeField] private Text gameOverText;  
-    [SerializeField] private Text restartText;  
-    [SerializeField] private Image livesImage;  
-    [SerializeField] private Image thrusterBar;  
-    [SerializeField] private GameObject ammoCounter;  
-    [SerializeField] private GameObject emptyAmmoImage;  
-    [SerializeField] private GameManager gameManager;  
+    [SerializeField] private Text ammoText;
+    [SerializeField] private Text scoreText;
+    [SerializeField] private Text gameOverText;
+    [SerializeField] private Text restartText;
+    [SerializeField] private Image livesImage;
+    [SerializeField] private Image thrusterBar;
+    [SerializeField] private GameObject ammoCounter;
+    [SerializeField] private GameObject ammoImage;
+    [SerializeField] private GameObject emptyAmmoImage;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private Sprite[] livesSprites;
 
-    /*  Create a private reference for image *
-     *  Drag and drop image in editor *
-     *  Start image fill to 0.5f *
-     *  Create methods to increase and decrease fill *
-     *  Create logic in Player movement
-     *  Fill and empty image with methods called from player
-     *  Set the lowest value to 0.5f
+    /* Visualize on screen the ammo count of the player in the form of current/max
+    * Identify ammo Text ==> ammoText
+        ? Player
+        * Create 2 variables in player: totalAmmo and availableAmmo
+        * Set totalAmmo value in Start
+
+        ? UI Manager
+        * Display availableAmmo/totalAmmo in ammoText 
+        * Modify the info shown in ammoText ==> ammoText.text = playerAmmoCount.ToString();
+        * Activate it in emptyAmmoImage
+        * Resize AmmoText in Canvas
     */
 
     void Start()
@@ -29,24 +34,12 @@ public class UIManager : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         if (gameManager == null) Debug.LogError("gameManager in UI Manager is null");
 
-        scoreText.text = "Score: 0"; 
+        scoreText.text = "Score: 0";
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
-        
+
         OnFullAmmo();
         thrusterBar.fillAmount = 0.5f;
-    }
-
-    public void ShowStartAmmo(int playerAmmoCount)
-    {
-        ammoText.text = playerAmmoCount.ToString();
-        emptyAmmoImage.SetActive(false);
-        ammoCounter.SetActive(true);
-    }
-
-    public void UpdateAmmo(int playerAmmoCount)
-    {
-        ammoText.text = playerAmmoCount.ToString();
     }
 
     public void UpdateScore(int playerScore)
@@ -57,22 +50,39 @@ public class UIManager : MonoBehaviour
     public void UpdateLives(int currentLives)
     {
         livesImage.sprite = livesSprites[currentLives];
-        
+
         if (currentLives == 0)
             GameOverSequence();
+    }
+
+    public void SetAmmoValues(int ammoAvailable, int AmmoTotal)
+    { 
+        ammoText.text = ammoAvailable.ToString() + "/" + AmmoTotal.ToString();
+    }
+
+    // public void ShowStartAmmo(int playerAmmoAvailable, int playerAmmoTotal)
+    // {
+    //     SetAmmoValues(playerAmmoAvailable, playerAmmoTotal);
+    //     emptyAmmoImage.SetActive(false);
+    //     ammoCounter.SetActive(true);
+    // }
+
+    public void UpdateAmmo(int playerAmmoAvailable, int playerAmmoTotal)
+    {
+        SetAmmoValues(playerAmmoAvailable, playerAmmoTotal);
     }
 
     public void OnEmptyAmmo()
     {
         emptyAmmoImage.SetActive(true);
         emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", true);
-        ammoCounter.SetActive(false);
-    }
+        ammoImage.SetActive(false);
+    }   
 
     public void OnFullAmmo()
     {
         emptyAmmoImage.SetActive(false);
-        ammoCounter.SetActive(true);
+        ammoImage.SetActive(true);
     }
 
     public void IncreaseThrusterBar(float fillAmount)

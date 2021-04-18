@@ -29,7 +29,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float MultipleShotFireRate = 5.0f;
     [SerializeField] private int lives = 3;
     [SerializeField] private int score;
-    [SerializeField] private int ammoCount;
+    [SerializeField] private int ammoAvailable;
+    [SerializeField] private int ammoMax;
 
     private SpawnManager spawnManager;
     private AudioSource audioSource;
@@ -38,51 +39,49 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    private void Start()
-    {
-        transform.position = new Vector2(0f, -3.0f);
+    /*
+    TODO: 
+     ? Player
+            * Create 2 variables in player: totalAmmo and availableAmmo
+            * Set totalAmmo value in Start
+            * Change availableAmmo when shooting
+            */
 
+    private void Start()
+
+    {
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
-            Debug.LogError("There is no AudioSource component in Player script");
-
-        audioSource.clip = laserSound;
+        { Debug.LogError("There is no AudioSource component in Player script"); }
 
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-
         if (spawnManager == null)
-            Debug.LogError("There is no SpawnManager script in spawnManager");
+        { Debug.LogError("There is no SpawnManager script in spawnManager"); }
 
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         if (uiManager == null)
-            Debug.LogError("No UI Manager found. Null");
+        { Debug.LogError("No UI Manager found. Null"); }
+
+        transform.position = new Vector2(0f, -3.0f);
+        audioSource.clip = laserSound;
+        ammoMax = 15;
+        ammoAvailable = 15;
+        UpdateAmmo();
 
         shield.SetActive(false);
         leftEngine.SetActive(false);
         rightEngine.SetActive(false);
-
-        //Limit the lasers fired by the player to only 15 shots.
-        hasAmmo = true;
-        //ammoCount = 15;
-        uiManager.UpdateAmmo(ammoCount);
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
-            isLeftShiftKeyPressed = true;
-        else isLeftShiftKeyPressed = false;
-            
         MovePlayer();
 
-        // if Time.time = 5, Time.time > 0f => true
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo)
-        {
-            // player must wait until Time.time = 5.8f to shoot again
-            FireLaser();
-        }
+        if (FiringActive())
+        { FireLaser(); }
     }
 
+    #region Functions
     private void MovePlayer()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -90,14 +89,7 @@ public class Player : MonoBehaviour
 
         Vector2 moveDirection = new Vector2(horizontal, vertical).normalized;
 
-        /* Ask for a parameter in increase and decrease methods in UIManager*
-         * If left shift key or Speedup powerup
-         * uiManager.IncreaseFillBar
-         * How to increase fill bar?
-         * uiManager.func(float fill) * 
-         */
-
-        // Increase speed with speedUp powerup
+        // Increase speed with powerup
         if (isSpeedBoostActive)
         {
             totalSpeed = playerSpeed * speedUpSpeed;
@@ -105,7 +97,7 @@ public class Player : MonoBehaviour
             uiManager.IncreaseThrusterBar(0.004f);
         }
         // Increase speed with Left shift key
-        else if (isLeftShiftKeyPressed)
+        else if (IncreaseSpeed())
         {
             totalSpeed = playerSpeed * leftShiftSpeedMult;
             transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
@@ -123,16 +115,46 @@ public class Player : MonoBehaviour
         float xPos = transform.position.x;
         float yPos = transform.position.y;
 
-        if (yPos >= 0f) transform.position = new Vector2(xPos, 0f);
-        else if (yPos <= -3.5f) transform.position = new Vector2(xPos, -3.5f);
+        if (yPos >= 0f)
+        { transform.position = new Vector2(xPos, 0f); }
+        else if (yPos <= -3.5f)
+        { transform.position = new Vector2(xPos, -3.5f); }
 
-        if (xPos >= 10.4f) transform.position = new Vector2(-10.4f, yPos);
-        else if (xPos <= -10.4f) transform.position = new Vector2(10.4f, yPos);
+        if (xPos >= 10.4f)
+        { transform.position = new Vector2(-10.4f, yPos); }
+        else if (xPos <= -10.4f)
+        { transform.position = new Vector2(10.4f, yPos); }
+    }
+
+    private bool FiringActive()
+    {
+        return Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo;
+    }
+
+    private bool IncreaseSpeed()
+    {
+        return Input.GetKey(KeyCode.LeftShift);
     }
 
     private void FireLaser()
     {
-        // FIX: code logic modified due to a bug, improving code
+        // TODO
+        // if activeMultShot, ammo ++ ok
+        // ammo = 1 .. turn off onemptyammo .. ok
+        // fire multiple shot .. ok
+        // *** created a new UpdateAmmo function to check ammo amount and if has ammo
+        // TODO: Fix laser clone in multShot destroy
+
+        // when to update ammo ...
+        //  FireLaser() refillAmmo () ActMultShot()
+
+        // When to increase ammo ...
+        //  refill ammo powerup
+        //  multipleShot powerup
+
+        // When to reduce ammo ...
+        //  FireLaser()
+
 
         // Fire MultipleShot
         if (isMultipleShotActive)
@@ -154,26 +176,26 @@ public class Player : MonoBehaviour
             Vector2 laserPos = transform.position + new Vector3(0, 1.0f);
             Instantiate(laserPrefab, laserPos, Quaternion.identity);
         }
+
+        ammoAvailable--;
         audioSource.Play();
-        ammoCount--;
 
-        if (ammoCount >= 1)
-            uiManager.UpdateAmmo(ammoCount);
-
-        else
-        {
-            uiManager.OnEmptyAmmo();
-            hasAmmo = false;
-        }
+        UpdateAmmo();
     }
 
     public void Damage(int damage)
     {
         lives -= damage;
-        uiManager.UpdateLives(lives);
+        UpdateLives();
         ChangeShieldColor();
-        if (lives == 0) Destroy(gameObject);
-        //Camera.main.GetComponent<CameraEffects>().Shake();
+
+        if (lives == 0)
+        { Destroy(gameObject); }
+    }
+
+    public void UpdateLives()
+    {
+        uiManager.UpdateLives(lives);
     }
 
     public void AddScore(int points)
@@ -181,6 +203,8 @@ public class Player : MonoBehaviour
         score += points;
         uiManager.UpdateScore(score);
     }
+
+    #endregion
 
     #region Activate powerups mechanics
     public void ActivateTripleLaser()
@@ -193,6 +217,13 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         isTripleLaserActive = false;
+    }
+
+    public void ActivateMultipleShot()
+    {
+        isMultipleShotActive = true;
+        ammoAvailable++;
+        UpdateAmmo();
     }
 
     public void ActivateSpeedBoost()
@@ -213,7 +244,7 @@ public class Player : MonoBehaviour
         shield.SetActive(true);
         lives = 3;
         ChangeShieldColor();
-        uiManager.UpdateLives(lives);
+        UpdateLives();
     }
 
     public void ChangeShieldColor()
@@ -241,11 +272,27 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void UpdateAmmo()
+    {
+        if (ammoAvailable > ammoMax)
+        { ammoAvailable = ammoMax; }
+
+        uiManager.UpdateAmmo(ammoAvailable, ammoMax);
+
+        hasAmmo = (ammoAvailable >= 1) ? true : false;
+
+        if (!hasAmmo)
+        {
+            uiManager.UpdateAmmo(ammoAvailable, ammoMax);
+            uiManager.OnEmptyAmmo();
+        }
+    }
+
     public void RefillAmmo()
     {
-        ammoCount = 15;
-        hasAmmo = true;
-        uiManager.UpdateAmmo(ammoCount);
+        ammoAvailable = 15;
+        UpdateAmmo();
+
         uiManager.OnFullAmmo();
     }
 
@@ -253,33 +300,9 @@ public class Player : MonoBehaviour
     {
         if (lives >= 3) return;
         lives++;
-        uiManager.UpdateLives(lives);
+        UpdateLives();
         ChangeShieldColor();
-    }
-
-    //Create a new form of projectile such as a new multidirection shot
-    // Replace the standard fire to 5 seconds
-    // Spawns rarely
-
-    // Create pic
-    // Create prefab
-    // Create mechanic
-    // Create script
-    // gameobject array laser
-    // for each obj in array
-    // random float to rotate
-    // Instantiate
-    // transform.translate(forw * speed * t.delt)
-    public void ActivateMultipleShot()
-    {
-        isMultipleShotActive = true;
-        ammoCount++;
-        uiManager.UpdateAmmo(ammoCount);
     }
 
     #endregion
 }
-
-// TODO: decide if reparing engines with new shield
-// DONE: make a moving background
-// INFO: a new mechanic can be created to reduce shield keeping player lives. If so, set isShieldActive to false where needed

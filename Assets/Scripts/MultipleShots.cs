@@ -38,6 +38,7 @@ public class MultipleShots : MonoBehaviour
                 Quaternion shotRotation = Quaternion.Euler(0, 0, n);
                 Instantiate(shotPrefab, shootingPoint.transform.position, shotRotation);
                 Destroy(gameObject, 2f);
+                //Destroy(shotPrefab, 2f);  *** Destroying assets is not permitted to avoid data loss.
             }
         }
     }
