@@ -2,6 +2,10 @@
 
 public class Enemy : MonoBehaviour
 {
+
+    // Separate 
+    // TODO: write logic for enemy shield
+
     [SerializeField] private Animator anim;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject doubleLaserPrefab;
@@ -34,20 +38,28 @@ public class Enemy : MonoBehaviour
 
         isEnemyAlive = true;
         leftRightSpeed = 1;
-        shield.SetActive(false); 
-        // TODO: write logic for enemy shield
-        
+        shield.SetActive(false);
+
     }
 
     private void Update()
     {
         timeTime = Time.time;
         MoveEnemy();
+
+        // Shot single laser for the weakest enemy
+        // double for the stronger one and so on
+
         ShotDoubleLaser();
     }
 
     private void MoveEnemy()
     {
+        // TODO: change speed depending on the enemy level
+        // Remove other enemy movements
+
+
+
         transform.Translate(Vector2.down * speed * Time.deltaTime);
         CheckBottomPosition();
     }

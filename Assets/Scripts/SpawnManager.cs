@@ -11,6 +11,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private int enemiesAmount;
     [SerializeField] private float startTime;
 
+    [SerializeField] private bool isMultiShotActive;
+    [SerializeField] private int randomPowerup;
     private bool isPlayerAlive = true;
     private bool isWaveRunning;
 
@@ -65,14 +67,18 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerupRoutine()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(3f);
 
         while (isPlayerAlive)
         {
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
-            int randomPowerup = Random.Range(0, 5);
-            Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(4, 7));
+            //int randomPowerup = Random.Range(0, 6);
+            randomPowerup = Random.Range(0, 6);
+            if (randomPowerup != 5)
+            {
+                Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
+                yield return new WaitForSeconds(Random.Range(2, 4));
+            }
         }
     }
 
@@ -82,6 +88,7 @@ public class SpawnManager : MonoBehaviour
 
         while (isPlayerAlive)
         {
+            Debug.Log("multishot time: " +  Time.time);
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
             Instantiate(powerups[5], powerupPos, Quaternion.identity);
             yield return new WaitForSeconds(20);
