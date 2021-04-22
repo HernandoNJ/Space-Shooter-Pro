@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+enum EnemyType { BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null }
+enum EnemyWeapon { Laser, DoubleLaser, Rocket, BackwardLaser, Null }
+enum EnemyMove { Normal, ZigZag, ChasePlayer, AvoidShot, Null };
+
 public class Enemy : MonoBehaviour
 {
 
@@ -8,19 +12,44 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private Animator anim;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private GameObject laserPrefab;
     [SerializeField] private GameObject doubleLaserPrefab;
+    [SerializeField] private GameObject rocket;
+    [SerializeField] private GameObject rechargedLaser;
     [SerializeField] private GameObject shield;
     [SerializeField] private Player player;
     [SerializeField] private SpawnManager spawnManager;
 
     [SerializeField] private bool isEnemyAlive;
+    [SerializeField] private bool hasShield;
     [SerializeField] private float speed = 2f;
     [SerializeField] private float timeTime;
     [SerializeField] private int leftRightSpeed;
     [SerializeField] private int enemyDirection = 1;
 
+    [SerializeField] private int[] levelID = { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+
     private float fireRate = 3f;
-    private float canFire = -1;
+    private float canFire;
+
+    /*
+
+BasicEnemy			move: normal		    Fire: laser
+DoubleShotEnemy		move: normal		    Fire: doubleLaser 
+ShieldedEnemy		move zig-zag			Fire Laser 			Shield
+AggressiveEnemy
+ChaserEnemy		    move zz && ChasePlyr	Fire: Laser 
+BackShootEnemy	move: normal 		    Fire: laser			Backw laser
+AvoidShotEnemy		move: normal		    Fire: laser			AvoidShot
+BossEnemy			
+ 
+    Boss: 
+    Move up/down, left/right -  Stay in center - Random
+    Attack laser - double - circular (1 shot) - rocket - chargedRocket - rocket follows player
+    */
+
+
 
     private void Start()
     {
@@ -36,6 +65,10 @@ public class Enemy : MonoBehaviour
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (spawnManager == null) Debug.LogError("spawnmanager is null in Enemy script");
 
+        EnemyWeapon enemyWeapon;
+        EnemyMove enemyMove;
+        EnemyType enemyType;
+
         isEnemyAlive = true;
         leftRightSpeed = 1;
         shield.SetActive(false);
@@ -45,7 +78,8 @@ public class Enemy : MonoBehaviour
     private void Update()
     {
         timeTime = Time.time;
-        MoveEnemy();
+        //MoveEnemy();
+        MoveEnemy2();
 
         // Shot single laser for the weakest enemy
         // double for the stronger one and so on
@@ -55,7 +89,8 @@ public class Enemy : MonoBehaviour
 
     private void MoveEnemy()
     {
-        // TODO: change speed depending on the enemy level
+        // TODO: change speed depending on the enemy level 
+        // FIX configure move code with enemyLevel ID
         // Remove other enemy movements
 
 
@@ -69,12 +104,16 @@ public class Enemy : MonoBehaviour
         Vector2 vec = new Vector2(leftRightSpeed * enemyDirection, -1 * speed);
         transform.Translate(vec * Time.deltaTime);
 
-        if (transform.position.x >= 4f)
+        // set xpos = pos x
+        // if posx > xpos + 2
+        Vector2 xPos = transform.position;
+
+        if (transform.position.x >= 2f)
         {
             enemyDirection = -1;
         }
 
-        if (transform.position.x <= -4f)
+        if (transform.position.x <= -2f)
         {
             enemyDirection = 1;
         }
@@ -100,6 +139,16 @@ public class Enemy : MonoBehaviour
             fireRate = Random.Range(3f, 7f);
             canFire = Time.time + fireRate;
         }
+    }
+
+    private void AvoidShot()
+    {
+        // Move away from the player’s laser
+        // Checkout create with code -black ball in moving platform
+    }
+
+    private void MoveLaserBackwards()
+    {
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
     // ammo = 1 .. turn off onemptyammo .. 
     // fire multiple shot .. 
     // DONE
-    
+
     // DONE: created a new UpdateAmmo function to check ammo amount and if hasAmmo
 
     // INFO
@@ -124,10 +124,11 @@ public class Player : MonoBehaviour
             uiManager.IncreaseThrusterBar(0.004f);
         }
         // Increase speed with Left shift key
-        else if (IncreaseSpeed())
+        else if (SpeedIncreased())
         {
             totalSpeed = playerSpeed * leftShiftSpeedMult;
             transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
+
             uiManager.IncreaseThrusterBar(0.004f);
         }
         // Normal Player movement
@@ -158,7 +159,7 @@ public class Player : MonoBehaviour
         return Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo;
     }
 
-    private bool IncreaseSpeed()
+    private bool SpeedIncreased()
     {
         return Input.GetKey(KeyCode.LeftShift);
     }
@@ -195,40 +196,34 @@ public class Player : MonoBehaviour
     public void Damage(int damage)
     {
         lives -= damage;
-        UpdateLives();
-        UpdateDamage();
+        UpdatePlayerState(lives);
 
         if (lives == 0)
         { Destroy(gameObject); }
     }
 
-    public void UpdateDamage()
-    {
-        if (isShieldActive)
-        { ChangeShieldColor(); }
-        else
-        {
-            if (lives == 3)
-            {
-                leftEngine.SetActive(false);
-                rightEngine.SetActive(false);
-            }
-            if (lives == 2)
-            {
-                leftEngine.SetActive(true);
-                rightEngine.SetActive(false);
-            }
-            else if (lives == 1)
-            {
-                leftEngine.SetActive(true);
-                rightEngine.SetActive(true);
-            }
-        }
-    }
-
-    public void UpdateLives()
+    private void UpdatePlayerState(int playerLives)
     {
         uiManager.UpdateLives(lives);
+
+        if (isShieldActive) ChangeShieldColor();
+
+        if (lives == 3)
+        {
+            leftEngine.SetActive(false);
+            rightEngine.SetActive(false);
+        }
+        if (lives == 2)
+        {
+            leftEngine.SetActive(true);
+            rightEngine.SetActive(false);
+        }
+        else if (lives == 1)
+        {
+            leftEngine.SetActive(true);
+            rightEngine.SetActive(true);
+
+        }
     }
 
     public void AddScore(int points)
@@ -276,8 +271,7 @@ public class Player : MonoBehaviour
         isShieldActive = true;
         shield.SetActive(true);
         lives = 3;
-        ChangeShieldColor();
-        UpdateLives();
+        UpdatePlayerState(lives);
     }
 
     public void ChangeShieldColor()
@@ -285,15 +279,13 @@ public class Player : MonoBehaviour
         switch (lives)
         {
             case 3:
-                shield.GetComponent<SpriteRenderer>().color = new Color(0f, 1f, 1f, 0.7f);
+                shield.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.906f, 0.374f, 1f);
                 break;
             case 2:
                 shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.5f, 0f, 0.7f);
-                leftEngine.SetActive(true);
                 break;
             case 1:
                 shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.2f, 0f, 0.6f);
-                rightEngine.SetActive(true);
                 break;
             case 0:
                 spawnManager.OnPlayerDestroyed();
@@ -330,8 +322,7 @@ public class Player : MonoBehaviour
     {
         if (lives >= 3) return;
         lives++;
-        UpdateLives();
-        UpdateDamage();
+        UpdatePlayerState(lives);
     }
 
     #endregion
