@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class Notes : MonoBehaviour
+public class NOTES : MonoBehaviour
 {
-    [TextArea]
-    [Tooltip("Doesn't do anything. Just comments shown in inspector")]
-    public string notes = "This component shouldn't be removed, it does important stuff.";
+    [TextArea(5,7)]
+    [Tooltip("Just for writing notes")]
+    public string notes = "Write your notes here";
 
 }

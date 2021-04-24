@@ -1,22 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    [SerializeField] private int weaponId;
+    public GameObject cube1;
 
     void Start()
     {
+        ChangeColor(cube1, Color.blue);
     }
 
-    void Update()
+    public void ChangeColor(GameObject g, Color c)
     {
-        switch (weaponId)
+        g.GetComponent<Renderer>().material.color = c;
+    }
+
+}
+
+
+/*
+
+[SerializeField] private int weaponId;
+
+switch (weaponId)
         {
             case 1: Debug.Log("Gun"); break;
             case 2: Debug.Log("Knife"); break;
             case 3: Debug.Log("Machine Gun"); break;
         }
-    }
-}
+
+*/

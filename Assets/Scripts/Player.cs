@@ -39,40 +39,12 @@ public class Player : MonoBehaviour
 
     #endregion
 
-
-    // TODO: Fix laser clone in multShot destroy ***
-
-    // TODO create negative pickup
-    // Create powerup prefab
-    // Set values
-    // Define a method in player
-    // Reduce 2 lives
+    // TODO *** Fix laser clone in multShot destroy ***
+    // DONE fix multishot mechanic - code and time delay
     // DONE negative powerup mechanic 
-
-    // FIXED multishot mechanic - code and time delay
-
-    // TODO fix engines disable after health powerup, with or without shield
-    // INFO: the updatedamage method had only left engine to false in some if conditions. Added right engine
-    // DONE
-
-    // TODO add behaviors to activeMultiShot mechanic
-    // if activeMultShot, ammo ++ 
-    // ammo = 1 .. turn off onemptyammo .. 
-    // fire multiple shot .. 
-    // DONE
-
-    // DONE: created a new UpdateAmmo function to check ammo amount and if hasAmmo
-
-    // INFO
-    // when to update ammo ...
-    //  FireLaser() refillAmmo () ActMultShot()
-
-    // When to increase ammo ...
-    //  refill ammo powerup
-    //  multipleShot powerup
-
-    // When to reduce ammo ...
-    //  FireLaser()
+    // DONE fix engines disable after health powerup, with or without shield
+    // DONE add behaviors to activeMultiShot mechanic
+    // DONE created a new UpdateAmmo function to check ammo amount and if hasAmmo
 
     private void Start()
 

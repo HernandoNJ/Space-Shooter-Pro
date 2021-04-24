@@ -6,10 +6,6 @@ enum EnemyMove { Normal, ZigZag, ChasePlayer, AvoidShot, Null };
 
 public class Enemy : MonoBehaviour
 {
-
-    // Separate 
-    // TODO: write logic for enemy shield
-
     [SerializeField] private Animator anim;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject laserPrefab;
@@ -27,29 +23,39 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int leftRightSpeed;
     [SerializeField] private int enemyDirection = 1;
 
-    [SerializeField] private int[] levelID = { 0, 1, 2, 3, 4, 5, 6, 7 };
-
-
     private float fireRate = 3f;
     private float canFire;
 
+    // DONE Define enemies type, weapon and move
+    // TODO get all required gameobjects: laser, doubleLaser, shield, rocket, superRocket
+    // TODO define and implement mechanics: 
+    // Move (normal, zz, center, left/right, ChasePlayer, AvoidShot, Agressive)
+    // Shot (laser, doubleLaser, ShotBackw, Rocket, SuperRocket).
+    // Shield
+    // Health
+
     /*
+EnemyType 
+BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null
+
+EnemyWeapon
+Laser, DoubleLaser, Rocket, BackwardLaser, Null 
+
+EnemyMove
+Normal, ZigZag, ChasePlayer, AvoidShot, Null
 
 BasicEnemy			move: normal		    Fire: laser
 DoubleShotEnemy		move: normal		    Fire: doubleLaser 
 ShieldedEnemy		move zig-zag			Fire Laser 			Shield
 AggressiveEnemy
 ChaserEnemy		    move zz && ChasePlyr	Fire: Laser 
-BackShootEnemy	move: normal 		    Fire: laser			Backw laser
-AvoidShotEnemy		move: normal		    Fire: laser			AvoidShot
-BossEnemy			
- 
-    Boss: 
-    Move up/down, left/right -  Stay in center - Random
-    Attack laser - double - circular (1 shot) - rocket - chargedRocket - rocket follows player
+BackShootEnemy	    move: normal 		    Fire: laser			Backw laser
+AvoidShotEnemy		move: normal, AvoidShot Fire: laser			
+
+BossEnemy			move: center, LeftRight 
+                    Fire: laser, doubleLaser, rocket (follow player), superRocket
+                    Health: 10x
     */
-
-
 
     private void Start()
     {
