@@ -1,32 +1,27 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RoutineCheck : MonoBehaviour
 {
-    public bool isVisible;
+    private MeshRenderer mesh;
+    private WaitForSeconds waitTime = new WaitForSeconds(0.05f);
 
-    private void Start()
-    {
-        isVisible = true;
+    private void Start() {
+        mesh = GetComponent<MeshRenderer>();
+        StartCoroutine(ChangeColorRoutine());
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.I) && isVisible)
-        {
-            gameObject.GetComponent<Renderer>().enabled = false;
-            Debug.Log("Entering routine");
-            StartCoroutine(HideShowRoutine());
-            isVisible = false;
+    private IEnumerator ChangeColorRoutine(){
+        while(true){
+            mesh.enabled = true;
+            mesh.material.color = SetColor();
+            yield return waitTime;
+            mesh.enabled = false;
+            yield return waitTime;
         }
     }
 
-    IEnumerator HideShowRoutine()
-    {
-        yield return new WaitForSeconds(5f);
-        gameObject.GetComponent<Renderer>().enabled = true;
-        Debug.Log("Exiting 5 seconds");
-        isVisible = true;
+    private Color SetColor(){
+        return new Color(Random.value, Random.value, Random.value);
     }
 }

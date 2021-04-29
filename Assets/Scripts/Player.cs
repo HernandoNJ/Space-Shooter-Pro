@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     // Set values
     // Define a method in player
     // Reduce 2 lives
-    // DONE negative powerup mechanic 
+    // DONE 
 
     // FIXED multishot mechanic - code and time delay
 
