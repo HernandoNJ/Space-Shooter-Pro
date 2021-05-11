@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EnemyDoubleLaser : MonoBehaviour
+public class EnemyDoubleLaserStart : MonoBehaviour
 {
     [SerializeField] private float speed = 4f;
 

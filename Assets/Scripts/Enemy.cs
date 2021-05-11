@@ -1,193 +1,206 @@
 ﻿using UnityEngine;
 
-enum EnemyType { BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null }
-enum EnemyWeapon { Laser, DoubleLaser, Rocket, BackwardLaser, Null }
-enum EnemyMove { Normal, ZigZag, ChasePlayer, AvoidShot, Null };
-
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
-    [SerializeField] private Animator anim;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private GameObject laserPrefab;
-    [SerializeField] private GameObject doubleLaserPrefab;
-    [SerializeField] private GameObject rocket;
-    [SerializeField] private GameObject rechargedLaser;
-    [SerializeField] private GameObject shield;
-    [SerializeField] private Player player;
-    [SerializeField] private SpawnManager spawnManager;
+    // Declare only fields and methods common for all enemies
+    // Additional behaviors like Shield, Shot and Damage must be implemented as interfaces
 
-    [SerializeField] private bool isEnemyAlive;
-    [SerializeField] private bool hasShield;
-    [SerializeField] private float speed = 2f;
-    [SerializeField] private float timeTime;
-    [SerializeField] private int leftRightSpeed;
-    [SerializeField] private int enemyDirection = 1;
-
-    private float fireRate = 3f;
-    private float canFire;
-
-    // DONE Define enemies type, weapon and move
-    // TODO get all required gameobjects: laser, doubleLaser, shield, rocket, superRocket
-    // TODO define and implement mechanics: 
-    // Move (normal, zz, center, left/right, ChasePlayer, AvoidShot, Agressive)
-    // Shot (laser, doubleLaser, ShotBackw, Rocket, SuperRocket).
-    // Shield
-    // Health
+    public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
+    public enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
+    public enum EnemyMove { Default, Normal, ZigZag, Aggressive, ChasingPlayer, AvoidingShot }
 
     /*
-EnemyType 
-BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null
 
-EnemyWeapon
-Laser, DoubleLaser, Rocket, BackwardLaser, Null 
+    Abstract:   what an enemy could have? properties, actions
+                what actions and properties must be static? abstract (mandatory)?                
+                what variables and actions must be shown in editor?
+                can the method be implemented for several kinds of enemies?
 
-EnemyMove
-Normal, ZigZag, ChasePlayer, AvoidShot, Null
+    Interface:  the behaviour is a must.
+                is the method/property unique for each enemy? 
+                what behaviours will the enemy have? what properties will those behaviors require?
 
-BasicEnemy			move: normal		    Fire: laser
-DoubleShotEnemy		move: normal		    Fire: doubleLaser 
-ShieldedEnemy		move zig-zag			Fire Laser 			Shield
-AggressiveEnemy
-ChaserEnemy		    move zz && ChasePlyr	Fire: Laser 
-BackShootEnemy	    move: normal 		    Fire: laser			Backw laser
-AvoidShotEnemy		move: normal, AvoidShot Fire: laser			
+    Move: is an action, a behavior. Most Enemies must move. Define a method
+    Weapon: is a part of the enemy, not an action. Define a field. 
 
-BossEnemy			move: center, LeftRight 
-                    Fire: laser, doubleLaser, rocket (follow player), superRocket
-                    Health: 10x
+    TODO Implement events, Code to customize enemy in inspector
+    TODO create a Laser base class for laser, doubleLaser and Backwards Laser
+
+    ASK Children constructors can be public, protected or private?
+
     */
+
+    [SerializeField] protected EnemyType enemyType;
+    [SerializeField] protected EnemyMove enemyMove;
+    [SerializeField] protected EnemyWeapon enemyWeapon;
+    [SerializeField] private float fireRate;
+    [SerializeField] private float speed;
+    [SerializeField] private int lives;
+    public float FireRate { get => fireRate; set => fireRate = value; }
+    public int Lives { get => lives; set => lives = value; }
+    public float Speed { get => speed; set => speed = value; }
+
+    // ASK useless in Unity?
+    // public Enemy(EnemyType enemyType, int lives, float speed, float fireRate)
+    // {
+    //     //ConfigureEnemy(enemyType);
+    //     Lives = lives;
+    //     Speed = speed;
+    //     FireRate = fireRate;
+    // }
+
+    protected void ConfigureEnemy(EnemyType type, EnemyMove move, EnemyWeapon weapon, int livesAmount, float speedAmount, float fireRateAmount)
+    {
+        enemyType = type;
+        enemyMove = move;
+        enemyWeapon = weapon;
+        Lives = livesAmount;
+        Speed = speedAmount;
+        FireRate = fireRateAmount;
+    }
 
     private void Start()
     {
-        player = GameObject.Find("Player").GetComponent<Player>();
-        if (player == null) Debug.LogError("There is not Player script in player");
-
-        anim = GetComponent<Animator>();
-        if (anim == null) Debug.LogError("anim is null in Enemy script");
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null) Debug.LogError("audioSource is null in Enemy script");
-
-        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        if (spawnManager == null) Debug.LogError("spawnmanager is null in Enemy script");
-
-        EnemyWeapon enemyWeapon;
-        EnemyMove enemyMove;
-        EnemyType enemyType;
-
-        isEnemyAlive = true;
-        leftRightSpeed = 1;
-        shield.SetActive(false);
 
     }
 
-    private void Update()
+    protected abstract void MoveEnemy();
+    protected virtual void MoveNormal()
     {
-        timeTime = Time.time;
-        //MoveEnemy();
-        MoveEnemy2();
-
-        // Shot single laser for the weakest enemy
-        // double for the stronger one and so on
-
-        ShotDoubleLaser();
+        transform.Translate(Vector3.down.normalized * Speed * Time.deltaTime);
     }
 
-    private void MoveEnemy()
+    // protected virtual void MoveZigZag() { }
+    // protected virtual void MoveAggressive() { }
+    // protected virtual void ShieldEnemy() { }
+    // protected virtual void SetAgressive() { }
+    // protected virtual void ChasePlayer() { }
+    // protected virtual void ShootBack() { }
+    // protected virtual void AvoidShot() { }
+    protected virtual void Destroyed()
+    { Destroy(gameObject); }
+
+}
+
+
+
+
+
+
+/*
+
+explosionPrefab
+shieldPrefab
+laserPrefab
+doubleLaserPrefab
+
+isShieldActive
+shieldStrength
+spawnRate
+lives
+maxLives
+damageAmount
+damagePoints
+fireRate
+moveSpeed
+isBoss
+bossPositions
+
+
+public enum EnemyMovementType 
+{ 
+Default, 
+ZigZag,
+Hover,
+Follow,
+Aggressive,
+Patrol,
+Panic,
+ToAnchorPoint,
+LeftRight,
+Juke,
+}
+
+    In the start() function of EnemyMovement script, I put this:
+8:59 AM
+if (_enemy.GetEnemyType() == EnemyType.Infantry)
+            InitInfantryMovementType();
+        else if (_enemy.GetEnemyType() == EnemyType.Assault)
+            InitAssaultMovementType();
+        else if (_enemy.GetEnemyType() == EnemyType.Aggressor)
+            InitAggressorMovementType();
+9:00 AM
+If the enemy is of type infantry or any other enemy type, then initialise a function that will choose a random movement type. (edited)
+9:01 AM
+so for instance, in the "InitInfatnryMovementType(), I put this:
+9:01 AM
+private void InitInfantryMovementType()
     {
-        // TODO: change speed depending on the enemy level 
-        // FIX configure move code with enemyLevel ID
-        // Remove other enemy movements
+        int randomIntValue = Random.Range(0, 2);
+        if (randomIntValue == 0)
+            _enemyMovementType = EnemyMovementType.Default;
+        else if (randomIntValue == 1)
+            _enemyMovementType = EnemyMovementType.ZigZag;
+    }
+9:02 AM
+I created a random int value.If the random int value is 0, then I want the enemy of type Infantry to have the default movement type. if the random int is 1, I want the movement type to be zigzag.
+
+GetEnemyType() returns the type of enemy. Here's what it is in code. Very simple.
+public EnemyType GetEnemyType()
+{
+    return _enemyType;
+}
 
 
 
-        transform.Translate(Vector2.down * speed * Time.deltaTime);
-        CheckBottomPosition();
+
+private void Movement(){
+    if(enemymoveType == EnemyMoveType.Default)
+    transform.Translate(Vector3.down.normalized * speed * Time.deltaTime);
+
+    if(enemymoveType == EnemyMoveType.ZigZag)
+    if(!canSwitch){ randomSide = Random.Range(1,3); canSwitch = true; }
+
+    if(randomeSide == 1)
+    transform.Translate((Vector3.down + _right).normalized * speed * Time.deltaTime);
+    else if(randomeSide == 2)
+    transform.Translate((Vector3.down + _left).normalized * speed * Time.deltaTime);
+
+    if(enemymoveType == EnemyMoveType.Hover)
+    if(transform.position.y >4f) { 
+    transform.Translate(Vector3.down.normalized * speed * Time.deltaTime);
+    isHovering = true; }
+    else if(isHovering) { 
+    Vector3 newPos = new Vector3(transform.position.x, 4f,0);
+    transform.position = newPos;
+    StartCoroutine(HoverRoutine())
+    }
+    else transform.Translate(Vector3.down.normalized * hoverSpeed ...5... * Time.deltaTime
     }
 
-    private void MoveEnemy2()
+    if (enemyMoveType == EnemyMove.Follow)
     {
-        Vector2 vec = new Vector2(leftRightSpeed * enemyDirection, -1 * speed);
-        transform.Translate(vec * Time.deltaTime);
-
-        // set xpos = pos x
-        // if posx > xpos + 2
-        Vector2 xPos = transform.position;
-
-        if (transform.position.x >= 2f)
-        {
-            enemyDirection = -1;
-        }
-
-        if (transform.position.x <= -2f)
-        {
-            enemyDirection = 1;
-        }
-
-        CheckBottomPosition();
+        if (target == null) return;
+        if (Vector3.Distance(transform.position,target.position) > 5f)
+            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * time.DeltaTime);
     }
 
-    private void CheckBottomPosition()
-    {
-        if (transform.position.y <= -6.0f)
-        {
-            // place enemy at top (reuse the enemy) in random pos.x
-            transform.position = new Vector2(Random.Range(-8.0f, 8.0f), 5.0f);
-        }
+    if(enemyMove == EnemyMove.Aggressive) {
+        isAggressive = true;
+        transform.Translate(Vector3.down * (speed * 2) * Time.deltaTime);
     }
+    else isAgressive = false;
 
-    public void ShotDoubleLaser()
-    {
-        if (Time.time > canFire && isEnemyAlive)
-        {
-            Instantiate(doubleLaserPrefab, transform.position, Quaternion.Euler(Vector2.down));
+    if(enemyMove == EnemyMove.Patrol){
+        isPatrolling = true;
+        Vector3 pos = transform.position;
+        pos = Vector3.MoveTowards(transform.position, bossPositions[randomPoint].position, speed * Time.deltaTime);
+        transform.position = pos;
 
-            fireRate = Random.Range(3f, 7f);
-            canFire = Time.time + fireRate;
-        }
-    }
-
-    private void AvoidShot()
-    {
-        // Move away from the player’s laser
-        // Checkout create with code -black ball in moving platform
-    }
-
-    private void MoveLaserBackwards()
-    {
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        // Ignore collision if other is an Enemy
-        if (other.transform.parent != null && other.transform.parent.CompareTag("EnemyLaser"))
-            return;
-
-        if (other.CompareTag("Player"))
-        {
-            player.Damage(1);
-            speed = 0f;
-            anim.SetTrigger("OnEnemyDestroyed");
-            audioSource.Play();
-            Destroy(GetComponent<Collider2D>());
-            gameObject.SetActive(false); // added because enemy was hitting the player twice
-            Destroy(gameObject, 2.0f);
-        }
-    }
-
-    // Called by a laser when hit
-    public void OnEnemyDestroyed()
-    {
-        isEnemyAlive = false;
-        anim.SetTrigger("OnEnemyDestroyed");
-        speed = 0f;
-        audioSource.Play();
-        Destroy(GetComponent<Collider2D>());
-        Destroy(gameObject, 2.0f);
-    }
-
-    private void OnDestroy()
-    {
-        spawnManager.DecreaseEnemiesAmount();
+        if(Vector3.Distance(pos, bossPositions[randomPoint].position)<0.2f)
+        if(waitTime <=0)
+            randomPoint = Random.Range(0, bossPositions.Length);
     }
 }
+
+*/

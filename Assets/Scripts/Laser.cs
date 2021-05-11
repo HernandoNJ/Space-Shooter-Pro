@@ -34,7 +34,7 @@ public class Laser : MonoBehaviour
         {
             this.player.AddScore(10);
             Destroy(gameObject);
-            Enemy enemy = other.GetComponent<Enemy>();
+            EnemyStart enemy = other.GetComponent<EnemyStart>();
             if (enemy != null) enemy.OnEnemyDestroyed();
 
         }
