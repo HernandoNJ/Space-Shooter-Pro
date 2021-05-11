@@ -8,7 +8,7 @@ public class MultipleShots : MonoBehaviour
     [SerializeField] private GameObject shotPrefab;
     [SerializeField] private GameObject shootingPoint;
 
-    void Start()
+    private void Start()
     {
         shootingPoint = GameObject.Find("FirePoint");
         shotsAmount = 30;

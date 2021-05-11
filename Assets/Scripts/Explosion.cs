@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
         Destroy(gameObject, 3f);
     }

@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
         * Resize AmmoText in Canvas
     */
 
-    void Start()
+    private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         if (gameManager == null) Debug.LogError("gameManager in UI Manager is null");
@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void SetAmmoValues(int ammoAvailable, int AmmoTotal)
-    { 
+    {
         ammoText.text = ammoAvailable.ToString() + "/" + AmmoTotal.ToString();
     }
 
@@ -77,7 +77,7 @@ public class UIManager : MonoBehaviour
         emptyAmmoImage.SetActive(true);
         emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", true);
         ammoImage.SetActive(false);
-    }   
+    }
 
     public void OnFullAmmo()
     {

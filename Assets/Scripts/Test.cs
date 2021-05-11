@@ -4,7 +4,7 @@ public class Test : MonoBehaviour
 {
     public GameObject cube1;
 
-    void Start()
+    private void Start()
     {
         ChangeColor(cube1, Color.blue);
     }

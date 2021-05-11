@@ -71,10 +71,6 @@ BossEnemy			move: center, LeftRight
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (spawnManager == null) Debug.LogError("spawnmanager is null in Enemy script");
 
-        EnemyWeapon enemyWeapon;
-        EnemyMove enemyMove;
-        EnemyType enemyType;
-
         isEnemyAlive = true;
         leftRightSpeed = 1;
         shield.SetActive(false);

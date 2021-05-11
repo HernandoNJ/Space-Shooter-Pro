@@ -25,14 +25,15 @@ public abstract class Enemy : MonoBehaviour
 
     TODO Implement events, Code to customize enemy in inspector
     TODO create a Laser base class for laser, doubleLaser and Backwards Laser
+    TODO raycast for enemy and backward laser chasing player
 
     ASK Children constructors can be public, protected or private?
 
     */
 
-    [SerializeField] protected EnemyType enemyType;
-    [SerializeField] protected EnemyMove enemyMove;
-    [SerializeField] protected EnemyWeapon enemyWeapon;
+    [SerializeField] private EnemyType enemyType;
+    [SerializeField] private EnemyWeapon enemyWeapon;
+    [SerializeField] private EnemyMove enemyMove;
     [SerializeField] private float fireRate;
     [SerializeField] private float speed;
     [SerializeField] private int lives;
