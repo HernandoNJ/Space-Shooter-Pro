@@ -12,8 +12,8 @@ namespace Training.Others
                 RaycastHit hitInfo;
                 if (Physics.Raycast(ray, hitInfo: out hitInfo))
                 {
-                    var iDamage = hitInfo.collider.GetComponent<ITakeDamage>();
-                    if(iDamage != null) iDamage.TakeDamage(1);
+                    var iDamage = hitInfo.collider.GetComponent<ITakeDamageT>();
+                    if (iDamage != null) iDamage.TakeDamage(1);
                 }
             }
         }

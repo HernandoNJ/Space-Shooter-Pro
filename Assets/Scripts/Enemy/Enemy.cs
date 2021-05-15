@@ -4,49 +4,86 @@ namespace EnemyLib
 {
     public abstract class Enemy : MonoBehaviour, IDamage, IDestroy, IMove, IShield, IShoot
     {
-
-        public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
-        public enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
-        public enum EnemyMove { Default, Normal, ZigZag, Aggressive, ChasingPlayer, AvoidingShot }
-
         /*
+
+        TODO *** try using enums to populate parameters in ConfigureEnemy. For example: ConfigureEnemy(EnemyType enemyType). 
+        TODO *** if (enemyType == EnemyType.Basic) ==> Set basic Enemy values
+
+        TODO *** create a way to make a new Enemy with EnemyType.Default, which settings can be set in inspector
+
+        TODO *** Create blog explaining how to create enemies. First, showing how it would be to create each enemy from scratch. Later, explaining modularization through inheritance.
+
+        TODO *** Implement interfaces in children
+
+        ASK *** Check start method here
 
         TODO Implement events, Code to customize enemy in inspector
         TODO create a Laser base class for laser, doubleLaser and Backwards Laser
         TODO raycast for enemy and backward laser chasing player
 
-        INFO Abstract methods don't have implementation and must be overriden in children
-        INFO Virtual method may be called and overriden, and may keep parent's method implementation
-
         */
 
-        [SerializeField] private EnemyType enemyType;
-        [SerializeField] private EnemyWeapon enemyWeapon;
-        [SerializeField] private EnemyMove enemyMove;
+        public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
+        public enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
+        public enum EnemyMove { Default, Normal, ZigZag, Aggressive, ChasingPlayer, AvoidingShot }
+
+        [SerializeField] private EnemyType type;
+        [SerializeField] private EnemyWeapon weapon;
+        [SerializeField] private EnemyMove move;
+        [SerializeField] private Sprite image;
         [SerializeField] private GameObject explosionPrefab;
 
         [SerializeField] private float fireRate;
         [SerializeField] private float speed;
-        [SerializeField] private int lives;
+        [SerializeField] protected int lives;
         [SerializeField] private int maxLives;
 
         public float FireRate { get => fireRate; set => fireRate = value; }
         public int Lives { get => lives; set => lives = value; }
         public float Speed { get => speed; set => speed = value; }
+        public int MaxLives { get => maxLives; set => maxLives = value; }
 
+        /// <summary>
+        /// Set Enemy values with hardcode @HernandoNJ
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="move"></param>
+        /// <param name="weapon"></param>
+        /// <param name="maxLives"></param>
+        /// <param name="speedAmount"></param>
+        /// <param name="fireRateAmount"></param>
         protected void ConfigureEnemy(EnemyType type, EnemyMove move, EnemyWeapon weapon, int maxLives, float speedAmount, float fireRateAmount)
         {
-            enemyType = type;
-            enemyMove = move;
-            enemyWeapon = weapon;
-            Lives = maxLives;
+            this.type = type;
+            this.move = move;
+            this.weapon = weapon;
             Speed = speedAmount;
             FireRate = fireRateAmount;
+            MaxLives = maxLives;
+            // Set lives value in children
+            lives = MaxLives;
         }
+
+        /// <summary>
+        /// Set only EnemyType value. Other values must be set in inn inspector. Overloaded method @HernandoNJ
+        /// </summary>
+        /// <param name="enemyType"></param>
+        protected void ConfigureEnemy(EnemyType enemyType) { }
 
         private void Start()
         {
-            lives = maxLives;
+            // ASK how to execute this line in children without repeating code?
+            // Set lives value in this class
+            lives = MaxLives;
+
+            // [SerializeField] private int weaponId;
+
+            // switch (weaponId)
+            // {
+            //     case 1: Debug.Log("Gun"); break;
+            //     case 2: Debug.Log("Knife"); break;
+            //     case 3: Debug.Log("Machine Gun"); break;
+            // }
         }
 
         public virtual void Destroyed()

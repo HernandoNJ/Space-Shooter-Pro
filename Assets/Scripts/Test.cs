@@ -1,17 +1,23 @@
-﻿using UnityEngine;
+﻿using System.Runtime.InteropServices;
+using UnityEngine;
+using EnemyLib;
 
 public class Test : MonoBehaviour
 {
-    public GameObject cube1;
+    public int livesT;
+    public float speedT;
+    public float fireRateT;
+    public EnemyAggressive enemyAg;
 
     private void Start()
     {
-        ChangeColor(cube1, Color.blue);
-    }
+        enemyAg = new EnemyAggressive();
 
-    public void ChangeColor(GameObject g, Color c)
-    {
-        g.GetComponent<Renderer>().material.color = c;
+        livesT = enemyAg.Lives;
+        speedT = enemyAg.Speed;
+        fireRateT = enemyAg.FireRate;
+
+        Debug.Log("ag lives: " + livesT + "speed: " + speedT);
     }
 
 }

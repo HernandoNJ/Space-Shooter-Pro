@@ -2,9 +2,9 @@
 
 namespace Training.Others
 {
-    public class Barrel : MonoBehaviour, ITakeDamage
+    public class Barrel : MonoBehaviour, ITakeDamageT
     {
-    
+
         public void TakeDamage(int damage)
         {
             Destroy(gameObject);
