@@ -1,11 +1,12 @@
-﻿public class EnemyShotAvoider : Enemy
+﻿namespace EnemyLib
 {
-    private void Start()
+    public class EnemyShotAvoider :Enemy
     {
-        ConfigureEnemy(EnemyType.ShotAvoider, EnemyMove.AvoidingShot, EnemyWeapon.Laser, 1, 3f, 0.15f);
-    }
-    protected override void MoveEnemy()
-    {
-        // TODO implement
+        private void Start()
+        {
+            ConfigureEnemy(EnemyType.ShotAvoider, EnemyMove.AvoidingShot, EnemyWeapon.Laser, 1, 3f, 0.15f);
+        }
+        
+        
     }
 }

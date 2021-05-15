@@ -1,87 +1,70 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour
+namespace EnemyLib
 {
-    // Declare only fields and methods common for all enemies
-    // Additional behaviors like Shield, Shot and Damage must be implemented as interfaces
-
-    public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
-    public enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
-    public enum EnemyMove { Default, Normal, ZigZag, Aggressive, ChasingPlayer, AvoidingShot }
-
-    /*
-
-    Abstract:   what an enemy could have? properties, actions
-                what actions and properties must be static? abstract (mandatory)?                
-                what variables and actions must be shown in editor?
-                can the method be implemented for several kinds of enemies?
-
-    Interface:  the behaviour is a must.
-                is the method/property unique for each enemy? 
-                what behaviours will the enemy have? what properties will those behaviors require?
-
-    Move: is an action, a behavior. Most Enemies must move. Define a method
-    Weapon: is a part of the enemy, not an action. Define a field. 
-
-    TODO Implement events, Code to customize enemy in inspector
-    TODO create a Laser base class for laser, doubleLaser and Backwards Laser
-    TODO raycast for enemy and backward laser chasing player
-
-    ASK Children constructors can be public, protected or private?
-
-    */
-
-    [SerializeField] private EnemyType enemyType;
-    [SerializeField] private EnemyWeapon enemyWeapon;
-    [SerializeField] private EnemyMove enemyMove;
-    [SerializeField] private float fireRate;
-    [SerializeField] private float speed;
-    [SerializeField] private int lives;
-    public float FireRate { get => fireRate; set => fireRate = value; }
-    public int Lives { get => lives; set => lives = value; }
-    public float Speed { get => speed; set => speed = value; }
-
-    // ASK useless in Unity?
-    // public Enemy(EnemyType enemyType, int lives, float speed, float fireRate)
-    // {
-    //     //ConfigureEnemy(enemyType);
-    //     Lives = lives;
-    //     Speed = speed;
-    //     FireRate = fireRate;
-    // }
-
-    protected void ConfigureEnemy(EnemyType type, EnemyMove move, EnemyWeapon weapon, int livesAmount, float speedAmount, float fireRateAmount)
-    {
-        enemyType = type;
-        enemyMove = move;
-        enemyWeapon = weapon;
-        Lives = livesAmount;
-        Speed = speedAmount;
-        FireRate = fireRateAmount;
-    }
-
-    private void Start()
+    public abstract class Enemy : MonoBehaviour, IDamage, IDestroy, IMove, IShield, IShoot
     {
 
+        public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
+        public enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
+        public enum EnemyMove { Default, Normal, ZigZag, Aggressive, ChasingPlayer, AvoidingShot }
+
+        /*
+
+        TODO Implement events, Code to customize enemy in inspector
+        TODO create a Laser base class for laser, doubleLaser and Backwards Laser
+        TODO raycast for enemy and backward laser chasing player
+
+        INFO Abstract methods don't have implementation and must be overriden in children
+        INFO Virtual method may be called and overriden, and may keep parent's method implementation
+
+        */
+
+        [SerializeField] private EnemyType enemyType;
+        [SerializeField] private EnemyWeapon enemyWeapon;
+        [SerializeField] private EnemyMove enemyMove;
+        [SerializeField] private GameObject explosionPrefab;
+
+        [SerializeField] private float fireRate;
+        [SerializeField] private float speed;
+        [SerializeField] private int lives;
+        [SerializeField] private int maxLives;
+
+        public float FireRate { get => fireRate; set => fireRate = value; }
+        public int Lives { get => lives; set => lives = value; }
+        public float Speed { get => speed; set => speed = value; }
+
+        protected void ConfigureEnemy(EnemyType type, EnemyMove move, EnemyWeapon weapon, int maxLives, float speedAmount, float fireRateAmount)
+        {
+            enemyType = type;
+            enemyMove = move;
+            enemyWeapon = weapon;
+            Lives = maxLives;
+            Speed = speedAmount;
+            FireRate = fireRateAmount;
+        }
+
+        private void Start()
+        {
+            lives = maxLives;
+        }
+
+        public virtual void Destroyed()
+        {
+            Destroy(gameObject);
+            // TODO Set Explosion animation
+        }
+        public virtual void FireWeapon(int firingRate) { }
+        public virtual void Move(float moveSpeed)
+        {
+
+        }
+        public virtual void Shield(int shieldForce) { }
+        public virtual void TakeDamage(int damage) { }
+
     }
-
-    protected abstract void MoveEnemy();
-    protected virtual void MoveNormal()
-    {
-        transform.Translate(Vector3.down.normalized * Speed * Time.deltaTime);
-    }
-
-    // protected virtual void MoveZigZag() { }
-    // protected virtual void MoveAggressive() { }
-    // protected virtual void ShieldEnemy() { }
-    // protected virtual void SetAgressive() { }
-    // protected virtual void ChasePlayer() { }
-    // protected virtual void ShootBack() { }
-    // protected virtual void AvoidShot() { }
-    protected virtual void Destroyed()
-    { Destroy(gameObject); }
-
 }
+
 
 
 

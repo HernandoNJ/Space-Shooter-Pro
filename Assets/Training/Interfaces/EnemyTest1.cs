@@ -2,7 +2,7 @@
 
 namespace Interfaces
 {
-    public class Enemy : MonoBehaviour, IDamage, IShoot
+    public class EnemyTest1 : MonoBehaviour, IDamage, IShoot
     {
 
         public int Health { get; set; }
@@ -13,11 +13,9 @@ namespace Interfaces
             GetComponent<MeshRenderer>().material.color = Color.red;
         }
 
-        public void Shoot()
+        public void FireWeapon(int shotValue)
         {
 
         }
-
-
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Abstracts
 {
-    public abstract class Enemy : MonoBehaviour
+    public abstract class EnemyTest2 : MonoBehaviour
     {
         public string speed;
         public int health;

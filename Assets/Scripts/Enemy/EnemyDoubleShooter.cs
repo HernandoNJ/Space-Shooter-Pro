@@ -1,13 +1,13 @@
-﻿public class EnemyDoubleShooter : Enemy
+﻿namespace EnemyLib
 {
-    private void Start()
+    public class EnemyDoubleShooter :Enemy
     {
-        ConfigureEnemy(EnemyType.DoubleShooter, EnemyMove.Normal, EnemyWeapon.DoubleLaser, 1, 3f, 0.4f);
-    }
-    protected override void MoveEnemy()
-    {
-        MoveNormal();
-    }
+        private void Start()
+        {
+            ConfigureEnemy(EnemyType.DoubleShooter, EnemyMove.Normal, EnemyWeapon.DoubleLaser, 1, 3f, 0.4f);
+        }
+      
 
 
+    }
 }

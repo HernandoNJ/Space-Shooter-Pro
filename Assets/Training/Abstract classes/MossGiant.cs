@@ -2,7 +2,7 @@
 
 namespace Abstracts
 {
-    public class MossGiant : Enemy
+    public class MossGiant : EnemyTest2
     {
         private void Start()
         {
