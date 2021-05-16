@@ -4,25 +4,6 @@ namespace EnemyLib
 {
     public abstract class Enemy : MonoBehaviour, IDamage, IDestroy, IMove, IShield, IShoot
     {
-        /*
-
-        TODO *** try using enums to populate parameters in ConfigureEnemy. For example: ConfigureEnemy(EnemyType enemyType). 
-        TODO *** if (enemyType == EnemyType.Basic) ==> Set basic Enemy values
-
-        TODO *** create a way to make a new Enemy with EnemyType.Default, which settings can be set in inspector
-
-        TODO *** Create blog explaining how to create enemies. First, showing how it would be to create each enemy from scratch. Later, explaining modularization through inheritance.
-
-        TODO *** Implement interfaces in children
-
-        ASK *** Check start method here
-
-        TODO Implement events, Code to customize enemy in inspector
-        TODO create a Laser base class for laser, doubleLaser and Backwards Laser
-        TODO raycast for enemy and backward laser chasing player
-
-        */
-
         public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
         public enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
         public enum EnemyMove { Default, Normal, ZigZag, Aggressive, ChasingPlayer, AvoidingShot }
@@ -32,10 +13,9 @@ namespace EnemyLib
         [SerializeField] private EnemyMove move;
         [SerializeField] private Sprite image;
         [SerializeField] private GameObject explosionPrefab;
-
         [SerializeField] private float fireRate;
         [SerializeField] private float speed;
-        [SerializeField] protected int lives;
+        [SerializeField] private int lives;
         [SerializeField] private int maxLives;
 
         public float FireRate { get => fireRate; set => fireRate = value; }
@@ -43,8 +23,59 @@ namespace EnemyLib
         public float Speed { get => speed; set => speed = value; }
         public int MaxLives { get => maxLives; set => maxLives = value; }
 
+        private void Start()
+        {
+            // ASK how to execute this line in children without repeating code?
+            // Set lives value in this class
+            lives = MaxLives;
+        }
+
+        private void Update()
+        {
+
+        }
+
         /// <summary>
-        /// Set Enemy values with hardcode @HernandoNJ
+        /// Default Enemy setup - @HernandoNJ
+        /// </summary>
+        protected void ConfigureEnemy() { }
+
+        /// <summary>
+        /// Set only EnemyType. Other values must be set in inspector. 
+        /// Overloaded method - @HernandoNJ
+        /// </summary>
+        /// <param name="enemyType"></param>
+        protected void ConfigureEnemy(EnemyType enemyType)
+        {
+            if (!CheckType(enemyType)) return;
+            switch (enemyType)
+            {
+                case EnemyType.Basic:
+                    type = EnemyType.Basic;
+                    move = EnemyMove.Normal;
+                    weapon = EnemyWeapon.Laser;
+                    Speed = 3f;
+                    FireRate = 0.15f;
+                    MaxLives = 1;
+                    lives = MaxLives;
+                    break;
+                case EnemyType.DoubleShooter:
+                    type = EnemyType.DoubleShooter;
+                    move = EnemyMove.Normal;
+                    weapon = EnemyWeapon.DoubleLaser;
+                    Speed = 3f;
+                    FireRate = 0.1f;
+                    MaxLives = 1;
+                    lives = MaxLives;
+                    break;
+                default:
+                    ConfigureEnemy();
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Set Enemy values with hardcode - @HernandoNJ
         /// </summary>
         /// <param name="type"></param>
         /// <param name="move"></param>
@@ -64,26 +95,11 @@ namespace EnemyLib
             lives = MaxLives;
         }
 
-        /// <summary>
-        /// Set only EnemyType value. Other values must be set in inn inspector. Overloaded method @HernandoNJ
-        /// </summary>
-        /// <param name="enemyType"></param>
-        protected void ConfigureEnemy(EnemyType enemyType) { }
 
-        private void Start()
+        private bool CheckType(EnemyType type)
         {
-            // ASK how to execute this line in children without repeating code?
-            // Set lives value in this class
-            lives = MaxLives;
-
-            // [SerializeField] private int weaponId;
-
-            // switch (weaponId)
-            // {
-            //     case 1: Debug.Log("Gun"); break;
-            //     case 2: Debug.Log("Knife"); break;
-            //     case 3: Debug.Log("Machine Gun"); break;
-            // }
+            if (type == EnemyType.Basic || type == EnemyType.DoubleShooter) return true;
+            else { Debug.Log("Select enemy type basic or double shooter"); return false; }
         }
 
         public virtual void Destroyed()
@@ -91,20 +107,38 @@ namespace EnemyLib
             Destroy(gameObject);
             // TODO Set Explosion animation
         }
-        public virtual void FireWeapon(int firingRate) { }
+
+        public virtual void FireWeapon(int firingRate)
+        {
+            fireRate = firingRate;
+        }
+
         public virtual void Move(float moveSpeed)
         {
 
         }
-        public virtual void Shield(int shieldForce) { }
-        public virtual void TakeDamage(int damage) { }
 
+        public virtual void Shield(int shieldForce) { }
+        public virtual void TakeDamage(int damage) => lives -= damage;
     }
 }
 
+/*
+
+TODO *** Create blog explaining how to create enemies. First, showing how it would be to create each enemy from scratch. Later, explaining modularization through inheritance.
+
+TODO *** Implement interfaces in children
+
+TODO Implement events, Code to customize enemy in inspector
+TODO create a Laser base class for laser, doubleLaser and Backwards Laser
+TODO raycast for enemy and backward laser chasing player
+
+DONE use enums to populate parameters in ConfigureEnemy.For example: ConfigureEnemy(EnemyType enemyType).  *** if (enemyType == EnemyType.Basic) ==> Set basic Enemy values
+
+DONE*** create a way to make a new Enemy with EnemyType.Default, which settings can be set in inspector
 
 
-
+*/
 
 
 
@@ -141,6 +175,10 @@ ToAnchorPoint,
 LeftRight,
 Juke,
 }
+
+
+speed = moveSpeed;
+transform.Translate(Vector3.down.normalized * speed * Time.deltaTime);
 
     In the start() function of EnemyMovement script, I put this:
 8:59 AM
