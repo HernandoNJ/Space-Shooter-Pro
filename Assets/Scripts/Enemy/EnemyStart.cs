@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-
-enum EnemyType { BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null }
-enum EnemyWeapon { Laser, DoubleLaser, Rocket, BackwardLaser, Null }
-enum EnemyMove { Normal, ZigZag, ChasePlayer, AvoidShot, Null };
-
 public class EnemyStart : MonoBehaviour
 {
+    enum EnemyType { BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null }
+    enum EnemyWeapon { Laser, DoubleLaser, Rocket, BackwardLaser, Null }
+    enum EnemyMove { Normal, ZigZag, ChasePlayer, AvoidShot, Null };
+
     [SerializeField] private Animator anim;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private GameObject laserPrefab;
@@ -25,37 +24,6 @@ public class EnemyStart : MonoBehaviour
 
     private float fireRate = 3f;
     private float canFire;
-
-    // DONE Define enemies type, weapon and move
-    // TODO get all required gameobjects: laser, doubleLaser, shield, rocket, superRocket
-    // TODO define and implement mechanics: 
-    // Move (normal, zz, center, left/right, ChasePlayer, AvoidShot, Agressive)
-    // Shot (laser, doubleLaser, ShotBackw, Rocket, SuperRocket).
-    // Shield
-    // Health
-
-    /*
-EnemyType 
-BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null
-
-EnemyWeapon
-Laser, DoubleLaser, Rocket, BackwardLaser, Null 
-
-EnemyMove
-Normal, ZigZag, ChasePlayer, AvoidShot, Null
-
-BasicEnemy			move: normal		    Fire: laser
-DoubleShotEnemy		move: normal		    Fire: doubleLaser 
-ShieldedEnemy		move zig-zag			Fire Laser 			Shield
-AggressiveEnemy
-ChaserEnemy		    move normal, ChasePlyr	Fire: Laser 
-BackShootEnemy	    move: normal 		    Fire: laser			Backw laser
-AvoidShotEnemy		move: normal, AvoidShot Fire: laser			
-
-BossEnemy			move: center, LeftRight 
-                    Fire: laser, doubleLaser, rocket (follow player), superRocket
-                    Health: 10x
-    */
 
     private void Start()
     {
@@ -91,12 +59,6 @@ BossEnemy			move: center, LeftRight
 
     private void MoveEnemy()
     {
-        // TODO: change speed depending on the enemy level 
-        // FIX configure move code with enemyLevel ID
-        // Remove other enemy movements
-
-
-
         transform.Translate(Vector2.down * speed * Time.deltaTime);
         CheckBottomPosition();
     }

@@ -1,13 +1,12 @@
-﻿namespace EnemyLib
+﻿using EnemyLib;
+public class EnemyDoubleShooter : Enemy
 {
-    public class EnemyDoubleShooter :Enemy
+    private void Start()
     {
-        private void Start()
-        {
-            ConfigureEnemy(EnemyType.DoubleShooter, EnemyMove.Normal, EnemyWeapon.DoubleLaser, 1, 3f, 0.4f);
-        }
-      
-
-
+        ConfigureEnemy(EnemyType.DoubleShooter);
     }
+
+
+
 }
+

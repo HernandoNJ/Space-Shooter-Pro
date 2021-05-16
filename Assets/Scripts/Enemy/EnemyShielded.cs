@@ -1,13 +1,12 @@
-﻿namespace EnemyLib
+﻿using EnemyLib;
+public class EnemyShielded : Enemy
 {
-    public class EnemyShielded :Enemy
+    private void Start()
     {
-        private void Start()
-        {
-            ConfigureEnemy(EnemyType.Shielded, EnemyMove.Normal, EnemyWeapon.Laser, 2, 3f, 0.1f);
-        }
-       
-
-
+        ConfigureEnemy(EnemyType.Shielded);
     }
+
+
+
 }
+

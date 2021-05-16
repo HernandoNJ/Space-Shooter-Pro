@@ -2,15 +2,13 @@ using UnityEngine;
 
 namespace EnemyLib
 {
-    public abstract class Enemy : MonoBehaviour, IDamage, IDestroy, IMove, IShield, IShoot
+    public abstract class Enemy : MonoBehaviour, IDamage, IMove, IShield, IShoot
     {
         public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
-        public enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
-        public enum EnemyMove { Default, Normal, ZigZag, Aggressive, ChasingPlayer, AvoidingShot }
+        private enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
 
         [SerializeField] private EnemyType type;
         [SerializeField] private EnemyWeapon weapon;
-        [SerializeField] private EnemyMove move;
         [SerializeField] private Sprite image;
         [SerializeField] private GameObject explosionPrefab;
         [SerializeField] private float fireRate;
@@ -18,89 +16,73 @@ namespace EnemyLib
         [SerializeField] private int lives;
         [SerializeField] private int maxLives;
 
-        public float FireRate { get => fireRate; set => fireRate = value; }
-        public int Lives { get => lives; set => lives = value; }
-        public float Speed { get => speed; set => speed = value; }
-        public int MaxLives { get => maxLives; set => maxLives = value; }
-
-        private void Start()
-        {
+        private void Start() =>
             // ASK how to execute this line in children without repeating code?
             // Set lives value in this class
-            lives = MaxLives;
-        }
+            lives = maxLives;
 
         private void Update()
         {
+            Move(speed);
+
 
         }
 
         /// <summary>
-        /// Default Enemy setup - @HernandoNJ
-        /// </summary>
-        protected void ConfigureEnemy() { }
-
-        /// <summary>
-        /// Set only EnemyType. Other values must be set in inspector. 
-        /// Overloaded method - @HernandoNJ
+        /// For creating a new enemy, Add a new EnemyType enum and set its values here - @HernandoNJ
         /// </summary>
         /// <param name="enemyType"></param>
         protected void ConfigureEnemy(EnemyType enemyType)
         {
-            if (!CheckType(enemyType)) return;
-            switch (enemyType)
+            type = enemyType;
+            if (type == EnemyType.Default) return;
+
+            switch (type)
             {
                 case EnemyType.Basic:
-                    type = EnemyType.Basic;
-                    move = EnemyMove.Normal;
-                    weapon = EnemyWeapon.Laser;
-                    Speed = 3f;
-                    FireRate = 0.15f;
-                    MaxLives = 1;
-                    lives = MaxLives;
+                    // 
+                    //weapon = EnemyWeapon.Laser;
+
+                    //if weapon = weapon1, 
+                    // image = 
+                    // explosionPrefab = 
+                    fireRate = 0.15f;
+                    speed = 2.5f;
+                    maxLives = 1;
                     break;
                 case EnemyType.DoubleShooter:
-                    type = EnemyType.DoubleShooter;
-                    move = EnemyMove.Normal;
-                    weapon = EnemyWeapon.DoubleLaser;
-                    Speed = 3f;
-                    FireRate = 0.1f;
-                    MaxLives = 1;
-                    lives = MaxLives;
+                    // 
+                    //weapon = EnemyWeapon.Laser;
+
+                    //if weapon = weapon1, 
+                    // image = 
+                    // explosionPrefab = 
+                    fireRate = 0.1f;
+                    speed = 2f;
+                    maxLives = 1;
                     break;
-                default:
-                    ConfigureEnemy();
-                    break;
+
             }
-        }
+            lives = maxLives;
 
-        /// <summary>
-        /// Set Enemy values with hardcode - @HernandoNJ
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="move"></param>
-        /// <param name="weapon"></param>
-        /// <param name="maxLives"></param>
-        /// <param name="speedAmount"></param>
-        /// <param name="fireRateAmount"></param>
-        protected void ConfigureEnemy(EnemyType type, EnemyMove move, EnemyWeapon weapon, int maxLives, float speedAmount, float fireRateAmount)
-        {
-            this.type = type;
-            this.move = move;
-            this.weapon = weapon;
-            Speed = speedAmount;
-            FireRate = fireRateAmount;
-            MaxLives = maxLives;
-            // Set lives value in children
-            lives = MaxLives;
-        }
+            // SetWeapon(EnemyWeapon weapontype)
+            // if (weapontype = EnemyWeapon.Laser) weaponItem = Laser
+
+            // Dictionary weapons Laser, DoubleLaser, BackwardLaser, Rocket
+            // if boss, create a weapon prefabs array
+            // Require component: rigidbody, 
+
+            // ASK how to edit a line of code in multiple files, for example, namespace EnemyLib?
+            // TODO set values for each enemytype
+            // TODO create a weapons dictionary
+            // TODO create a miscellaneous items dictionary (explosion, shield)
+            // TODO create a doc in the project to explain how to create a new enemy with hardcode or in editor. if in editor, new empty, attach EnemyDefault script, set values, save as prefab
 
 
-        private bool CheckType(EnemyType type)
-        {
-            if (type == EnemyType.Basic || type == EnemyType.DoubleShooter) return true;
-            else { Debug.Log("Select enemy type basic or double shooter"); return false; }
+
+
         }
+
 
         public virtual void Destroyed()
         {
@@ -115,12 +97,18 @@ namespace EnemyLib
 
         public virtual void Move(float moveSpeed)
         {
-
+            transform.Translate(Vector2.down * speed * Time.deltaTime);
+            //TODO CheckBottomPosition();
         }
 
         public virtual void Shield(int shieldForce) { }
         public virtual void TakeDamage(int damage) => lives -= damage;
     }
+
+
+
+
+
 }
 
 /*

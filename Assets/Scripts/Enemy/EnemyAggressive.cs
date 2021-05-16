@@ -1,15 +1,14 @@
-namespace EnemyLib
+using EnemyLib;
+public class EnemyAggressive : Enemy
 {
-    public class EnemyAggressive : Enemy
+
+    private void Start()
     {
-
-        private void Start()
-        {
-            ConfigureEnemy(EnemyType.Aggressive, EnemyMove.Aggressive, EnemyWeapon.Laser, 1, 3.5f, 0.1f);
-        }
-
-
-
+        ConfigureEnemy(EnemyType.Aggressive);
     }
+
+
+
 }
+
 
