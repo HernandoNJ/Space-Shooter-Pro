@@ -1,13 +1,8 @@
 ﻿using EnemyLib;
 public class EnemyChaser : Enemy
 {
-
-    private void Start()
+    public override void TakeDamage(int damage)
     {
-        ConfigureEnemy(EnemyType.Chaser);
     }
-
-
-
 }
 

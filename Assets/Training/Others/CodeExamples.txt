@@ -591,9 +591,32 @@ private Color SetColor(){
 
 ***************** --------------- **********************
 
+CODE EG Enemy detection *****************
 
+https://discord.com/channels/675813882589085706/675824359897694259
 
+https://discord.com/channels/675813882589085706/675824359897694259/843775417739640872
 
+So you can have your enemies in a Layer called "EnemyLayer" (and Tag as "EnemyGuard" it's not necessary to use Tag but i will use it in the example)
+And for the example lets assume that the enemy guard is  the"enemy" gameObject and has the "Enemy" component.
+
+I am going to use Physics.OverlapSphere to find the enemy guards colliders near the guard that is alerting.
+- enemy.transform.position is the enemy that wants to alert other guards and its going to serve as the center of the sphere.
+- alertDistance is the distance that other guards can be alerted and its going to be the sphere radius.
+- And at last i will use the layerMask i mentioned earlier because i want to search for enemy guards in that Layer only!(Using a layerMask for performance reasons)
+
+float alertDistance = 10f;
+Collider[] hitColliders = Physics.OverlapSphere(enemy.transform.position, alertDistance, LayerMask.GetMask("EnemyLayer"));
+
+foreach(Collider hitCollider in hitColliders)
+{
+    if(hitCollider.gameObject.tag == "EnemyGuard" && hitCollider.GetComponent<Enemy>() != enemy)
+    {
+        //Your code goes here
+    }
+}
+
+***************** --------------- **********************
 
 
 */

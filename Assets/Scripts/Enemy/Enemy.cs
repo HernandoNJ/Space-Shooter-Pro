@@ -2,108 +2,78 @@ using UnityEngine;
 
 namespace EnemyLib
 {
-    public abstract class Enemy : MonoBehaviour, IDamage, IMove, IShield, IShoot
+    public abstract class Enemy : MonoBehaviour, IDamage, IMove, IShoot
     {
-        public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
-        private enum EnemyWeapon { Default, Laser, DoubleLaser, BackwardLaser, Rocket }
-
-        [SerializeField] private EnemyType type;
-        [SerializeField] private EnemyWeapon weapon;
-        [SerializeField] private Sprite image;
+        public EnemyData enemyData;
         [SerializeField] private GameObject explosionPrefab;
-        [SerializeField] private float fireRate;
-        [SerializeField] private float speed;
-        [SerializeField] private int lives;
-        [SerializeField] private int maxLives;
+        [SerializeField] protected int currentHealth;
+        private EnemyType enemyType;
+        private float speed;
+        private int health;
+        private int fireRate;
 
-        private void Start() =>
-            // ASK how to execute this line in children without repeating code?
-            // Set lives value in this class
-            lives = maxLives;
+
+        // TODO Define shield in SO
+        // todo *** Inventory Items in SO for shield, weapons, explosion
+
+        private void Start()
+        {
+            SetEnemyValues(enemyData);
+
+        }
 
         private void Update()
         {
             Move(speed);
-
+            FireWeapon(fireRate);
+            TestClickDamage();
 
         }
 
-        /// <summary>
-        /// For creating a new enemy, Add a new EnemyType enum and set its values here - @HernandoNJ
-        /// </summary>
-        /// <param name="enemyType"></param>
-        protected void ConfigureEnemy(EnemyType enemyType)
+        private void OnDisable()
         {
-            type = enemyType;
-            if (type == EnemyType.Default) return;
-
-            switch (type)
-            {
-                case EnemyType.Basic:
-                    // 
-                    //weapon = EnemyWeapon.Laser;
-
-                    //if weapon = weapon1, 
-                    // image = 
-                    // explosionPrefab = 
-                    fireRate = 0.15f;
-                    speed = 2.5f;
-                    maxLives = 1;
-                    break;
-                case EnemyType.DoubleShooter:
-                    // 
-                    //weapon = EnemyWeapon.Laser;
-
-                    //if weapon = weapon1, 
-                    // image = 
-                    // explosionPrefab = 
-                    fireRate = 0.1f;
-                    speed = 2f;
-                    maxLives = 1;
-                    break;
-
-            }
-            lives = maxLives;
-
-            // SetWeapon(EnemyWeapon weapontype)
-            // if (weapontype = EnemyWeapon.Laser) weaponItem = Laser
-
-            // Dictionary weapons Laser, DoubleLaser, BackwardLaser, Rocket
-            // if boss, create a weapon prefabs array
-            // Require component: rigidbody, 
-
-            // ASK how to edit a line of code in multiple files, for example, namespace EnemyLib?
-            // TODO set values for each enemytype
-            // TODO create a weapons dictionary
-            // TODO create a miscellaneous items dictionary (explosion, shield)
-            // TODO create a doc in the project to explain how to create a new enemy with hardcode or in editor. if in editor, new empty, attach EnemyDefault script, set values, save as prefab
-
-
-
-
+            enemyData.updatedHealth = currentHealth;
         }
 
-
-        public virtual void Destroyed()
+        private void SetEnemyValues(EnemyData _data)
         {
-            Destroy(gameObject);
-            // TODO Set Explosion animation
+            currentHealth = _data.maxHealth;
+            speed = _data.speed;
+            health = _data.maxHealth;
+            enemyType = _data.enemyType;
         }
 
-        public virtual void FireWeapon(int firingRate)
+        public virtual void TakeDamage(int damage)
         {
-            fireRate = firingRate;
+            currentHealth -= damage;
         }
-
-        public virtual void Move(float moveSpeed)
+            
+        public virtual void Move(float speed)
         {
             transform.Translate(Vector2.down * speed * Time.deltaTime);
-            //TODO CheckBottomPosition();
+            // TODO CheckBottomPosition();
+        }
+        public virtual void FireWeapon(int firingRate)
+        {
+
         }
 
-        public virtual void Shield(int shieldForce) { }
-        public virtual void TakeDamage(int damage) => lives -= damage;
+        public void TestClickDamage()
+        {
+            if (Input.GetMouseButtonDown(0)) 
+                TakeDamage(2);
+
+            if (Input.GetMouseButtonDown(1))
+                TakeDamage(5);
+        }
+
     }
+
+
+
+
+
+
 
 
 
@@ -128,6 +98,20 @@ DONE*** create a way to make a new Enemy with EnemyType.Default, which settings 
 
 */
 
+
+// SetWeapon(EnemyWeapon weapontype)
+// if (weapontype = EnemyWeapon.Laser) weaponItem = Laser
+
+// Dictionary weapons Laser, DoubleLaser, BackwardLaser, Rocket
+// if boss, create a weapon prefabs array
+// Require component: rigidbody, 
+
+// ASK how to edit a line of code in multiple files, for example, namespace EnemyLib?
+// TODO set values for each enemytype
+// TODO create weapons game objects
+// TODO make a weapons dictionary
+// TODO create a miscellaneous items dictionary (explosion, shield)
+// TODO create a doc in the project to explain how to create a new enemy with hardcode or in editor. if in editor, new empty, attach EnemyDefault script, set values, save as prefab
 
 
 /*

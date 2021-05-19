@@ -1,11 +1,8 @@
 ﻿using EnemyLib;
 public class EnemyShotAvoider : Enemy
 {
-    private void Start()
+    public override void TakeDamage(int damage)
     {
-        ConfigureEnemy(EnemyType.ShotAvoider);
     }
-
-
 }
 

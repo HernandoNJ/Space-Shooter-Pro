@@ -1,15 +1,14 @@
 ﻿using EnemyLib;
-public class EnemyBasic : Enemy //IShot
+public class EnemyBasic : Enemy
 {
-    // ASK useless? It doesn't work in play mode
-    // public EnemyBasic(EnemyType enemyType, int lives, float speed, float fireRate) : base(EnemyType.Basic, 4, speed, fireRate) { }
-
-
-    protected void Start()
+    public override void Move(float speed)
     {
-        ConfigureEnemy(EnemyType.Basic);
+
     }
 
-
+    public override void TakeDamage(int damage)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

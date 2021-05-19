@@ -1,13 +1,13 @@
 using EnemyLib;
 public class EnemyAggressive : Enemy
 {
-
-    private void Start()
+    public override void Move(float moveSpeed)
     {
-        ConfigureEnemy(EnemyType.Aggressive);
     }
 
-
+    public override void TakeDamage(int damage)
+    {
+    }
 
 }
 

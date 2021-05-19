@@ -1,12 +1,8 @@
 ﻿using EnemyLib;
 public class EnemyShielded : Enemy
 {
-    private void Start()
+    public override void TakeDamage(int damage)
     {
-        ConfigureEnemy(EnemyType.Shielded);
     }
-
-
-
 }
 
