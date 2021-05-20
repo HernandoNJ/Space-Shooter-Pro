@@ -9,15 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 357e4750eebf4d6418799afcc6b63e55, type: 3}
-  m_Name: TestEnemyBomb
+  m_Script: {fileID: 11500000, guid: 5a345f3088bf5244bb0e9595439901df, type: 3}
+  m_Name: EnemyBasicModel
   m_EditorClassIdentifier: 
-  enemyName: Bomb
+  modelName: EnemyBasicModel
   description: 
-  enemyModel: {fileID: 4242235274056284743, guid: 66ecbb14e1d841c4795c30a3d7d0ab85,
-    type: 3}
-  enemyWeapon: {fileID: 0}
-  speed: 2
-  fireRate: 1
-  damage: 1
-  health: 1
+  model: {fileID: 2157192408987552983, guid: ff92c4123ee48d047bbe1c9032b85fe6, type: 3}

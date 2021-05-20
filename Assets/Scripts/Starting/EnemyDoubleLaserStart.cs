@@ -22,7 +22,7 @@ public class EnemyDoubleLaserStart : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
-            if (player != null) player.Damage(1);
+            if (player != null) player.TakeDamage(1);
             Destroy(gameObject);
         }
     }

@@ -38,7 +38,7 @@ public class PowerUp : MonoBehaviour
                     case 3: player.RefillAmmo();break;
                     case 4: player.RecoverHealth(); break;
                     case 5: player.ActivateMultipleShot(); break;
-                    case 6: player.Damage(2); break;
+                    case 6: player.TakeDamage(2); break;
                     default: Debug.Log("Default message in switch"); break;
                 }
             }

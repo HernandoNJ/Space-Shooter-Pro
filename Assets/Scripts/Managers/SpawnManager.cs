@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using EnemyLib;
+using System.Collections;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -18,6 +19,7 @@ public class SpawnManager : MonoBehaviour
 
     private void Start()
     {
+        Enemy.enemyDestroyed += DecreaseEnemiesAmount;
         waveNumber = 1;
         isWaveRunning = true;
     }

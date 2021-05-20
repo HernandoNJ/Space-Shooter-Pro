@@ -2,7 +2,7 @@
 
 public class Weaponv2 : MonoBehaviour
 {
-    [SerializeField] private WeaponData weaponData;
+    [SerializeField] private WeaponDataTraining weaponData;
     [SerializeField] private Transform weaponModelTransformParent;
     private GameObject model;
 

@@ -8,7 +8,7 @@ public class EnemyControl : MonoBehaviour
 
     private void Start()
     {
-        GameObject enemyModel = Instantiate(data.model);
+        
     }
 
     // private void Update()

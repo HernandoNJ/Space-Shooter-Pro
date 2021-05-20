@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Basic
   description: Normal move and shot
-  model: {fileID: 0}
-  weapon: {fileID: 0}
   speed: 3
-  fireRate: 0.15
-  maxHealth: 0
+  fireRate: 3
+  maxHealth: 1
+  updatedHealth: 1
+  enemyType: 1
+  modelData: {fileID: 11400000, guid: c525999f50b3385498042f415505b3b0, type: 2}
+  weapon: {fileID: 806219380596265371, guid: 5b7522317acac9c4bb49731546f5260c, type: 3}
   weapons: []
+  explosionPrefab: {fileID: 4009486786716279570, guid: 6a96c45d6a4a5bf4ea32127b409524e5,
+    type: 3}

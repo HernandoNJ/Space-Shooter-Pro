@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Target : MonoBehaviour, IDamage
+public class Target : MonoBehaviour, ITakeDamage
 {
     /* It can be anything like a player or enemy */
 

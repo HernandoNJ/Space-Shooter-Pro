@@ -3,12 +3,12 @@ public class EnemyBasic : Enemy
 {
     public override void Move(float speed)
     {
-
+        base.Move(speed);
     }
 
     public override void TakeDamage(int damage)
     {
-        throw new System.NotImplementedException();
+        base.TakeDamage(damage);
     }
 }
 

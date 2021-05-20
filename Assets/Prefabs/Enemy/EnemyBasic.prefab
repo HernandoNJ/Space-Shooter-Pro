@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 0
   m_Name: EnemyBasic
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -43,9 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178f4af6b1c2dd346a510f030e2b406a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
-  enemyMove: 0
-  enemyWeapon: 0
-  fireRate: 0
-  speed: 0
-  lives: 0
+  enemyData: {fileID: 11400000, guid: 8c11f89cb05798c4e8601a27859e6b18, type: 2}
+  currentHealth: 1

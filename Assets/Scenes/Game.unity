@@ -636,7 +636,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 528118172}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
@@ -1834,7 +1834,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 29b18eb40b5b75145b1abcd638a469f7, type: 3}
-  m_Color: {r: 0.6462264, g: 0.71665347, b: 1, a: 0.9647059}
+  m_Color: {r: 0.6462264, g: 0.71665347, b: 1, a: 0.7294118}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2153,7 +2153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e295663cca3804296915d926289db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 4450228360150968733, guid: 309daab616b56f24b9db4aff35b7a3e3,
+  enemyPrefab: {fileID: 4587283898457224990, guid: 1316b6c1d59a1c246bf2b34f3a1a13a1,
     type: 3}
   enemySpawnner: {fileID: 168691554}
   powerups:
@@ -2274,14 +2274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728a8f85ffaf7934596e6888e3174d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notes: '* Improved player script code
-
-    * Modified background sprite
-
-    *
-    Modified Player sprite
-
-'
+  notes: "* Test EnemyStart and Player \n* Add damage in Weapon SO and set a value
+    of 2 in doubleLaser \n*  Set TakeDamage(weapon.damage)\n"
 --- !u!4 &1902709677
 Transform:
   m_ObjectHideFlags: 0
@@ -2371,7 +2365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 38.999817, y: -20}
+  m_AnchoredPosition: {x: 38.999756, y: -20}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 1, y: 1}
 --- !u!1 &2083380923

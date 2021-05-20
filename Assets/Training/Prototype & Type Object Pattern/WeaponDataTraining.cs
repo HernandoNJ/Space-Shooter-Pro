@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-[CreateAssetMenu(menuName = "Weapon Data")]
-public class WeaponData : ScriptableObject
+[CreateAssetMenu(fileName = "WeaponData", menuName = "ScriptableObject/TrainingSO/WeaponData")]
+public class WeaponDataTraining : ScriptableObject
 {
     /*
     Really useful if designers use the Unity editor frequently

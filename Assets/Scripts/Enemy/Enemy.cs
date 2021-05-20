@@ -1,71 +1,162 @@
+using System;
 using UnityEngine;
 
 namespace EnemyLib
 {
-    public abstract class Enemy : MonoBehaviour, IDamage, IMove, IShoot
+    public abstract class Enemy : MonoBehaviour, ITakeDamage, IMove, IShoot
     {
+        public static Action enemyDestroyed;
         public EnemyData enemyData;
+        [SerializeField] private int currentHealth;
+        [SerializeField] private Animator animator;
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private EnemyType enemyType;
         [SerializeField] private GameObject explosionPrefab;
-        [SerializeField] protected int currentHealth;
-        private EnemyType enemyType;
-        private float speed;
-        private int health;
-        private int fireRate;
-
-
-        // TODO Define shield in SO
-        // todo *** Inventory Items in SO for shield, weapons, explosion
+        [SerializeField] private GameObject model;
+        [SerializeField] private GameObject weapon;
+        [SerializeField] private bool isAlive;
+        [SerializeField] private float speed;
+        [SerializeField] private float fireRate;
+        [SerializeField] private float timeToFire;
 
         private void Start()
         {
             SetEnemyValues(enemyData);
+        }
+        private void SetEnemyValues(EnemyData _data)
+        {
+            animator = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
+            currentHealth = _data.maxHealth;
+            enemyType = _data.enemyType;
+            fireRate = _data.fireRate;
+            isAlive = true;
+            model = _data.modelData.model;
+            weapon = _data.weapon;
+            speed = _data.speed;
+            explosionPrefab = _data.explosionPrefab;
+            explosionPrefab.SetActive(false);
 
+            GameObject modelGo = Instantiate(model);
+            modelGo.transform.SetParent(this.transform);
+            modelGo.transform.localPosition = Vector3.zero;
+            modelGo.transform.rotation = Quaternion.identity;
         }
 
         private void Update()
         {
             Move(speed);
-            FireWeapon(fireRate);
-            TestClickDamage();
-
         }
+
+        // TODO Create a coroutine
+        // FireWeapon(fireRate);
+
+        //public void ShotDoubleLaser()
+        //{
+        //    if (Time.time > canFire && isAlive)
+        //    { } }
+        //        Instantiate(doubleLaserPrefab, transform.position, Quaternion.Euler(Vector2.down));
+
+        //        fireRate = Random.Range(3f, 7f);
+        //        canFire = Time.time + fireRate;
+        //    }
+        //}
+
+
+        public virtual void FireWeapon(float firingRate) { }
+        //{
+        //    if (Time.time > timeToFire && isAlive)
+        //    {
+        //        Instantiate(weapon, transform.position, Quaternion.Euler(Vector2.down));
+
+        //        fireRate = Random.Range(3f, 7f);
+        //        timeToFire = Time.time + fireRate;
+        //    }
+        //}
 
         private void OnDisable()
         {
             enemyData.updatedHealth = currentHealth;
         }
-
-        private void SetEnemyValues(EnemyData _data)
+        private void OnDestroy()
         {
-            currentHealth = _data.maxHealth;
-            speed = _data.speed;
-            health = _data.maxHealth;
-            enemyType = _data.enemyType;
-        }
+            // TODO implement in spawnmanager to decrease enemies amount -  subscribe and unsubscribe
+            enemyDestroyed?.Invoke();
 
-        public virtual void TakeDamage(int damage)
-        {
-            currentHealth -= damage;
+            explosionPrefab.SetActive(true);
+
+            // Called by a laser when hit
+            // public void OnEnemyDestroyed()
+            isAlive = false;
+            animator.SetTrigger("OnEnemyDestroyed");
+            speed = 0f;
+            audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
+            Destroy(gameObject, 2.0f);
         }
-            
         public virtual void Move(float speed)
         {
             transform.Translate(Vector2.down * speed * Time.deltaTime);
-            // TODO CheckBottomPosition();
+            CheckBottomPosition();
         }
-        public virtual void FireWeapon(int firingRate)
+
+        //private void MoveEnemy2() -- Zigzag
+        //{
+        //    Vector2 vec = new Vector2(leftRightSpeed * enemyDirection, -1 * speed);
+        //    transform.Translate(vec * Time.deltaTime);
+
+        //    // set xpos = pos x
+        //    // if posx > xpos + 2
+        //    Vector2 xPos = transform.position;
+
+        //    if (transform.position.x >= 2f) enemyDirection = -1;
+        //    if (transform.position.x <= -2f) enemyDirection = 1;
+
+
+        //    CheckBottomPosition();
+        //}
+
+        public virtual void TakeDamage(int damage) => currentHealth -= damage;
+        private void CheckBottomPosition()
         {
-
+            if (transform.position.y <= -6.0f)
+                // Reuse enemy in random pos.x
+                transform.position = new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), 5.0f);
         }
 
-        public void TestClickDamage()
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            if (Input.GetMouseButtonDown(0)) 
-                TakeDamage(2);
+            // Ignore collision if other is an Enemy
+            if (other.transform.parent != null && other.transform.parent.CompareTag("EnemyLaser"))
+                return;
 
-            if (Input.GetMouseButtonDown(1))
-                TakeDamage(5);
+            if (other.CompareTag("Player"))
+            {
+                ITakeDamage iDamage = other.GetComponent<ITakeDamage>();
+                if (iDamage != null) iDamage.TakeDamage(1);
+                else Debug.Log("ITakeDamage or TakeDamage() is null");
+
+                speed = 0f;
+                animator.SetTrigger("OnEnemyDestroyed");
+                audioSource.Play();
+                Destroy(GetComponent<Collider2D>());
+                gameObject.SetActive(false); // added because enemy was hitting the player twice
+                Destroy(gameObject, 2.0f);
+            }
         }
+
+        private void AvoidShot()
+        {
+            // Move away from the player�s laser
+            // Checkout create with code -black ball in moving platform
+        }
+
+        private void MoveLaserBackwards()
+        {
+        }
+
+
+
 
     }
 
@@ -83,9 +174,6 @@ namespace EnemyLib
 
 /*
 
-TODO *** Create blog explaining how to create enemies. First, showing how it would be to create each enemy from scratch. Later, explaining modularization through inheritance.
-
-TODO *** Implement interfaces in children
 
 TODO Implement events, Code to customize enemy in inspector
 TODO create a Laser base class for laser, doubleLaser and Backwards Laser

@@ -1,7 +1,9 @@
-﻿using System.Collections;
+using EnemyLib;
+using System;
+using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ITakeDamage
 {
     #region Variables
 
@@ -35,19 +37,11 @@ public class Player : MonoBehaviour
     private SpawnManager spawnManager;
     private AudioSource audioSource;
 
-    private bool isLeftShiftKeyPressed;
-
     #endregion
 
-    // TODO *** Fix laser clone in multShot destroy ***
-    // DONE fix multishot mechanic - code and time delay
-    // DONE negative powerup mechanic 
-    // DONE fix engines disable after health powerup, with or without shield
-    // DONE add behaviors to activeMultiShot mechanic
-    // DONE created a new UpdateAmmo function to check ammo amount and if hasAmmo
+    // TODO *** Fix laser clone in multiShot destroy ***
 
     private void Start()
-
     {
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -72,12 +66,15 @@ public class Player : MonoBehaviour
         rightEngine.SetActive(false);
     }
 
+
+
     private void Update()
     {
+        //sendPlayerScript?.Invoke(player);
+
         MovePlayer();
 
-        if (FiringActive())
-        { FireLaser(); }
+        if (FiringActive()) FireLaser();
     }
 
     #region Functions
@@ -116,26 +113,23 @@ public class Player : MonoBehaviour
         float yPos = transform.position.y;
 
         if (yPos >= 0f)
-        { transform.position = new Vector2(xPos, 0f); }
+            transform.position = new Vector2(xPos, 0f);
         else if (yPos <= -3.5f)
-        { transform.position = new Vector2(xPos, -3.5f); }
+            transform.position = new Vector2(xPos, -3.5f);
 
         if (xPos >= 10.4f)
-        { transform.position = new Vector2(-10.4f, yPos); }
+            transform.position = new Vector2(-10.4f, yPos);
         else if (xPos <= -10.4f)
-        { transform.position = new Vector2(10.4f, yPos); }
+            transform.position = new Vector2(10.4f, yPos);
     }
-
     private bool FiringActive()
     {
         return Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo;
     }
-
     private bool SpeedIncreased()
     {
         return Input.GetKey(KeyCode.LeftShift);
     }
-
     private void FireLaser()
     {
         // Fire MultipleShot
@@ -164,16 +158,13 @@ public class Player : MonoBehaviour
 
         UpdateAmmo();
     }
-
-    public void Damage(int damage)
+    public void TakeDamage(int damage)
     {
         lives -= damage;
         UpdatePlayerState(lives);
 
-        if (lives == 0)
-        { Destroy(gameObject); }
+        if (lives <= 0) Destroy(gameObject);
     }
-
     private void UpdatePlayerState(int playerLives)
     {
         uiManager.UpdateLives(lives);
@@ -197,13 +188,11 @@ public class Player : MonoBehaviour
 
         }
     }
-
     public void AddScore(int points)
     {
         score += points;
         uiManager.UpdateScore(score);
     }
-
     #endregion
 
     #region Activate powerups mechanics

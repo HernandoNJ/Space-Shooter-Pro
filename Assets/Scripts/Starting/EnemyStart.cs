@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 public class EnemyStart : MonoBehaviour
 {
     enum EnemyType { BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null }
@@ -50,10 +51,6 @@ public class EnemyStart : MonoBehaviour
         timeTime = Time.time;
         //MoveEnemy();
         MoveEnemy2();
-
-        // Shot single laser for the weakest enemy
-        // double for the stronger one and so on
-
         ShotDoubleLaser();
     }
 
@@ -68,19 +65,11 @@ public class EnemyStart : MonoBehaviour
         Vector2 vec = new Vector2(leftRightSpeed * enemyDirection, -1 * speed);
         transform.Translate(vec * Time.deltaTime);
 
-        // set xpos = pos x
-        // if posx > xpos + 2
+        // set xpos = pos x **** if posx > xpos + 2
         Vector2 xPos = transform.position;
 
-        if (transform.position.x >= 2f)
-        {
-            enemyDirection = -1;
-        }
-
-        if (transform.position.x <= -2f)
-        {
-            enemyDirection = 1;
-        }
+        if (transform.position.x >= 2f) enemyDirection = -1;
+        if (transform.position.x <= -2f) enemyDirection = 1;
 
         CheckBottomPosition();
     }
@@ -88,10 +77,8 @@ public class EnemyStart : MonoBehaviour
     private void CheckBottomPosition()
     {
         if (transform.position.y <= -6.0f)
-        {
-            // place enemy at top (reuse the enemy) in random pos.x
-            transform.position = new Vector2(Random.Range(-8.0f, 8.0f), 5.0f);
-        }
+            // Reuse enemy in random pos.x
+            transform.position = new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), 5.0f);
     }
 
     public void ShotDoubleLaser()
@@ -99,20 +86,9 @@ public class EnemyStart : MonoBehaviour
         if (Time.time > canFire && isEnemyAlive)
         {
             Instantiate(doubleLaserPrefab, transform.position, Quaternion.Euler(Vector2.down));
-
-            fireRate = Random.Range(3f, 7f);
+            fireRate = UnityEngine.Random.Range(3f, 7f);
             canFire = Time.time + fireRate;
         }
-    }
-
-    private void AvoidShot()
-    {
-        // Move away from the player’s laser
-        // Checkout create with code -black ball in moving platform
-    }
-
-    private void MoveLaserBackwards()
-    {
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -123,7 +99,7 @@ public class EnemyStart : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            player.Damage(1);
+            player.TakeDamage(1);
             speed = 0f;
             anim.SetTrigger("OnEnemyDestroyed");
             audioSource.Play();
@@ -142,10 +118,5 @@ public class EnemyStart : MonoBehaviour
         audioSource.Play();
         Destroy(GetComponent<Collider2D>());
         Destroy(gameObject, 2.0f);
-    }
-
-    private void OnDestroy()
-    {
-        spawnManager.DecreaseEnemiesAmount();
     }
 }
