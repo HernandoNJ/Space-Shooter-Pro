@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 357e4750eebf4d6418799afcc6b63e55, type: 3}
-  m_Name: EnemyBasic
+  m_Name: EnemyBasicData
   m_EditorClassIdentifier: 
   enemyName: Basic
   description: Normal move and shot
   speed: 3
   fireRate: 3
+  collisionDamage: 1
   maxHealth: 1
   updatedHealth: 1
   enemyType: 1
   modelData: {fileID: 11400000, guid: c525999f50b3385498042f415505b3b0, type: 2}
-  weapon: {fileID: 806219380596265371, guid: 5b7522317acac9c4bb49731546f5260c, type: 3}
+  weaponData: {fileID: 11400000, guid: f48b76ee681e6b94bbf775f4cb711ce6, type: 2}
   weapons: []
   explosionPrefab: {fileID: 4009486786716279570, guid: 6a96c45d6a4a5bf4ea32127b409524e5,
     type: 3}

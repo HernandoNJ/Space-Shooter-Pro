@@ -9,14 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 357e4750eebf4d6418799afcc6b63e55, type: 3}
-  m_Name: EnemyChaser
+  m_Script: {fileID: 11500000, guid: bb44a4869f71c0d47850192441a4131e, type: 3}
+  m_Name: LaserData
   m_EditorClassIdentifier: 
-  enemyName: Chaser
-  description: Chases the player
-  model: {fileID: 0}
-  weapon: {fileID: 0}
-  speed: 2
-  fireRate: 0.1
-  maxHealth: 0
-  weapons: []
+  weaponName: Laser
+  description: 
+  owner: Enemy
+  direction: Down
+  speed: 5
+  damageAmount: 1
+  weapon: {fileID: 7809545642097186471, guid: 5f378fc9f8df473499fc83ec7a5b8006, type: 3}

@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a345f3088bf5244bb0e9595439901df, type: 3}
-  m_Name: EnemyBasicModel
+  m_Script: {fileID: 11500000, guid: bb44a4869f71c0d47850192441a4131e, type: 3}
+  m_Name: WeaponData
   m_EditorClassIdentifier: 
-  modelName: EnemyBasicModel
+  weaponName: 
   description: 
-  model: {fileID: 2157192408987552983, guid: ff92c4123ee48d047bbe1c9032b85fe6, type: 3}
+  damageAmount: 0
+  weapon: {fileID: 0}

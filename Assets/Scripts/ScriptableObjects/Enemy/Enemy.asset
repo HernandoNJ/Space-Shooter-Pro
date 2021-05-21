@@ -10,13 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 357e4750eebf4d6418799afcc6b63e55, type: 3}
-  m_Name: EnemyShotAvoider
+  m_Name: Enemy
   m_EditorClassIdentifier: 
-  enemyName: ShotAvoider
-  description: Avoids player's shots
-  model: {fileID: 0}
-  weapon: {fileID: 0}
-  speed: 3
-  fireRate: 0.15
+  enemyName: 
+  description: 
+  speed: 0
+  fireRate: 0
+  collisionDamage: 0
   maxHealth: 0
+  updatedHealth: 0
+  enemyType: 0
+  modelData: {fileID: 0}
+  weaponData: {fileID: 0}
   weapons: []
+  explosionPrefab: {fileID: 0}

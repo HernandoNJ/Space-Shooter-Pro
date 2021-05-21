@@ -218,7 +218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &76028081
 Transform:
   m_ObjectHideFlags: 0
@@ -2153,7 +2153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e295663cca3804296915d926289db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 4587283898457224990, guid: 1316b6c1d59a1c246bf2b34f3a1a13a1,
+  enemyPrefab: {fileID: 4450228360150968733, guid: 6b4b168baed1037438ff2c8a330bacc1,
     type: 3}
   enemySpawnner: {fileID: 168691554}
   powerups:
@@ -2274,8 +2274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728a8f85ffaf7934596e6888e3174d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notes: "* Test EnemyStart and Player \n* Add damage in Weapon SO and set a value
-    of 2 in doubleLaser \n*  Set TakeDamage(weapon.damage)\n"
+  notes: '* Enemies stop spawnning after some time'
 --- !u!4 &1902709677
 Transform:
   m_ObjectHideFlags: 0

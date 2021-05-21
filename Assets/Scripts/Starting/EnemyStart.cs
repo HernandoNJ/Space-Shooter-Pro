@@ -26,6 +26,11 @@ public class EnemyStart : MonoBehaviour
     private float fireRate = 3f;
     private float canFire;
 
+    public void my()
+    {
+        Debug.Log("hi");
+    }
+
     private void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();

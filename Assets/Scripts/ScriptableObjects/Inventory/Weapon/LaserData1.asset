@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb44a4869f71c0d47850192441a4131e, type: 3}
+  m_Name: LaserData1
+  m_EditorClassIdentifier: 
+  weaponName: Laser
+  description: 
+  owner: Player
+  direction: 
+  speed: 0
+  damageAmount: 1
+  weapon: {fileID: 806219380596265371, guid: 5b7522317acac9c4bb49731546f5260c, type: 3}

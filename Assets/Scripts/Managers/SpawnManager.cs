@@ -14,16 +14,20 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] private bool isMultiShotActive;
     [SerializeField] private int randomPowerup;
-    private bool isPlayerAlive = true;
+    private bool isPlayerAlive;
     private bool isWaveRunning;
 
+    private void OnEnable()
+    {
+        Enemy.onEnemyDestroyed += DecreaseEnemiesAmount;
+        Player.onPlayerDestroyed += PlayerIsDeath;
+    }
     private void Start()
     {
-        Enemy.enemyDestroyed += DecreaseEnemiesAmount;
         waveNumber = 1;
         isWaveRunning = true;
+        isPlayerAlive = true;
     }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return) && isWaveRunning == false && enemiesAmount == 0)
@@ -31,19 +35,19 @@ public class SpawnManager : MonoBehaviour
             StartCoroutine(SpawnEnemiesWaveRoutine());
         }
     }
-
+    private void OnDisable()
+    {
+        Enemy.onEnemyDestroyed -= DecreaseEnemiesAmount;
+        Player.onPlayerDestroyed -= PlayerIsDeath;
+    }
     public void DecreaseEnemiesAmount()
     {
         enemiesAmount--;
     }
-
-    public void StartSpawnning()
+    public void PlayerIsDeath()
     {
-        StartCoroutine(SpawnEnemiesWaveRoutine());
-        StartCoroutine(SpawnPowerupRoutine());
-        StartCoroutine(SpawnMultipleShot());
+        isPlayerAlive = false;
     }
-
     IEnumerator SpawnEnemiesWaveRoutine()
     {
         startTime = Time.time;
@@ -66,7 +70,6 @@ public class SpawnManager : MonoBehaviour
         waveNumber++;
         isWaveRunning = false;
     }
-
     IEnumerator SpawnPowerupRoutine()
     {
         yield return new WaitForSeconds(3f);
@@ -83,7 +86,6 @@ public class SpawnManager : MonoBehaviour
             }
         }
     }
-
     IEnumerator SpawnMultipleShot()
     {
         yield return new WaitForSeconds(20);
@@ -96,9 +98,10 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(20);
         }
     }
-
-    public void OnPlayerDestroyed()
+    public void StartSpawnning()
     {
-        isPlayerAlive = false;
+        StartCoroutine(SpawnEnemiesWaveRoutine());
+        StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(SpawnMultipleShot());
     }
 }

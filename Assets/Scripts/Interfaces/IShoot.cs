@@ -1,6 +1,6 @@
 ﻿public interface IShoot
 {
-    void FireWeapon(float firingRate);
+    void FireWeapon(float fireRate);
 }
 
 

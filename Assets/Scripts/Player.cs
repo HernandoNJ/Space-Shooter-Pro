@@ -37,6 +37,8 @@ public class Player : MonoBehaviour, ITakeDamage
     private SpawnManager spawnManager;
     private AudioSource audioSource;
 
+    public static Action onPlayerDestroyed;
+
     #endregion
 
     // TODO *** Fix laser clone in multiShot destroy ***
@@ -65,15 +67,9 @@ public class Player : MonoBehaviour, ITakeDamage
         leftEngine.SetActive(false);
         rightEngine.SetActive(false);
     }
-
-
-
     private void Update()
     {
-        //sendPlayerScript?.Invoke(player);
-
         MovePlayer();
-
         if (FiringActive()) FireLaser();
     }
 
@@ -122,13 +118,13 @@ public class Player : MonoBehaviour, ITakeDamage
         else if (xPos <= -10.4f)
             transform.position = new Vector2(10.4f, yPos);
     }
-    private bool FiringActive()
-    {
-        return Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo;
-    }
     private bool SpeedIncreased()
     {
         return Input.GetKey(KeyCode.LeftShift);
+    }
+    private bool FiringActive()
+    {
+        return Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo;
     }
     private void FireLaser()
     {
@@ -185,13 +181,16 @@ public class Player : MonoBehaviour, ITakeDamage
         {
             leftEngine.SetActive(true);
             rightEngine.SetActive(true);
-
         }
     }
     public void AddScore(int points)
     {
         score += points;
         uiManager.UpdateScore(score);
+    }
+    private void OnDestroy()
+    {
+        onPlayerDestroyed?.Invoke();
     }
     #endregion
 
@@ -249,7 +248,7 @@ public class Player : MonoBehaviour, ITakeDamage
                 shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.2f, 0f, 0.6f);
                 break;
             case 0:
-                spawnManager.OnPlayerDestroyed();
+                spawnManager.PlayerIsDeath();
                 Destroy(gameObject);
                 break;
         }

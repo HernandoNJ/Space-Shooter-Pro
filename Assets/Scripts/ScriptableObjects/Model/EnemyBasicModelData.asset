@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 357e4750eebf4d6418799afcc6b63e55, type: 3}
-  m_Name: EnemyAggresive
+  m_Script: {fileID: 11500000, guid: 5a345f3088bf5244bb0e9595439901df, type: 3}
+  m_Name: EnemyBasicModelData
   m_EditorClassIdentifier: 
-  enemyName: Aggressive
-  description: Rams the player
-  model: {fileID: 0}
-  weapon: {fileID: 0}
-  speed: 3
-  fireRate: 0.1
-  maxHealth: 0
-  weapons: []
+  modelName: EnemyBasicModel
+  description: 
+  model: {fileID: 2157192408987552983, guid: ff92c4123ee48d047bbe1c9032b85fe6, type: 3}

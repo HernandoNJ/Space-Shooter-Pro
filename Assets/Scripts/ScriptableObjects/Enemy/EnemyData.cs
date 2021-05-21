@@ -1,7 +1,6 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-public enum EnemyType { Default, Basic, DoubleShooter, Shielded, Aggressive, Chaser, BackShooter, ShotAvoider, Boss }
 
 [CreateAssetMenu(fileName = "EnemyData", menuName = "ScriptableObject/EnemySO/EnemyData", order = 0)]
 public class EnemyData : ScriptableObject
@@ -10,13 +9,10 @@ public class EnemyData : ScriptableObject
     public string description;
     public float speed;
     public float fireRate;
+    public int collisionDamage;
     public int maxHealth;
-    public int updatedHealth;
-    public EnemyType enemyType;
     public ModelData modelData;
-    public GameObject weapon;
+    public WeaponData weaponData;
     public List<GameObject> weapons = new List<GameObject>();
-
     public GameObject explosionPrefab;
-
 }
