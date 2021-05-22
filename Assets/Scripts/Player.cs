@@ -9,7 +9,7 @@ public class Player : MonoBehaviour, ITakeDamage
 
     [SerializeField] private AudioClip laserSound;
     [SerializeField] private GameObject multipleShotPrefab;
-    [SerializeField] private GameObject firepoint;
+    [SerializeField] private GameObject firePoint;
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private GameObject tripleLaserPrefab;
     [SerializeField] private GameObject shield;
@@ -28,8 +28,8 @@ public class Player : MonoBehaviour, ITakeDamage
     [SerializeField] private float leftShiftSpeedMult = 1.5f;
     [SerializeField] private float totalSpeed;
     [SerializeField] private float fireRate = 2.0f;
-    [SerializeField] private float MultipleShotFireRate = 5.0f;
-    [SerializeField] private int lives = 3;
+    [SerializeField] private float multipleShotFireRate = 5.0f;
+    [SerializeField] private int health = 3;
     [SerializeField] private int score;
     [SerializeField] private int ammoAvailable;
     [SerializeField] private int ammoMax;
@@ -37,13 +37,35 @@ public class Player : MonoBehaviour, ITakeDamage
     private SpawnManager spawnManager;
     private AudioSource audioSource;
 
+    public static Action<int> onAddScore;
+    public static Action<int, int> onAmmoUpdated;
     public static Action onPlayerDestroyed;
 
     #endregion
 
-    // TODO *** Fix laser clone in multiShot destroy ***
+    private void OnEnable()
+    {
+        Player.onAddScore += AddScore;
+    }
+    
+    private void OnDisable()
+    {
+        Player.onAddScore -= AddScore;
+    }
 
     private void Start()
+    {
+       SetInitialValues();
+    }
+    private void Update()
+    {
+        MovePlayer();
+        if (FiringActive()) FireLaser();
+    }
+
+    #region Functions
+
+    private void SetInitialValues()
     {
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -67,13 +89,7 @@ public class Player : MonoBehaviour, ITakeDamage
         leftEngine.SetActive(false);
         rightEngine.SetActive(false);
     }
-    private void Update()
-    {
-        MovePlayer();
-        if (FiringActive()) FireLaser();
-    }
-
-    #region Functions
+    
     private void MovePlayer()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -85,14 +101,14 @@ public class Player : MonoBehaviour, ITakeDamage
         if (isSpeedBoostActive)
         {
             totalSpeed = playerSpeed * speedUpSpeed;
-            transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
+            transform.Translate(moveDirection * (totalSpeed * Time.deltaTime));
             uiManager.IncreaseThrusterBar(0.004f);
         }
         // Increase speed with Left shift key
         else if (SpeedIncreased())
         {
             totalSpeed = playerSpeed * leftShiftSpeedMult;
-            transform.Translate(moveDirection * totalSpeed * Time.deltaTime);
+            transform.Translate(moveDirection * (totalSpeed * Time.deltaTime));
 
             uiManager.IncreaseThrusterBar(0.004f);
         }
@@ -100,7 +116,7 @@ public class Player : MonoBehaviour, ITakeDamage
         else
         {
             totalSpeed = playerSpeed; // Just for testing
-            transform.Translate(moveDirection * playerSpeed * Time.deltaTime);
+            transform.Translate(moveDirection * (playerSpeed * Time.deltaTime));
             uiManager.DecreaseThrusterBar(0.004f);
         }
 
@@ -118,7 +134,7 @@ public class Player : MonoBehaviour, ITakeDamage
         else if (xPos <= -10.4f)
             transform.position = new Vector2(10.4f, yPos);
     }
-    private bool SpeedIncreased()
+    private static bool SpeedIncreased()
     {
         return Input.GetKey(KeyCode.LeftShift);
     }
@@ -131,8 +147,8 @@ public class Player : MonoBehaviour, ITakeDamage
         // Fire MultipleShot
         if (isMultipleShotActive)
         {
-            canFire = Time.time + MultipleShotFireRate;
-            Instantiate(multipleShotPrefab, firepoint.transform.position, Quaternion.identity);
+            canFire = Time.time + multipleShotFireRate;
+            Instantiate(multipleShotPrefab, firePoint.transform.position, Quaternion.identity);
             isMultipleShotActive = false;
         }
         // Shot triple laser
@@ -156,38 +172,38 @@ public class Player : MonoBehaviour, ITakeDamage
     }
     public void TakeDamage(int damage)
     {
-        lives -= damage;
-        UpdatePlayerState(lives);
+        health -= damage;
+        UpdatePlayerState(health);
 
-        if (lives <= 0) Destroy(gameObject);
+        if (health <= 0) Destroy(gameObject);
     }
     private void UpdatePlayerState(int playerLives)
     {
-        uiManager.UpdateLives(lives);
+        uiManager.UpdateLives(health);
 
         if (isShieldActive) ChangeShieldColor();
 
-        if (lives == 3)
+        if (health == 3)
         {
             leftEngine.SetActive(false);
             rightEngine.SetActive(false);
         }
-        if (lives == 2)
+        if (health == 2)
         {
             leftEngine.SetActive(true);
             rightEngine.SetActive(false);
         }
-        else if (lives == 1)
+        else if (health == 1)
         {
             leftEngine.SetActive(true);
             rightEngine.SetActive(true);
         }
     }
-    public void AddScore(int points)
+    private void AddScore(int points)
     {
         score += points;
-        uiManager.UpdateScore(score);
     }
+
     private void OnDestroy()
     {
         onPlayerDestroyed?.Invoke();
@@ -230,13 +246,13 @@ public class Player : MonoBehaviour, ITakeDamage
     {
         isShieldActive = true;
         shield.SetActive(true);
-        lives = 3;
-        UpdatePlayerState(lives);
+        health = 3;
+        UpdatePlayerState(health);
     }
 
-    public void ChangeShieldColor()
+    private void ChangeShieldColor()
     {
-        switch (lives)
+        switch (health)
         {
             case 3:
                 shield.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.906f, 0.374f, 1f);
@@ -254,20 +270,13 @@ public class Player : MonoBehaviour, ITakeDamage
         }
     }
 
-    public void UpdateAmmo()
+    private void UpdateAmmo()
     {
-        if (ammoAvailable > ammoMax)
-        { ammoAvailable = ammoMax; }
-
-        uiManager.UpdateAmmo(ammoAvailable, ammoMax);
-
+        if (ammoAvailable > ammoMax) ammoAvailable = ammoMax;
+        onAmmoUpdated?.Invoke(ammoAvailable, ammoMax);
         hasAmmo = (ammoAvailable >= 1) ? true : false;
-
-        if (!hasAmmo)
-        {
-            uiManager.UpdateAmmo(ammoAvailable, ammoMax);
-            uiManager.OnEmptyAmmo();
-        }
+        if (hasAmmo) return;
+        onAmmoUpdated?.Invoke(ammoAvailable, ammoMax);
     }
 
     public void RefillAmmo()
@@ -280,9 +289,9 @@ public class Player : MonoBehaviour, ITakeDamage
 
     public void RecoverHealth()
     {
-        if (lives >= 3) return;
-        lives++;
-        UpdatePlayerState(lives);
+        if (health >= 3) return;
+        health++;
+        UpdatePlayerState(health);
     }
 
     #endregion

@@ -5,10 +5,7 @@ public class WeaponData : ScriptableObject
 {
     public string weaponName;
     public string description;
-    public string owner;
-    public string direction;
     public float speed;
     public int damageAmount;
-    public GameObject weapon;
- 
+    public Sprite model;
 }

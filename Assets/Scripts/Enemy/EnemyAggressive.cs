@@ -1,7 +1,7 @@
 using EnemyLib;
 public class EnemyAggressive : Enemy
 {
-    public override void Move(float moveSpeed)
+    public override void MoveEnemy(float moveSpeed)
     {
     }
 

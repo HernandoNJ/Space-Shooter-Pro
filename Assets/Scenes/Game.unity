@@ -491,7 +491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 168691555}
   m_Layer: 0
-  m_Name: EnemySpawnner
+  m_Name: EnemySpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -504,13 +504,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168691554}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1529237817}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &205087585
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,8 +1001,8 @@ MonoBehaviour:
   laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   multipleShotPrefab: {fileID: 2240785185835108519, guid: 54e4a3d99ee1e6440b0f2ea6b2706890,
     type: 3}
-  firepoint: {fileID: 1759475333}
-  laserPrefab: {fileID: 806219380596265371, guid: 5b7522317acac9c4bb49731546f5260c,
+  firePoint: {fileID: 1759475333}
+  laserPrefab: {fileID: 4144723292444118591, guid: 0779abfe98a72984696705f01df2f137,
     type: 3}
   tripleLaserPrefab: {fileID: 7795628346074341365, guid: c296bc5c491b5464981c312906c0bf4b,
     type: 3}
@@ -1021,8 +1021,8 @@ MonoBehaviour:
   leftShiftSpeedMult: 1.5
   totalSpeed: 0
   fireRate: 0.2
-  MultipleShotFireRate: 5
-  lives: 3
+  multipleShotFireRate: 5
+  health: 3
   score: 0
   ammoAvailable: 0
   ammoMax: 0
@@ -2155,7 +2155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4450228360150968733, guid: 6b4b168baed1037438ff2c8a330bacc1,
     type: 3}
-  enemySpawnner: {fileID: 168691554}
+  enemySpawner: {fileID: 168691554}
   powerups:
   - {fileID: 5633562507633991384, guid: 8ccfe9c9d0df678459d0b5197662731f, type: 3}
   - {fileID: 6692856756326246949, guid: 55bcf07a24833414281da0c93725dbb6, type: 3}

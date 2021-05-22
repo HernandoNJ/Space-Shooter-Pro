@@ -618,6 +618,20 @@ foreach(Collider hitCollider in hitColliders)
 
 ***************** --------------- **********************
 
+CODE EG Set Model *****************
+
+
+ private void SetModel()
+        {
+            GameObject modelGo = Instantiate(model);
+            modelGo.transform.SetParent(this.transform);
+            modelGo.transform.localPosition = Vector3.zero;
+            modelGo.transform.rotation = Quaternion.identity;
+        }
+
+***************** --------------- **********************
+
+
 
 */
 

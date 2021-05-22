@@ -16,9 +16,9 @@ public class Laser : MonoBehaviour
     {
         MoveLaserUp();
     }
-    public void MoveLaserUp()
+    private void MoveLaserUp()
     {
-        transform.Translate(Vector2.up * speed * Time.deltaTime);
+        transform.Translate(Vector2.up * (speed * Time.deltaTime));
 
         if (transform.position.y >= 7.5f)
         {
@@ -27,14 +27,15 @@ public class Laser : MonoBehaviour
                 Destroy(transform.parent.gameObject);
         }
     }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            this.player.AddScore(10);
-            Destroy(gameObject);
-            other.GetComponent<ITakeDamage>().TakeDamage(damageAmount);
+        var iDamage = other.GetComponent<ITakeDamage>();
+        if (iDamage == null)
+        { 
+            Debug.Log("ITakeDamage not found in other: " + other.gameObject.name); 
+            return;
         }
+        iDamage.TakeDamage(damageAmount);
+        Destroy(gameObject);
     }
 }

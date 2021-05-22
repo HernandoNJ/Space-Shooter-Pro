@@ -1,40 +1,44 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using EnemyLib;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private GameObject ammoCounter;
+    [SerializeField] private GameObject ammoImage;
+    [SerializeField] private GameObject emptyAmmoImage;
+    [SerializeField] private Image livesImage;
+    [SerializeField] private Image thrusterBar;
     [SerializeField] private Text ammoText;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text gameOverText;
     [SerializeField] private Text restartText;
-    [SerializeField] private Image livesImage;
-    [SerializeField] private Image thrusterBar;
-    [SerializeField] private GameObject ammoCounter;
-    [SerializeField] private GameObject ammoImage;
-    [SerializeField] private GameObject emptyAmmoImage;
-    [SerializeField] private GameManager gameManager;
     [SerializeField] private Sprite[] livesSprites;
 
-    /* Visualize on screen the ammo count of the player in the form of current/max
-    * Identify ammo Text ==> ammoText
-        ? Player
-        * Create 2 variables in player: totalAmmo and availableAmmo
-        * Set totalAmmo value in Start
+    [SerializeField] private int score;
 
-        ? UI Manager
-        * Display availableAmmo/totalAmmo in ammoText 
-        * Modify the info shown in ammoText ==> ammoText.text = playerAmmoCount.ToString();
-        * Activate it in emptyAmmoImage
-        * Resize AmmoText in Canvas
-    */
+    private void OnEnable()
+    {
+        Player.onAmmoUpdated += UpdateAmmo; 
+        Player.onAddScore += UpdateScore;
+    }
+    
+    private void OnDisable()
+    {
+        Player.onAmmoUpdated -= UpdateAmmo; 
+        Player.onAddScore -= UpdateScore;
+    }
 
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         if (gameManager == null) Debug.LogError("gameManager in UI Manager is null");
 
-        scoreText.text = "Score: 0";
+        score = 0;
+        scoreText.text = "Score: " + score;
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
 
@@ -42,37 +46,31 @@ public class UIManager : MonoBehaviour
         thrusterBar.fillAmount = 0.5f;
     }
 
-    public void UpdateScore(int playerScore)
+    private void UpdateScore(int scorePoints)
     {
-        scoreText.text = "Score: " + playerScore;
+        score += scorePoints;
+        scoreText.text = "Score: " + score;
     }
 
     public void UpdateLives(int currentLives)
     {
         livesImage.sprite = livesSprites[currentLives];
-
-        if (currentLives == 0)
+        if (currentLives > 0) return;
             GameOverSequence();
     }
 
-    public void SetAmmoValues(int ammoAvailable, int AmmoTotal)
+    private void SetAmmoValues(int ammoAvailable, int AmmoTotal)
     {
         ammoText.text = ammoAvailable.ToString() + "/" + AmmoTotal.ToString();
     }
 
-    // public void ShowStartAmmo(int playerAmmoAvailable, int playerAmmoTotal)
-    // {
-    //     SetAmmoValues(playerAmmoAvailable, playerAmmoTotal);
-    //     emptyAmmoImage.SetActive(false);
-    //     ammoCounter.SetActive(true);
-    // }
-
-    public void UpdateAmmo(int playerAmmoAvailable, int playerAmmoTotal)
+    private void UpdateAmmo(int playerAmmoAvailable, int playerAmmoTotal)
     {
         SetAmmoValues(playerAmmoAvailable, playerAmmoTotal);
+        if(playerAmmoAvailable <= 0) OnEmptyAmmo();
     }
 
-    public void OnEmptyAmmo()
+    private void OnEmptyAmmo()
     {
         emptyAmmoImage.SetActive(true);
         emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", true);
@@ -101,7 +99,7 @@ public class UIManager : MonoBehaviour
         thrusterBar.fillAmount -= emptyAmount;
     }
 
-    public void GameOverSequence()
+    private void GameOverSequence()
     {
         gameOverText.gameObject.SetActive(true);
         restartText.gameObject.SetActive(true);
@@ -109,7 +107,7 @@ public class UIManager : MonoBehaviour
         gameManager.OnGameOver();
     }
 
-    IEnumerator GameOverFlickerRoutine()
+    private IEnumerator GameOverFlickerRoutine()
     {
         while (true)
         {
@@ -120,3 +118,5 @@ public class UIManager : MonoBehaviour
         }
     }
 }
+
+// TODO fix Multi shot mechanic

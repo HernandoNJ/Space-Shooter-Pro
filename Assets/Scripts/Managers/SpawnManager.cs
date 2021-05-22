@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private GameObject enemySpawnner;
+    [SerializeField] private GameObject enemySpawner;
     [SerializeField] private GameObject[] powerups;
     [SerializeField] private int enemiesInWave;
     [SerializeField] private int waveNumber;
@@ -40,7 +40,7 @@ public class SpawnManager : MonoBehaviour
         Enemy.onEnemyDestroyed -= DecreaseEnemiesAmount;
         Player.onPlayerDestroyed -= PlayerIsDeath;
     }
-    public void DecreaseEnemiesAmount()
+    private void DecreaseEnemiesAmount()
     {
         enemiesAmount--;
     }
@@ -58,9 +58,9 @@ public class SpawnManager : MonoBehaviour
 
             float xRandomPos = Random.Range(-9.5f, 9.5f);
             Vector2 enemySpawnPos = new Vector2(xRandomPos, 5f);
-
+            
             GameObject newEnemy = Instantiate(enemyPrefab, enemySpawnPos, Quaternion.identity);
-            newEnemy.transform.parent = enemySpawnner.transform;
+            newEnemy.transform.parent = enemySpawner.transform;
 
             enemiesAmount++;
 
@@ -76,7 +76,7 @@ public class SpawnManager : MonoBehaviour
 
         while (isPlayerAlive)
         {
-            Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
+            var powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
             //int randomPowerup = Random.Range(0, 6);
             randomPowerup = Random.Range(0, 6);
             if (randomPowerup != 5)

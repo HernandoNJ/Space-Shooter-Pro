@@ -6,18 +6,20 @@ namespace EnemyLib
     public abstract class Enemy : MonoBehaviour, ITakeDamage, IMove, IShoot
     {
         public EnemyData enemyData;
-        [SerializeField] private int collisionDamage;
-        [SerializeField] private int currentHealth;
         [SerializeField] private Animator animator;
         [SerializeField] private AudioSource audioSource;
+        [SerializeField] private EnemyType enemyType;
         [SerializeField] private GameObject explosionPrefab;
-        [SerializeField] private GameObject model;
         [SerializeField] private GameObject weapon;
         [SerializeField] private GameObject firePoint;
         [SerializeField] private bool isAlive;
         [SerializeField] private float speed;
         [SerializeField] private float fireRate;
         [SerializeField] private float timeToFire;
+        [SerializeField] private int collisionDamage;
+        [SerializeField] private int currentHealth;
+        [SerializeField] private int scorePointsEnemyDestroyed;
+        [SerializeField] private int enemyDecreasedAmount;
 
         public static Action onEnemyDestroyed;
 
@@ -25,47 +27,47 @@ namespace EnemyLib
         {
             ConfigureEnemy(enemyData);
         }
+        
         private void Update()
         {
-            Move(speed);
+            MoveEnemy(speed);
             FireWeapon(fireRate);
         }
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
-            // Ignore collision if other is an Enemy
-            if (other.transform.parent != null && other.transform.parent.CompareTag("EnemyLaser")) return;
-
-            if (other.CompareTag("Player"))
-            {
-                other.GetComponent<ITakeDamage>().TakeDamage(collisionDamage); 
-                TakeDamage(collisionDamage);
-            }
+            if (!other.CompareTag("Player")) return;
+             other.GetComponent<ITakeDamage>().TakeDamage(collisionDamage);
+             TakeDamage(collisionDamage); 
         }
-        private void OnDestroy()
-        { onEnemyDestroyed?.Invoke(); }
-        private void CheckBottomPosition()
-        {
-            if (transform.position.y <= -6.0f)
-                // Reuse enemy in random pos.x
-                transform.position = new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), 5.0f);
-        }
+        
         private void ConfigureEnemy(EnemyData _data)
         {
             animator = GetComponent<Animator>();
             audioSource = GetComponent<AudioSource>();
             collisionDamage = _data.collisionDamage;
             currentHealth = _data.maxHealth;
+            enemyDecreasedAmount = 1;
+            scorePointsEnemyDestroyed = _data.scorePoints;
+            enemyType = _data.enemyType;
+            explosionPrefab = _data.explosionPrefab;
             fireRate = _data.fireRate;
             isAlive = true;
-            model = _data.modelData.model;
-            weapon = _data.weaponData.weapon;
             speed = _data.speed;
-            explosionPrefab = _data.explosionPrefab;
-
-            SetModel();
         }
+
+        private void CheckBottomPosition()
+        {
+            if (transform.position.y <= -6.0f)
+                // Reuse enemy in random pos.x
+                transform.position = new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), 5.0f);
+        }
+
         private void EnemyDestroyed()
         {
+            Player.onAddScore?.Invoke(scorePointsEnemyDestroyed);
+            onEnemyDestroyed?.Invoke();
+            
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             speed = 0f;
             animator.SetTrigger("OnEnemyDestroyed");
@@ -74,32 +76,29 @@ namespace EnemyLib
             gameObject.SetActive(false); // added because enemy was hitting the player twice
             Destroy(gameObject, 2.0f);
         }
+        
         public virtual void FireWeapon(float fireRate)
         {
             if (Time.time > timeToFire && isAlive)
             {
-                Instantiate(weapon, firePoint.transform.position, Quaternion.Euler(Vector2.down));
+                Instantiate(weapon, firePoint.transform.position, Quaternion.identity);
                 fireRate = UnityEngine.Random.Range(2f, 5f);
                 timeToFire = Time.time + fireRate;
             }
         }
-        private void SetModel()
-        {
-            GameObject modelGo = Instantiate(model);
-            modelGo.transform.SetParent(this.transform);
-            modelGo.transform.localPosition = Vector3.zero;
-            modelGo.transform.rotation = Quaternion.identity;
-        }
-        public virtual void Move(float speed)
+        
+        public virtual void MoveEnemy(float speed)
         {
             transform.Translate(Vector2.down * speed * Time.deltaTime);
             CheckBottomPosition();
         }
+        
         public virtual void TakeDamage(int damage)
         {
             currentHealth -= damage;
-            if (currentHealth <= 0)
-            { isAlive = false; EnemyDestroyed(); }
+            if (currentHealth > 0) return;
+            isAlive = false; 
+            EnemyDestroyed();
         }
     }
 }
