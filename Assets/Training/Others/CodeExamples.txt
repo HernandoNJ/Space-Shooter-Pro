@@ -10,14 +10,14 @@ if (Input.GetKeyDown(KeyCode.A)) speed -= 5f;
 
 /// if speed > 20, print out "Slow down"
 /// speed can't be lower than 0
-if (speed > 20f) Debug.Log("Slow down");
+if (speed > 20f) Log("Slow down");
 else if (speed <= 0f)
 {
    speed = 0f;
 }
 
 /// if speed = 0, print out "Speed up"
-if (speed == 0f) Debug.Log("Speed Up");
+if (speed == 0f) Log("Speed Up");
 
 ****************** ----- ***************
 
@@ -34,7 +34,7 @@ if (Input.GetKeyDown(KeyCode.Space)) score += 10;
 if (score > 50 && isGreenColorSet == false)
 {
    playerGO.GetComponent<MeshRenderer>().material.color = Color.green;
-   Debug.Log("Color changed to green");
+   Log("Color changed to green");
    isGreenColorSet = true;
 } 
 ****************** ----- ***************
@@ -61,16 +61,16 @@ void Start()
 void Update()
 {
    if (averageGrade > 90 && sentMessage == false)
-   { Debug.Log("A"); sentMessage = true; }
+   { Log("A"); sentMessage = true; }
 
    else if (averageGrade >= 80 && averageGrade < 90 && sentMessage == false)
-   { Debug.Log("B"); sentMessage = true; }
+   { Log("B"); sentMessage = true; }
 
    else if (averageGrade >= 70 && averageGrade < 80 && sentMessage == false)
-   { Debug.Log("C"); sentMessage = true; }
+   { Log("C"); sentMessage = true; }
 
    else if (sentMessage == false)
-   { Debug.Log("F"); sentMessage = true; }
+   { Log("F"); sentMessage = true; }
 }
 
 public int RandomGrade()
@@ -119,7 +119,7 @@ void Update(){
 
 public void Damage(float damage){
     health -= damage;
-    if (IsDead()) { health = 0; Debug.Log("Player is dead"); } }
+    if (IsDead()) { health = 0; Log("Player is dead"); } }
 ****************** ----- ***************
 
 CODE EG Get All Players ***********
@@ -140,7 +140,7 @@ private void Start()
 {
     posIndex = SetIndex();
     transform.position = SetPosition(posIndex);
-    Debug.Log("Index: " + posIndex);
+    Log("Index: " + posIndex);
 }
 
 private int SetIndex() => Random.Range(1, 5);
@@ -299,7 +299,7 @@ public class Test : MonoBehaviour
         Players p5 = new Players();
         Players p6 = new Players();
 
-        Debug.Log("Players count: " + Players.playersConnected);
+        Log("Players count: " + Players.playersConnected);
 
     }
 }
@@ -412,13 +412,13 @@ public class Employee
     public string firstName;
     public static string company;
 
-    public Employee() => Debug.Log("Instance members initialized");
+    public Employee() => Log("Instance members initialized");
 
     static Employee()
     {
         company = "Company Name";
-        Debug.Log(company);
-        Debug.Log("Initialized static members");
+        Log(company);
+        Log("Initialized static members");
     }
 }
 ***************** --------------- **********************
@@ -465,7 +465,7 @@ public void ChangeColor()
         go.GetComponent<MeshRenderer>().material.color = Color.green;
 
     objectsCreated.Clear();
-    Debug.Log("objCounter = " + objCounter);
+    Log("objCounter = " + objCounter);
     return;
 }
 ***************** --------------- **********************
@@ -509,11 +509,11 @@ public class MainClass : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             var player =  playerDictionary[49];
-            Debug.Log("Player name: " + player.playerName);
-            Debug.Log("Player name: " + playerDictionary[27].playerName);
+            Log("Player name: " + player.playerName);
+            Log("Player name: " + playerDictionary[27].playerName);
 
             var player2 = playerDictionary[p2.id];
-            Debug.Log("Player 2 name: " + player2.playerName);
+            Log("Player 2 name: " + player2.playerName);
 
         }
     }
@@ -535,7 +535,7 @@ private void Update()
     if (Input.GetKeyDown(KeyCode.I) && isVisible)
     {
         gameObject.GetComponent<Renderer>().enabled = false;
-        Debug.Log("Entering routine");
+        Log("Entering routine");
         StartCoroutine(HideShowRoutine());
         isVisible = false;
     }
@@ -545,7 +545,7 @@ IEnumerator HideShowRoutine()
 {
     yield return new WaitForSeconds(5f);
     gameObject.GetComponent<Renderer>().enabled = true;
-    Debug.Log("Exiting 5 seconds");
+    Log("Exiting 5 seconds");
     isVisible = true;
 }
 
@@ -628,6 +628,59 @@ CODE EG Set Model *****************
             modelGo.transform.localPosition = Vector3.zero;
             modelGo.transform.rotation = Quaternion.identity;
         }
+
+***************** --------------- **********************
+
+CODE EG Make an enemy get the player position, change color with coroutine *****************
+
+public class EndTrigger: Monobehaviour
+{
+    public delegate void OnEndReached(Vector3);
+    public static event OnEndReached onEndReached;
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Enemy") onEndReached?.Invoke();
+    }
+}
+
+public class Mech: Monobehaviour
+{
+    void OnEnable()
+    {    
+       EndTrigger.onEndReached += FinishedWave; 
+    }    
+    
+    void OnDisable()
+    {
+        EndTrigger.onEndReached -= FinishedWave;
+    }
+    
+    
+    
+    public void FinishedWave(Vector3 newPos)
+    {
+        // if(transform.position = newPos) return;
+        // transform.position = newPos;
+        
+        // float rand = Random.value;
+        // Color newColor = new Color(rand,rand,rand);
+        // _render.material.color = newColor;
+        
+        StartCoroutine(ColorChange());
+        
+    }  
+    
+    IEnumerator ColorChange(){
+        yield return new WaitForSeconds(2);
+        float rand = Random.value;
+        Color newColor = new Color(rand,rand,rand);
+        _render.material.color = newColor;
+    }
+      
+}
+
+
 
 ***************** --------------- **********************
 

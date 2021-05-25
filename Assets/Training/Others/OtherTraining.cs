@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
+using static UnityEngine.Debug;
+using static UnityEngine.SceneManagement.SceneManager;
+using Random = UnityEngine.Random;
 
 public class OtherTraining : MonoBehaviour
 {
-    private void Update()
-    {
-        transform.Translate(Vector3.up * (2 * Time.deltaTime));
-    }
+   
 }

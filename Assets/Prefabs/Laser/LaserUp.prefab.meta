@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 0779abfe98a72984696705f01df2f137
+labels:
+- Laser
 PrefabImporter:
   externalObjects: {}
   userData: 

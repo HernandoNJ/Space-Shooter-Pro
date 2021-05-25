@@ -20,6 +20,7 @@ MonoBehaviour:
   fireRate: 3
   collisionDamage: 1
   maxHealth: 1
+  weapon: {fileID: 222645671448293320, guid: 433dc301ed375494abe745f72112ca4e, type: 3}
   weapons: []
   explosionPrefab: {fileID: 4009486786716279570, guid: 6a96c45d6a4a5bf4ea32127b409524e5,
     type: 3}

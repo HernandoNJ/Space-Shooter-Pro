@@ -11,7 +11,7 @@ public class Various : MonoBehaviour
 //    private void OnEnable()
 //    {
 //        getPlayerScript?.Invoke(player);
-//        Debug.Log("value received: " + player.ToString());
+//        Log("value received: " + player.ToString());
 //    }
 //}
 

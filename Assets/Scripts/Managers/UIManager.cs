@@ -2,6 +2,7 @@
 using System.Collections;
 using EnemyLib;
 using UnityEngine;
+using static UnityEngine.Debug;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -18,27 +19,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text restartText;
     [SerializeField] private Sprite[] livesSprites;
 
-    [SerializeField] private int score;
+    [SerializeField] private int playerScore;
 
     private void OnEnable()
     {
         Player.onAmmoUpdated += UpdateAmmo; 
-        Player.onAddScore += UpdateScore;
+        Player.onScoreUpdated += UpdateScore;
     }
     
     private void OnDisable()
     {
         Player.onAmmoUpdated -= UpdateAmmo; 
-        Player.onAddScore -= UpdateScore;
+        Player.onScoreUpdated -= UpdateScore;
     }
 
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        if (gameManager == null) Debug.LogError("gameManager in UI Manager is null");
+        if (gameManager == null) LogError("gameManager in UI Manager is null");
 
-        score = 0;
-        scoreText.text = "Score: " + score;
+        playerScore = 0;
+        scoreText.text = "Score: " + playerScore;
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
 
@@ -46,10 +47,10 @@ public class UIManager : MonoBehaviour
         thrusterBar.fillAmount = 0.5f;
     }
 
-    private void UpdateScore(int scorePoints)
+    private void UpdateScore(int scoreFromPlayer)
     {
-        score += scorePoints;
-        scoreText.text = "Score: " + score;
+        playerScore = scoreFromPlayer;
+        scoreText.text = "Score: " + playerScore;
     }
 
     public void UpdateLives(int currentLives)

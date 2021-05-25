@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 public class LaserBase : MonoBehaviour
 {
@@ -48,12 +49,12 @@ public class LaserBase : MonoBehaviour
 
         if (iDamage == null)
         {
-            Debug.Log("iDamage is null?: " + iDamage == null);
+            Log("iDamage is null?: " + iDamage == null);
         }
         else if(other.gameObject.CompareTag(parentTag))
         {
-            Debug.Log("other tag: " + other.gameObject.tag);
-            Debug.Log("parent tag: " + parentTag);
+            Log("other tag: " + other.gameObject.tag);
+            Log("parent tag: " + parentTag);
         }
         else
         {

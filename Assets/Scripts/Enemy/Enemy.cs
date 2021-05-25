@@ -6,20 +6,19 @@ namespace EnemyLib
     public abstract class Enemy : MonoBehaviour, ITakeDamage, IMove, IShoot
     {
         public EnemyData enemyData;
-        [SerializeField] private Animator animator;
-        [SerializeField] private AudioSource audioSource;
-        [SerializeField] private EnemyType enemyType;
-        [SerializeField] private GameObject explosionPrefab;
-        [SerializeField] private GameObject weapon;
-        [SerializeField] private GameObject firePoint;
-        [SerializeField] private bool isAlive;
-        [SerializeField] private float speed;
-        [SerializeField] private float fireRate;
-        [SerializeField] private float timeToFire;
-        [SerializeField] private int collisionDamage;
-        [SerializeField] private int currentHealth;
-        [SerializeField] private int scorePointsEnemyDestroyed;
-        [SerializeField] private int enemyDecreasedAmount;
+        private Animator animator;
+        private AudioSource audioSource;
+        private EnemyType enemyType;
+        private GameObject explosionPrefab;
+        private GameObject weapon;
+        private GameObject firePoint;
+        private bool isAlive;
+        private float speed;
+        private float fireRate;
+        private float timeToFire;
+        private int collisionDamage;
+        private int currentHealth;
+        private int scorePoints;
 
         public static Action onEnemyDestroyed;
 
@@ -47,13 +46,20 @@ namespace EnemyLib
             audioSource = GetComponent<AudioSource>();
             collisionDamage = _data.collisionDamage;
             currentHealth = _data.maxHealth;
-            enemyDecreasedAmount = 1;
-            scorePointsEnemyDestroyed = _data.scorePoints;
+            scorePoints = _data.scorePoints;
             enemyType = _data.enemyType;
             explosionPrefab = _data.explosionPrefab;
+            firePoint = gameObject.transform.Find("FirePoint").gameObject;
             fireRate = _data.fireRate;
             isAlive = true;
             speed = _data.speed;
+            weapon = _data.weapon;
+        }
+
+        public virtual void MoveEnemy(float speed)
+        {
+            transform.Translate(Vector2.down * speed * Time.deltaTime);
+            CheckBottomPosition();
         }
 
         private void CheckBottomPosition()
@@ -63,20 +69,6 @@ namespace EnemyLib
                 transform.position = new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), 5.0f);
         }
 
-        private void EnemyDestroyed()
-        {
-            Player.onAddScore?.Invoke(scorePointsEnemyDestroyed);
-            onEnemyDestroyed?.Invoke();
-            
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            speed = 0f;
-            animator.SetTrigger("OnEnemyDestroyed");
-            audioSource.Play();
-            Destroy(GetComponent<Collider2D>());
-            gameObject.SetActive(false); // added because enemy was hitting the player twice
-            Destroy(gameObject, 2.0f);
-        }
-        
         public virtual void FireWeapon(float fireRate)
         {
             if (Time.time > timeToFire && isAlive)
@@ -86,19 +78,27 @@ namespace EnemyLib
                 timeToFire = Time.time + fireRate;
             }
         }
-        
-        public virtual void MoveEnemy(float speed)
-        {
-            transform.Translate(Vector2.down * speed * Time.deltaTime);
-            CheckBottomPosition();
-        }
-        
+
         public virtual void TakeDamage(int damage)
         {
             currentHealth -= damage;
             if (currentHealth > 0) return;
             isAlive = false; 
             EnemyDestroyed();
+        }
+
+        private void EnemyDestroyed()
+        {
+            Player.onAddScore?.Invoke(scorePoints);
+            onEnemyDestroyed?.Invoke();
+            
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            speed = 0f;
+            animator.SetTrigger("OnEnemyDestroyed");
+            audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
+            gameObject.SetActive(false); // added because enemy was hitting the player twice
+            Destroy(gameObject, 2.0f);
         }
     }
 }

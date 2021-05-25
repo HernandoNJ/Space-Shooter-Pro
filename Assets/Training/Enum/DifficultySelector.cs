@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 public class DifficultySelector : MonoBehaviour
 {
@@ -14,11 +15,11 @@ public class DifficultySelector : MonoBehaviour
         switch (currentLevel)
         {
             case Difficulty.Easy: 
-                Debug.Log("Easy selected"); break;
+                Log("Easy selected"); break;
             case Difficulty.Normal:
-                Debug.Log("Normal selected"); break;
+                Log("Normal selected"); break;
             case Difficulty.Hard:
-                Debug.Log("Hard selected"); break;
+                Log("Hard selected"); break;
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Debug;
 
 namespace Events
 {
@@ -16,7 +17,7 @@ namespace Events
 
         public void UpdateHealth(int health)
         {
-            Debug.Log("Current health: " + health);
+            Log("Current health: " + health);
         }
 
         public void UpdateDeathCount()

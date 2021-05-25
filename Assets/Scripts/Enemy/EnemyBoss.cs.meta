@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: d287d36767d07494f80e959cd460fdfb
+labels:
+- Enemy
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

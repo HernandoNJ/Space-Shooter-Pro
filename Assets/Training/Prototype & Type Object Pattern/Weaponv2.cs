@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 public class Weaponv2 : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class Weaponv2 : MonoBehaviour
 
         string message = string.IsNullOrEmpty(weaponData.Message) ? "hit" : weaponData.Message;
 
-        Debug.Log("You " + message + " - " + target.name);
+        Log("You " + message + " - " + target.name);
 
     }
 

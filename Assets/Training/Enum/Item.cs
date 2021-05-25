@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 namespace Enums
 {
@@ -18,10 +19,10 @@ namespace Enums
             switch (itemType)
             {
                 case ItemType.Weapon:
-                    Debug.Log("Item selected: --- " + itemType);
+                    Log("Item selected: --- " + itemType);
                     break;
                 case ItemType.Consumable:
-                    Debug.Log("Consumable selected");
+                    Log("Consumable selected");
                     break;
             }
         }

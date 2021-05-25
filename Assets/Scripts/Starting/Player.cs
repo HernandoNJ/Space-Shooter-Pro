@@ -1,7 +1,8 @@
-using EnemyLib;
 using System;
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Debug;
+
 
 public class Player : MonoBehaviour, ITakeDamage
 {
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour, ITakeDamage
     private AudioSource audioSource;
 
     public static Action<int> onAddScore;
+    public static Action<int> onScoreUpdated;
     public static Action<int, int> onAmmoUpdated;
     public static Action onPlayerDestroyed;
 
@@ -45,12 +47,12 @@ public class Player : MonoBehaviour, ITakeDamage
 
     private void OnEnable()
     {
-        Player.onAddScore += AddScore;
+        onAddScore += AddScore;
     }
     
     private void OnDisable()
     {
-        Player.onAddScore -= AddScore;
+        onAddScore -= AddScore;
     }
 
     private void Start()
@@ -61,6 +63,7 @@ public class Player : MonoBehaviour, ITakeDamage
     {
         MovePlayer();
         if (FiringActive()) FireLaser();
+        
     }
 
     #region Functions
@@ -69,15 +72,15 @@ public class Player : MonoBehaviour, ITakeDamage
     {
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
-        { Debug.LogError("There is no AudioSource component in Player script"); }
+        { LogError("There is no AudioSource component in Player script"); }
 
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         if (spawnManager == null)
-        { Debug.LogError("There is no SpawnManager script in spawnManager"); }
+        { LogError("There is no SpawnManager script in spawnManager"); }
 
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         if (uiManager == null)
-        { Debug.LogError("No UI Manager found. Null"); }
+        { LogError("No UI Manager found. Null"); }
 
         transform.position = new Vector2(0f, -3.0f);
         audioSource.clip = laserSound;
@@ -170,6 +173,7 @@ public class Player : MonoBehaviour, ITakeDamage
 
         UpdateAmmo();
     }
+    
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -177,6 +181,7 @@ public class Player : MonoBehaviour, ITakeDamage
 
         if (health <= 0) Destroy(gameObject);
     }
+    
     private void UpdatePlayerState(int playerLives)
     {
         uiManager.UpdateLives(health);
@@ -202,6 +207,13 @@ public class Player : MonoBehaviour, ITakeDamage
     private void AddScore(int points)
     {
         score += points;
+        UpdateScore(() => { onScoreUpdated?.Invoke(score); });
+    }
+
+    private void UpdateScore(Action newAction = null)
+    {
+        Log("newAction event with anonymous method Lambda implementation will be called");
+        newAction?.Invoke();
     }
 
     private void OnDestroy()

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using static UnityEngine.Debug;
 
 namespace Events
 {
@@ -31,7 +32,7 @@ namespace Events
             Health--;
 
             if(OnDamageReceived != null) OnDamageReceived(Health);
-            else Debug.Log("OnDamageReceived Event is null");
+            else Log("OnDamageReceived Event is null");
         }
 
     }

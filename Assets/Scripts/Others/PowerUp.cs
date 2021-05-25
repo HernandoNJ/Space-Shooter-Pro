@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 public class PowerUp : MonoBehaviour
 {
@@ -39,10 +40,10 @@ public class PowerUp : MonoBehaviour
                     case 4: player.RecoverHealth(); break;
                     case 5: player.ActivateMultipleShot(); break;
                     case 6: player.TakeDamage(2); break;
-                    default: Debug.Log("Default message in switch"); break;
+                    default: Log("Default message in switch"); break;
                 }
             }
-            else Debug.LogError("There is no Player script in player (other)");
+            else LogError("There is no Player script in player (other)");
 
             Destroy(gameObject);
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Debug;
 
 public class ObjectsSpawnner : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class ObjectsSpawnner : MonoBehaviour
             go.GetComponent<MeshRenderer>().material.color = Color.green;
 
         objectsCreated.Clear();
-        Debug.Log("objCounter = " + objCounter);
+        Log("objCounter = " + objCounter);
         return;
     }
 }

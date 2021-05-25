@@ -42,11 +42,11 @@ namespace Dictionaries
             // if (Input.GetKeyDown(KeyCode.Space))
             // {
             //     var player =  playerDictionary[49];
-            //     Debug.Log("Player name: " + player.playerName);
-            //     Debug.Log("Player name: " + playerDictionary[27].playerName);
+            //     Log("Player name: " + player.playerName);
+            //     Log("Player name: " + playerDictionary[27].playerName);
 
             //     var player2 = playerDictionary[p2.id];
-            //     Debug.Log("Player 2 name: " + player2.playerName);
+            //     Log("Player 2 name: " + player2.playerName);
 
             // }
         }

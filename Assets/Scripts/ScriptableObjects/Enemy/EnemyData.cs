@@ -13,6 +13,7 @@ public class EnemyData : ScriptableObject
     public float fireRate;
     public int collisionDamage;
     public int maxHealth;
+    public GameObject weapon;
     public List<GameObject> weapons = new List<GameObject>();
     public GameObject explosionPrefab;
 }

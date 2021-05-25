@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 public class FirstSword : MonoBehaviour
 {
@@ -6,7 +7,7 @@ public class FirstSword : MonoBehaviour
     public void Attack(Target target)
     {
         target.TakeDamage(damage);
-        Debug.Log("Damage applied to : -- " + target.name);
+        Log("Damage applied to : -- " + target.name);
     }
 
 }

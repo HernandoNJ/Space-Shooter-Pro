@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 public class Target : MonoBehaviour, ITakeDamage
 {
@@ -19,7 +20,7 @@ public class Target : MonoBehaviour, ITakeDamage
 
     public void Freeze(int seconds)
     {
-        Debug.Log("Frozen for: " + seconds);
+        Log("Frozen for: " + seconds);
         // if (floatingText != null)
         //     floatingText.SetText("<color=blue>Frozen</color>");
 

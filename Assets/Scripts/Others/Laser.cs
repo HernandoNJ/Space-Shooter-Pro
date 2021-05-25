@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 public class Laser : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class Laser : MonoBehaviour
         var iDamage = other.GetComponent<ITakeDamage>();
         if (iDamage == null)
         { 
-            Debug.Log("ITakeDamage not found in other: " + other.gameObject.name); 
+            Log("ITakeDamage not found in other: " + other.gameObject.name); 
             return;
         }
         iDamage.TakeDamage(damageAmount);

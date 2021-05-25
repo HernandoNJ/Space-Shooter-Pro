@@ -1,6 +1,7 @@
 ﻿using EnemyLib;
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Debug;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -54,7 +55,7 @@ public class SpawnManager : MonoBehaviour
 
         while (Time.time - startTime < (waveNumber * 5f))
         {
-            Debug.Log("Time - startTime " + (Time.time - startTime));
+            Log("Time - startTime " + (Time.time - startTime));
 
             float xRandomPos = Random.Range(-9.5f, 9.5f);
             Vector2 enemySpawnPos = new Vector2(xRandomPos, 5f);
@@ -92,7 +93,7 @@ public class SpawnManager : MonoBehaviour
 
         while (isPlayerAlive)
         {
-            Debug.Log("multishot time: " +  Time.time);
+            Log("multishot time: " +  Time.time);
             Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
             Instantiate(powerups[5], powerupPos, Quaternion.identity);
             yield return new WaitForSeconds(20);

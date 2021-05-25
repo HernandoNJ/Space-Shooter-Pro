@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 8ccfe9c9d0df678459d0b5197662731f
+labels:
+- Powerup
 PrefabImporter:
   externalObjects: {}
   userData: 

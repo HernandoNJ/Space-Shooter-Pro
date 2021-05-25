@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Debug;
 
 namespace Dictionaries
 {
@@ -28,7 +29,7 @@ namespace Dictionaries
            
             if (itemDictionary.ContainsKey(randNumber))
             {
-                Debug.Log("Key " + randNumber + "found");
+                Log("Key " + randNumber + "found");
                 var randomItem = itemDictionary[randNumber];
             }
         }

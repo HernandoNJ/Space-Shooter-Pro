@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using static UnityEngine.Debug;
+
 public class EnemyStart : MonoBehaviour
 {
     enum EnemyType { BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null }
@@ -28,22 +30,22 @@ public class EnemyStart : MonoBehaviour
 
     public void my()
     {
-        Debug.Log("hi");
+        Log("hi");
     }
 
     private void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
-        if (player == null) Debug.LogError("There is not Player script in player");
+        if (player == null) LogError("There is not Player script in player");
 
         anim = GetComponent<Animator>();
-        if (anim == null) Debug.LogError("anim is null in Enemy script");
+        if (anim == null) LogError("anim is null in Enemy script");
 
         audioSource = GetComponent<AudioSource>();
-        if (audioSource == null) Debug.LogError("audioSource is null in Enemy script");
+        if (audioSource == null) LogError("audioSource is null in Enemy script");
 
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        if (spawnManager == null) Debug.LogError("spawnmanager is null in Enemy script");
+        if (spawnManager == null) LogError("spawnmanager is null in Enemy script");
 
         isEnemyAlive = true;
         leftRightSpeed = 1;

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 namespace Events
 {
@@ -9,7 +10,7 @@ namespace Events
             Player.OnDeath += ResetPlayer;
 
         }
-        public void ResetPlayer() => Debug.Log("Reset player");
+        public void ResetPlayer() => Log("Reset player");
 
         private void OnDisable()
         {

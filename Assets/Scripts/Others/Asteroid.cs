@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 public class Asteroid : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class Asteroid : MonoBehaviour
     private void Start()
     {
         spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        if (spawnManager == null) Debug.LogError("SpawnManager is null in Asteroid");
+        if (spawnManager == null) LogError("SpawnManager is null in Asteroid");
 
-        if (explosionPrefab == null) Debug.LogError("Explosion prefab is null in Asteroid");
+        if (explosionPrefab == null) LogError("Explosion prefab is null in Asteroid");
 
         transform.position = Vector3.up * 3f;
     }
@@ -26,9 +27,10 @@ public class Asteroid : MonoBehaviour
         if (other.CompareTag("Laser"))
         {
             Destroy(other.gameObject);
-            spawnManager.StartSpawnning();
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(gameObject, 0.25f);
+            //GetComponent<SpriteRenderer>().enabled = false;
+            spawnManager.StartSpawnning();
+            Destroy(gameObject, 0.1f);
         }
     }
 }

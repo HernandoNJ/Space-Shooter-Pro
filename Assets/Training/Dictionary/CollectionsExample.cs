@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Debug;
 
 public class CollectionsExample : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class CollectionsExample : MonoBehaviour
 
         foreach (var num in intList)
         {
-            Debug.Log("Number: " + num);
+            Log("Number: " + num);
         }
     }
 

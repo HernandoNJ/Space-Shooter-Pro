@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static UnityEngine.Debug;
 
 namespace Abstracts
 {
@@ -18,8 +19,8 @@ namespace Abstracts
         {
             // Add custom particle system
             base.Die();
-            Debug.Log("Gameobject is destroyed");
-            Debug.Log("GameObject name: " + gameObject.name);
+            Log("Gameobject is destroyed");
+            Log("GameObject name: " + gameObject.name);
         }
     }
 }
