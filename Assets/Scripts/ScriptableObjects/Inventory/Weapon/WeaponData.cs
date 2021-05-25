@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+namespace ScriptableObjects.Inventory.Weapon {
 [CreateAssetMenu(fileName = "WeaponData", menuName = "ScriptableObject/Inventory/WeaponData")]
 public class WeaponData : ScriptableObject
 {
@@ -8,4 +9,5 @@ public class WeaponData : ScriptableObject
     public float speed;
     public int damageAmount;
     public Sprite model;
+}
 }

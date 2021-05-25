@@ -1,5 +1,4 @@
-using EnemyLib;
-public class EnemyAggressive : Enemy
+public class EnemyAggressive : Enemy.Enemy
 {
     public override void MoveEnemy(float moveSpeed)
     {

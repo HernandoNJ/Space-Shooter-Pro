@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Training.Abstract_classes;
+using UnityEngine;
 
 public class PartTime : Employee
 {

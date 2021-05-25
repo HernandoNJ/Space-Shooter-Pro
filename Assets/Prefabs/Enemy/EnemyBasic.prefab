@@ -212,19 +212,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: 8c11f89cb05798c4e8601a27859e6b18, type: 2}
-  collisionDamage: 0
-  currentHealth: 0
-  enemyDestroyedPoints: 0
-  enemyDecreasedAmount: 0
-  animator: {fileID: 0}
-  audioSource: {fileID: 0}
-  explosionPrefab: {fileID: 0}
-  weapon: {fileID: 222645671448293320, guid: 433dc301ed375494abe745f72112ca4e, type: 3}
-  firePoint: {fileID: 5579572451328260604}
-  isAlive: 0
-  speed: 0
-  fireRate: 0
-  timeToFire: 0
 --- !u!1 &5579572451328260604
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,6 +254,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Model
       objectReference: {fileID: 0}
+    - target: {fileID: 2434305982652362110, guid: ff92c4123ee48d047bbe1c9032b85fe6,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 60876990327e38343afeb745abb42643,
+        type: 3}
     - target: {fileID: 5691228452449804389, guid: ff92c4123ee48d047bbe1c9032b85fe6,
         type: 3}
       propertyPath: m_RootOrder
@@ -275,12 +268,12 @@ PrefabInstance:
     - target: {fileID: 5691228452449804389, guid: ff92c4123ee48d047bbe1c9032b85fe6,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5691228452449804389, guid: ff92c4123ee48d047bbe1c9032b85fe6,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5691228452449804389, guid: ff92c4123ee48d047bbe1c9032b85fe6,
         type: 3}

@@ -11,21 +11,14 @@ namespace Training.Others
     {
         private MeshRenderer _render;
         private float speed = 5f;
+        private void OnEnable() => EndTrigger.onEndReachedAction += FinishedWave;
+        private void OnDisable() => EndTrigger.onEndReachedAction -= FinishedWave;
 
         private void Start()
         {
             _render = GetComponent<MeshRenderer>();
         }
 
-        private void OnEnable()
-        {    
-            EndTrigger.onEndReached += FinishedWave; 
-        }
-
-        private void OnDisable()
-        {
-            EndTrigger.onEndReached -= FinishedWave;
-        }
 
         private void Update()
         {
@@ -39,24 +32,29 @@ namespace Training.Others
 
         private void FinishedWave(Vector3 newPos, Mech mech)
         {
-            if(this == mech) Debug.Log("this is me: "  + name);
+            if (this == mech)
+            {
+                Debug.Log("this is me: "  + name);
+                return;
+            }
             
             // if(transform.position = newPos) return;
             // transform.position = newPos;
         
-            // float rand = Random.value;
-            // Color newColor = new Color(rand,rand,rand);
-            // _render.material.color = newColor;
-        
-            StartCoroutine(ColorChange());
-        
+            StartCoroutine(ColorChange(() =>
+            {
+                _render.material.color = Color.cyan;
+                Debug.Log("Coroutine finished, Action onComplete finished");
+            }));
         }
 
-        private IEnumerator ColorChange()
+        private IEnumerator ColorChange(Action onFinished = null)
         {
             yield return new WaitForSeconds(1);
             Color newColor = new Color(Random.value, Random.value, Random.value);
             _render.material.color = newColor;
+            yield return new WaitForSeconds(2);
+            onFinished?.Invoke();
         }
     }
 }

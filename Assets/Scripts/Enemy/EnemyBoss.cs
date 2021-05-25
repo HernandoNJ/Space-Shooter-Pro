@@ -1,5 +1,4 @@
-﻿using EnemyLib;
-public class EnemyBoss : Enemy
+﻿public class EnemyBoss : Enemy.Enemy
 {
     public override void TakeDamage(int damage)
     {

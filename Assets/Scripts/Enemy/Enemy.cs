@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
+using ScriptableObjects.Inventory.Weapon;
+using Starting;
 using UnityEngine;
 
-namespace EnemyLib
-{
+namespace Enemy {
     public abstract class Enemy : MonoBehaviour, ITakeDamage, IMove, IShoot
     {
         public EnemyData enemyData;
@@ -19,6 +21,7 @@ namespace EnemyLib
         private int collisionDamage;
         private int currentHealth;
         private int scorePoints;
+        protected List<WeaponData> weapons = new List<WeaponData>();
 
         public static Action onEnemyDestroyed;
 
@@ -54,6 +57,7 @@ namespace EnemyLib
             isAlive = true;
             speed = _data.speed;
             weapon = _data.weapon;
+            
         }
 
         public virtual void MoveEnemy(float speed)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ScriptableObjects.Inventory.Weapon;
 using UnityEngine;
 
 public enum EnemyType{Default, Basic, DoubleShooter, Chaser, Aggressive, ShotAvoider, Shielded, Boss}
@@ -14,6 +15,6 @@ public class EnemyData : ScriptableObject
     public int collisionDamage;
     public int maxHealth;
     public GameObject weapon;
-    public List<GameObject> weapons = new List<GameObject>();
+    public List<WeaponData> weapons = new List<WeaponData>();
     public GameObject explosionPrefab;
 }

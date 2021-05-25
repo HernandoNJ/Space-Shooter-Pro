@@ -611,23 +611,20 @@ Collider[] hitColliders = Physics.OverlapSphere(enemy.transform.position, alertD
 foreach(Collider hitCollider in hitColliders)
 {
     if(hitCollider.gameObject.tag == "EnemyGuard" && hitCollider.GetComponent<Enemy>() != enemy)
-    {
-        //Your code goes here
-    }
+    { //Your code goes here S}
 }
 
 ***************** --------------- **********************
 
 CODE EG Set Model *****************
 
-
  private void SetModel()
-        {
-            GameObject modelGo = Instantiate(model);
-            modelGo.transform.SetParent(this.transform);
-            modelGo.transform.localPosition = Vector3.zero;
-            modelGo.transform.rotation = Quaternion.identity;
-        }
+{
+    GameObject modelGo = Instantiate(model);
+    modelGo.transform.SetParent(this.transform);
+    modelGo.transform.localPosition = Vector3.zero;
+    modelGo.transform.rotation = Quaternion.identity;
+}
 
 ***************** --------------- **********************
 
@@ -635,28 +632,18 @@ CODE EG Make an enemy get the player position, change color with coroutine *****
 
 public class EndTrigger: Monobehaviour
 {
-    public delegate void OnEndReached(Vector3);
-    public static event OnEndReached onEndReached;
+    public delegate void onEndReachedAction(Vector3);
+    public static event onEndReachedAction onEndReachedAction;
     
     private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Enemy") onEndReached?.Invoke();
-    }
+    { if(other.tag == "Enemy") onEndReachedAction?.Invoke(); }
 }
 
 public class Mech: Monobehaviour
 {
-    void OnEnable()
-    {    
-       EndTrigger.onEndReached += FinishedWave; 
-    }    
+    void OnEnable() { EndTrigger.onEndReachedAction += FinishedWave; }    
     
-    void OnDisable()
-    {
-        EndTrigger.onEndReached -= FinishedWave;
-    }
-    
-    
+    void OnDisable() { EndTrigger.onEndReachedAction -= FinishedWave; }
     
     public void FinishedWave(Vector3 newPos)
     {
@@ -668,7 +655,6 @@ public class Mech: Monobehaviour
         // _render.material.color = newColor;
         
         StartCoroutine(ColorChange());
-        
     }  
     
     IEnumerator ColorChange(){
@@ -677,14 +663,120 @@ public class Mech: Monobehaviour
         Color newColor = new Color(rand,rand,rand);
         _render.material.color = newColor;
     }
-      
 }
-
-
 
 ***************** --------------- **********************
 
+CODE EG Move Cube and Rotate with Mouse *****************
 
+    private void MoveCube()
+    {
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        Vector3 input = new Vector3(h, 0, v);
+        transform.Translate(input * speed * Time.deltaTime);
+    }
+
+    private void RotateCube()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * 200 * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * 200 * Time.deltaTime;
+        transform.Rotate(mouseX, mouseY, 0, Space.Self);
+    }
+***************** --------------- **********************
+
+CODE EG Select objects with Mouse and Raycast *****************
+
+public class RaycastIntoScene : MonoBehaviour
+{
+    [SerializeField] private Camera myCamera;
+    
+    // Useful for setting up values automatically
+    private void OnValidate()
+    { if (myCamera == null) myCamera = Camera.main; }
+
+    private void Update()
+    {
+        Vector2 mouseScreenPosition = Input.mousePosition;
+        Ray ray = myCamera.ScreenPointToRay(mouseScreenPosition);
+
+        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.magenta);
+        
+        if (Physics.Raycast(ray, out RaycastHit raycastHit))
+            raycastHit.collider.GetComponent<Renderer>().material.color = Color.cyan;
+    }
+    
+    ***************** --------------- **********************
+    
+    CODE EG Raycast single and multiple with cube *****************
+    
+    public class CubeLookingAtSphere : MonoBehaviour
+    {
+        [SerializeField] private Color singleColor = Color.green;
+        [SerializeField] private Color allColor = Color.yellow;
+        [SerializeField] private bool isMultiple;
+        [SerializeField] private float speed;
+    
+        private void Update(){ RaycastSingle(); RaycastMultiple(); }
+        private void RaycastSingle()
+        {
+            Vector3 origin = transform.position;
+            var direction = transform.forward;
+            Debug.DrawRay(origin, direction * 5f, Color.red);
+            bool objectHit = Physics.Raycast(new Ray(origin, direction), out RaycastHit hitInfo);
+            if (objectHit) hitInfo.collider.GetComponent<Renderer>().material.color = singleColor;
+        }
+        private void RaycastMultiple()
+        {
+            Vector3 origin = transform.position;
+            var direction = transform.forward;
+            Debug.DrawRay(origin, direction * 5f, Color.yellow);
+            Ray ray = new Ray(origin, direction);
+            var multipleHits = Physics.RaycastAll(ray);
+            foreach (var raycastHit in multipleHits)
+            { raycastHit.collider.GetComponent<Renderer>().material.color = allColor; }
+        }
+    }
+    ***************** --------------- **********************
+    
+    CODE EG Raycast with LayerMask *****************
+    
+    public class CubeLookingAtSphereWithLayers : MonoBehaviour
+    {
+        private const float MAX_DISTANCE = 10f;
+    
+        [SerializeField] private Color raycastSingleTint = Color.green;
+        [SerializeField] private Color raycastAllTint = Color.yellow;
+        [SerializeField] private bool multiple;
+        [SerializeField] private LayerMask layerMask;
+    
+        private void Update()
+        {
+            if (multiple) RaycastMultiple();
+            else RaycastSingle();
+        }
+    
+        private void RaycastSingle()
+        {
+            Vector3 origin = transform.position;
+            var direction = transform.forward;
+            Debug.DrawRay(origin, direction * 10f, Color.red);
+            Ray ray = new Ray(origin, direction);
+            bool objectHit = Physics.Raycast(ray, out RaycastHit raycastHit, maxDistance:10f, layerMask);
+            if (objectHit) raycastHit.collider.GetComponent<Renderer>().material.color = raycastSingleTint;
+        }
+        private void RaycastMultiple()
+        {
+            Vector3 origin = transform.position;
+            var direction = transform.forward;
+            Debug.DrawRay(origin, direction * 5f, Color.yellow);
+            Ray ray = new Ray(origin, direction);
+            var multipleHits = Physics.RaycastAll(ray, MAX_DISTANCE, layerMask);
+            foreach (var raycastHit in multipleHits)
+            { raycastHit.collider.GetComponent<Renderer>().material.color = raycastAllTint; }
+        }
+    }
+    
 
 */
 

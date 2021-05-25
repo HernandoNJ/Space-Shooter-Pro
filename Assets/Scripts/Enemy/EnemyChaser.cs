@@ -1,5 +1,4 @@
-﻿using EnemyLib;
-public class EnemyChaser : Enemy
+﻿public class EnemyChaser : Enemy.Enemy
 {
     public override void TakeDamage(int damage)
     {

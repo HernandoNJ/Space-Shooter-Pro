@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Starting;
+using UnityEngine;
 
 public class EnemyDoubleLaserStart : MonoBehaviour
 {

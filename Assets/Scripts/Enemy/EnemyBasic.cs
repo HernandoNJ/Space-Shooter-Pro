@@ -1,5 +1,4 @@
-﻿using EnemyLib;
-public class EnemyBasic : Enemy
+﻿public class EnemyBasic : Enemy.Enemy
 {
     
 }

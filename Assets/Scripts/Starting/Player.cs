@@ -1,25 +1,23 @@
 using System;
 using System.Collections;
+using Lasers;
+using Managers;
 using UnityEngine;
 using static UnityEngine.Debug;
 
-
+namespace Starting {
 public class Player : MonoBehaviour, ITakeDamage
 {
     #region Variables
 
-    [SerializeField] private AudioClip laserSound;
-    [SerializeField] private GameObject multipleShotPrefab;
-    [SerializeField] private GameObject firePoint;
+    [SerializeField] private Transform[] firePoints;
     [SerializeField] private GameObject laserPrefab;
-    [SerializeField] private GameObject tripleLaserPrefab;
+    [SerializeField] private GameObject multipleShotPrefab;
     [SerializeField] private GameObject shield;
     [SerializeField] private GameObject leftEngine;
     [SerializeField] private GameObject rightEngine;
-    [SerializeField] private UIManager uiManager;
 
     [SerializeField] private bool hasAmmo;
-    [SerializeField] private bool isMultipleShotActive;
     [SerializeField] private bool isTripleLaserActive;
     [SerializeField] private bool isSpeedBoostActive;
     [SerializeField] private bool isShieldActive;
@@ -29,14 +27,14 @@ public class Player : MonoBehaviour, ITakeDamage
     [SerializeField] private float leftShiftSpeedMult = 1.5f;
     [SerializeField] private float totalSpeed;
     [SerializeField] private float fireRate = 2.0f;
-    [SerializeField] private float multipleShotFireRate = 5.0f;
     [SerializeField] private int health = 3;
     [SerializeField] private int score;
     [SerializeField] private int ammoAvailable;
     [SerializeField] private int ammoMax;
 
+    private UIManager uiManager;
     private SpawnManager spawnManager;
-    private AudioSource audioSource;
+    private LasersManager lasersManager;
 
     public static Action<int> onAddScore;
     public static Action<int> onScoreUpdated;
@@ -45,45 +43,26 @@ public class Player : MonoBehaviour, ITakeDamage
 
     #endregion
 
-    private void OnEnable()
-    {
-        onAddScore += AddScore;
-    }
-    
-    private void OnDisable()
-    {
-        onAddScore -= AddScore;
-    }
+    private void OnEnable() => onAddScore += AddScore;
+    private void OnDisable() => onAddScore -= AddScore;
+    private void Start() => SetInitialValues();
 
-    private void Start()
-    {
-       SetInitialValues();
-    }
     private void Update()
     {
         MovePlayer();
         if (FiringActive()) FireLaser();
-        
     }
 
     #region Functions
 
     private void SetInitialValues()
     {
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        { LogError("There is no AudioSource component in Player script"); }
-
-        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        if (spawnManager == null)
-        { LogError("There is no SpawnManager script in spawnManager"); }
-
-        uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-        if (uiManager == null)
-        { LogError("No UI Manager found. Null"); }
+        spawnManager = SpawnManager.Instance;
+        uiManager = UIManager.Instance;
+        lasersManager = LasersManager.Instance;
 
         transform.position = new Vector2(0f, -3.0f);
-        audioSource.clip = laserSound;
+
         ammoMax = 15;
         ammoAvailable = 15;
         UpdateAmmo();
@@ -92,7 +71,7 @@ public class Player : MonoBehaviour, ITakeDamage
         leftEngine.SetActive(false);
         rightEngine.SetActive(false);
     }
-    
+
     private void MovePlayer()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -105,7 +84,7 @@ public class Player : MonoBehaviour, ITakeDamage
         {
             totalSpeed = playerSpeed * speedUpSpeed;
             transform.Translate(moveDirection * (totalSpeed * Time.deltaTime));
-            uiManager.IncreaseThrusterBar(0.004f);
+            UIManager.Instance.IncreaseThrusterBar(0.004f);
         }
         // Increase speed with Left shift key
         else if (SpeedIncreased())
@@ -123,7 +102,7 @@ public class Player : MonoBehaviour, ITakeDamage
             uiManager.DecreaseThrusterBar(0.004f);
         }
 
-        // Set up player movement constraints 
+        // Set up player movement constraints
         float xPos = transform.position.x;
         float yPos = transform.position.y;
 
@@ -137,43 +116,36 @@ public class Player : MonoBehaviour, ITakeDamage
         else if (xPos <= -10.4f)
             transform.position = new Vector2(10.4f, yPos);
     }
-    private static bool SpeedIncreased()
-    {
-        return Input.GetKey(KeyCode.LeftShift);
-    }
-    private bool FiringActive()
-    {
-        return Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo;
-    }
+
+    private static bool SpeedIncreased() => Input.GetKey(KeyCode.LeftShift);
+
+    private bool FiringActive() => Input.GetKeyDown(KeyCode.Space) && Time.time > canFire && hasAmmo;
+
     private void FireLaser()
     {
-        // Fire MultipleShot
-        if (isMultipleShotActive)
-        {
-            canFire = Time.time + multipleShotFireRate;
-            Instantiate(multipleShotPrefab, firePoint.transform.position, Quaternion.identity);
-            isMultipleShotActive = false;
-        }
         // Shot triple laser
-        else if (isTripleLaserActive)
+        if (isTripleLaserActive)
         {
             canFire = Time.time + fireRate;
-            Instantiate(tripleLaserPrefab, transform.position, Quaternion.identity);
+
+            /* TODO fix triple laser in player*/
+            //Instantiate(tripleLaserPrefab, transform.position, Quaternion.identity);
         }
         // Shot one laser
         else
         {
             canFire = Time.time + fireRate;
-            Vector2 laserPos = transform.position + new Vector3(0, 1.0f);
-            Instantiate(laserPrefab, laserPos, Quaternion.identity);
+            lasersManager.GetOneBullet();
+            // Vector2 laserPos = transform.position + new Vector3(0, 1.0f);
+            // Instantiate(laserPrefab, laserPos, Quaternion.identity);
         }
 
         ammoAvailable--;
-        audioSource.Play();
+
 
         UpdateAmmo();
     }
-    
+
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -181,7 +153,7 @@ public class Player : MonoBehaviour, ITakeDamage
 
         if (health <= 0) Destroy(gameObject);
     }
-    
+
     private void UpdatePlayerState(int playerLives)
     {
         uiManager.UpdateLives(health);
@@ -237,9 +209,9 @@ public class Player : MonoBehaviour, ITakeDamage
 
     public void ActivateMultipleShot()
     {
-        isMultipleShotActive = true;
-        ammoAvailable++;
-        UpdateAmmo();
+        firePoints[0].transform.position = transform.position + (Vector3.up * 2);
+        Instantiate(multipleShotPrefab, (firePoints[0]));
+        Destroy(multipleShotPrefab, 3);
     }
 
     public void ActivateSpeedBoost()
@@ -295,7 +267,6 @@ public class Player : MonoBehaviour, ITakeDamage
     {
         ammoAvailable = 15;
         UpdateAmmo();
-
         uiManager.OnFullAmmo();
     }
 
@@ -307,4 +278,5 @@ public class Player : MonoBehaviour, ITakeDamage
     }
 
     #endregion
+}
 }

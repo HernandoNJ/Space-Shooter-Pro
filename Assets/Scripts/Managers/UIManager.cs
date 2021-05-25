@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections;
-using EnemyLib;
+﻿using System.Collections;
+using Starting;
 using UnityEngine;
-using static UnityEngine.Debug;
 using UnityEngine.UI;
+using static UnityEngine.Debug;
 
+namespace Managers {
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
@@ -21,15 +21,27 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private int playerScore;
 
+    private static UIManager _instance;
+    public static UIManager Instance
+    {
+        get
+        {
+            if (_instance == null) Log("UIManager is null");
+            return _instance;
+        }
+    }
+
+    private void Awake() => _instance = this;
+
     private void OnEnable()
     {
-        Player.onAmmoUpdated += UpdateAmmo; 
+        Player.onAmmoUpdated += UpdateAmmo;
         Player.onScoreUpdated += UpdateScore;
     }
-    
+
     private void OnDisable()
     {
-        Player.onAmmoUpdated -= UpdateAmmo; 
+        Player.onAmmoUpdated -= UpdateAmmo;
         Player.onScoreUpdated -= UpdateScore;
     }
 
@@ -57,18 +69,18 @@ public class UIManager : MonoBehaviour
     {
         livesImage.sprite = livesSprites[currentLives];
         if (currentLives > 0) return;
-            GameOverSequence();
+        GameOverSequence();
     }
 
-    private void SetAmmoValues(int ammoAvailable, int AmmoTotal)
+    private void SetAmmoValues(int ammoAvailable, int ammoTotal)
     {
-        ammoText.text = ammoAvailable.ToString() + "/" + AmmoTotal.ToString();
+        ammoText.text = ammoAvailable.ToString() + "/" + ammoTotal.ToString();
     }
 
     private void UpdateAmmo(int playerAmmoAvailable, int playerAmmoTotal)
     {
         SetAmmoValues(playerAmmoAvailable, playerAmmoTotal);
-        if(playerAmmoAvailable <= 0) OnEmptyAmmo();
+        if (playerAmmoAvailable <= 0) OnEmptyAmmo();
     }
 
     private void OnEmptyAmmo()
@@ -118,6 +130,7 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.35f);
         }
     }
+}
 }
 
 // TODO fix Multi shot mechanic
