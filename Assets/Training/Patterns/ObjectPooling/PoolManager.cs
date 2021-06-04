@@ -22,7 +22,7 @@ namespace Training.Patterns.ObjectPooling
                 //bullet.SetActive(false);
                 bulletPool.Add(bullet);
 
-                // GameObject bullet = Instantiate(bulletPrefab);
+                // WeaponLauncher bullet = Instantiate(bulletPrefab);
                 // bullet.transform.parent = bulletContainer.transform;
                 // //bullet.SetActive(false);
                 // bulletPool.Add(bullet);

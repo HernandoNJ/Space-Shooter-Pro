@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Debug;
 
-namespace Managers {
+namespace Managers
+{
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameManager gameManager;
@@ -35,14 +36,14 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.onAmmoUpdated += UpdateAmmo;
-        Player.onScoreUpdated += UpdateScore;
+        PlayerStart.onAmmoUpdated += UpdateAmmo;
+        PlayerStart.onScoreUpdated += UpdateScore;
     }
 
     private void OnDisable()
     {
-        Player.onAmmoUpdated -= UpdateAmmo;
-        Player.onScoreUpdated -= UpdateScore;
+        PlayerStart.onAmmoUpdated -= UpdateAmmo;
+        PlayerStart.onScoreUpdated -= UpdateScore;
     }
 
     private void Start()

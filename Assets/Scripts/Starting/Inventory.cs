@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class Inventory : MonoBehaviour
-    {
-        public Dictionary<int, GameObject> Items;
+public class Inventory : MonoBehaviour
+{
+    public Dictionary<int, GameObject> Items;
 
 
 
 
-    }
+}
 }

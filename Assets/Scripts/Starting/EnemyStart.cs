@@ -6,7 +6,12 @@ using static UnityEngine.Debug;
 
 public class EnemyStart : MonoBehaviour
 {
-    enum EnemyType { BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy, BossEnemy, Null }
+    enum EnemyType
+    {
+        BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy,
+        BossEnemy, Null
+    }
+
     enum EnemyWeapon { Laser, DoubleLaser, Rocket, BackwardLaser, Null }
     enum EnemyMove { Normal, ZigZag, ChasePlayer, AvoidShot, Null };
 
@@ -17,7 +22,7 @@ public class EnemyStart : MonoBehaviour
     [SerializeField] private GameObject rocket;
     [SerializeField] private GameObject rechargedLaser;
     [SerializeField] private GameObject shield;
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerStart player;
     [SerializeField] private SpawnManager spawnManager;
 
     [SerializeField] private bool isEnemyAlive;
@@ -37,8 +42,8 @@ public class EnemyStart : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.Find("Player").GetComponent<Player>();
-        if (player == null) LogError("There is not Player script in player");
+        player = GameObject.Find("PlayerStart").GetComponent<PlayerStart>();
+        if (player == null) LogError("There is not PlayerStart script in player");
 
         anim = GetComponent<Animator>();
         if (anim == null) LogError("anim is null in Enemy script");
@@ -52,7 +57,6 @@ public class EnemyStart : MonoBehaviour
         isEnemyAlive = true;
         leftRightSpeed = 1;
         shield.SetActive(false);
-
     }
 
     private void Update()
@@ -106,7 +110,7 @@ public class EnemyStart : MonoBehaviour
         if (other.transform.parent != null && other.transform.parent.CompareTag("EnemyLaser"))
             return;
 
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("PlayerStart"))
         {
             player.TakeDamage(1);
             speed = 0f;

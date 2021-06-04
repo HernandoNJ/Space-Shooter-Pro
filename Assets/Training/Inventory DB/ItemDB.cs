@@ -8,7 +8,7 @@ namespace Inventories
     {
         public List<Item> itemDatabase = new List<Item>();
 
-        // PlayerInv (Player.cs) to add or remove Item in Player
+        // PlayerInv (PlayerStart.cs) to add or remove Item in PlayerStart
         public void AddItem(int itemID, Player playerInv)
         {
             // Check if itemID matches any existing item in DB
@@ -16,7 +16,7 @@ namespace Inventories
             {
                 if (itemID == itemDB.id)
                 {
-                    // Add item from DB List to Player inventory
+                    // Add item from DB List to PlayerStart inventory
                     // TODO improve code because it shows the message even if the item is already added to the array 
                     playerInv.inventory[1] = itemDB;
                     Log("Match found");

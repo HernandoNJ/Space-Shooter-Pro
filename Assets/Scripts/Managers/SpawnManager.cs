@@ -3,8 +3,10 @@ using Starting;
 using UnityEngine;
 using static UnityEngine.Debug;
 
-namespace Managers{
-public class SpawnManager : SingletonBP<SpawnManager>{
+namespace Managers
+{
+public class SpawnManager : SingletonBP<SpawnManager>
+{
 
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject enemySpawner;
@@ -23,7 +25,7 @@ public class SpawnManager : SingletonBP<SpawnManager>{
     private void OnEnable()
     {
         Enemy.Enemy.onEnemyDestroyed += DecreaseEnemiesAmount;
-        Player.onPlayerDestroyed += PlayerIsDeath;
+        PlayerStart.onPlayerDestroyed += PlayerIsDeath;
     }
 
     private void Start()
@@ -44,7 +46,7 @@ public class SpawnManager : SingletonBP<SpawnManager>{
     private void OnDisable()
     {
         Enemy.Enemy.onEnemyDestroyed -= DecreaseEnemiesAmount;
-        Player.onPlayerDestroyed -= PlayerIsDeath;
+        PlayerStart.onPlayerDestroyed -= PlayerIsDeath;
     }
 
     private void DecreaseEnemiesAmount()

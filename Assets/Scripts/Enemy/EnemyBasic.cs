@@ -1,5 +1,7 @@
-﻿public class EnemyBasic : Enemy.Enemy
+﻿namespace Enemy
 {
-    
-}
+public class EnemyBasic : Enemy
+{
 
+}
+}

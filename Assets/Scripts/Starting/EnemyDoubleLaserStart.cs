@@ -20,9 +20,9 @@ public class EnemyDoubleLaserStart : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("PlayerStart"))
         {
-            Player player = other.GetComponent<Player>();
+            PlayerStart player = other.GetComponent<PlayerStart>();
             if (player != null) player.TakeDamage(1);
             Destroy(gameObject);
         }

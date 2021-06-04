@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 using static UnityEngine.Debug;
 
-namespace Starting {
+namespace Starting
+{
 public class LaserStart : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private int damageAmount;
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerStart player;
 
     private void Start()
     {
-        player = GameObject.Find("Player").GetComponent<Player>();
+        player = GameObject.Find("PlayerStart").GetComponent<PlayerStart>();
         speed = 5f;
         damageAmount = 1;
     }
+
     private void Update()
     {
         MoveLaserUp();
     }
+
     private void MoveLaserUp()
     {
         transform.Translate(Vector2.up * (speed * Time.deltaTime));
@@ -29,14 +32,17 @@ public class LaserStart : MonoBehaviour
                 Destroy(transform.parent.gameObject);
         }
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         var iDamage = other.GetComponent<ITakeDamage>();
+
         if (iDamage == null)
         {
             Log("ITakeDamage not found in other: " + other.gameObject.name);
             return;
         }
+
         iDamage.TakeDamage(damageAmount);
         Destroy(gameObject);
     }

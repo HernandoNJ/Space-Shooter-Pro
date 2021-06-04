@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6680382158412950072}
   - component: {fileID: 6867714703604317930}
   - component: {fileID: 2894870295091577957}
-  - component: {fileID: -8994171698869699792}
   - component: {fileID: 4963322855800269213}
+  - component: {fileID: -8994171698869699792}
   m_Layer: 0
   m_Name: EnemyExplosion
   m_TagString: Untagged
@@ -103,18 +103,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-8994171698869699792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4009486786716279570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6dce9282e14b7a4190e17f59790e1f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &4963322855800269213
 AudioSource:
   m_ObjectHideFlags: 0
@@ -211,3 +199,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-8994171698869699792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4009486786716279570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7053ed2f78f32a40ab752cc5f952f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

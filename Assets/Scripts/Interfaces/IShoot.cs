@@ -2,5 +2,3 @@
 {
     void FireWeapon(float fireRate);
 }
-
-

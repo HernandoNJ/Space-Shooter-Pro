@@ -33,6 +33,7 @@ public class MultipleShots : MonoBehaviour
         for (int i = 1; i < shotsAmount; i++)
         {
             int n = i * 30;
+
             if (n <= 360)
             {
                 Quaternion shotRotation = Quaternion.Euler(0, 0, n);

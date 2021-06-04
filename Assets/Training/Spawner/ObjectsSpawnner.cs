@@ -24,13 +24,13 @@ public class ObjectsSpawnner : MonoBehaviour
         objCounter++;
 
         int randObj = Random.Range(0, sourceObjects.Length);
-        GameObject obj = sourceObjects[randObj]; // GameObject referencing a prefab
+        GameObject obj = sourceObjects[randObj]; // WeaponLauncher referencing a prefab
 
         float randX = Random.Range(-10, 10);
         float randY = Random.Range(-10, 10);
         Vector3 objPos = new Vector3(randX, randY, 0);
 
-        // ASK difference between prefab and GameObject referencing
+        // ASK difference between prefab and WeaponLauncher referencing
         // Adding obj to List - throws an error when trying to change color
         // Instantiate(obj, objPos, Quaternion.identity);
         // objectsCreated.Add(obj);

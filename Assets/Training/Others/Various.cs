@@ -6,8 +6,8 @@ public class Various : MonoBehaviour
     
 //public abstract class Enemy : MonoBehaviour
 //{
-//    public static Action<Player> getPlayerScript;
-//    public Player player;
+//    public static Action<PlayerStart> getPlayerScript;
+//    public PlayerStart player;
 //    private void OnEnable()
 //    {
 //        getPlayerScript?.Invoke(player);
@@ -21,9 +21,9 @@ public class Various : MonoBehaviour
 //    {
 //        Enemy.getPlayerScript += SendPlayerScript;
 //    }
-//    private void SendPlayerScript(Player player)
+//    private void SendPlayerScript(PlayerStart player)
 //    {
-//        player = GetComponent<Player>();
+//        player = GetComponent<PlayerStart>();
 //    }
 
 }
