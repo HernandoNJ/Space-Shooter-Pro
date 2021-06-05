@@ -9,7 +9,7 @@ public class PowerUp : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private int powerupID;
 
-    void Update()
+    private void Update()
     {
         MovePowerup();
 
@@ -24,45 +24,45 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            AudioSource.PlayClipAtPoint(powerupSound, transform.position, 0.3f);
+        if (!other.CompareTag("Player")) return;
+        
+        AudioSource.PlayClipAtPoint(powerupSound, transform.position, 0.3f);
 
-            PlayerStart player = other.GetComponent<PlayerStart>();
+        var player = other.GetComponent<PlayerStart>();
 
-            if (player != null)
+        if (player != null)
+        {   
+            // TODO set powerups as enum
+            switch (powerupID)
             {
-                switch (powerupID)
-                {
-                    case 0:
-                        player.ActivateTripleLaser();
-                        break;
-                    case 1:
-                        player.ActivateSpeedBoost();
-                        break;
-                    case 2:
-                        player.ActivateShield();
-                        break;
-                    case 3:
-                        player.RefillAmmo();
-                        break;
-                    case 4:
-                        player.RecoverHealth();
-                        break;
-                    case 5:
-                        player.ActivateMultipleShot();
-                        break;
-                    case 6:
-                        player.TakeDamage(2);
-                        break;
-                    default:
-                        Log("Default message in switch");
-                        break;
-                }
+                case 0:
+                    player.ActivateTripleLaser();
+                    break;
+                case 1:
+                    player.ActivateSpeedBoost();
+                    break;
+                case 2:
+                    player.ActivateShield();
+                    break;
+                case 3:
+                    player.RefillAmmo();
+                    break;
+                case 4:
+                    player.RecoverHealth();
+                    break;
+                case 5:
+                    player.ActivateMultipleShot();
+                    break;
+                case 6:
+                    player.TakeDamage(2);
+                    break;
+                default:
+                    Log("Default message in switch");
+                    break;
             }
-            else LogError("There is no PlayerStart script in player (other)");
-
-            Destroy(gameObject);
         }
+        else LogError("There is no PlayerStart script in player (other)");
+
+        Destroy(gameObject);
     }
 }

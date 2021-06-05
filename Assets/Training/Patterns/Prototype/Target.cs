@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Interfaces;
+using UnityEngine;
 using static UnityEngine.Debug;
 
 namespace Training.Patterns.Prototype
@@ -7,9 +8,9 @@ public class Target : MonoBehaviour, ITakeDamage
 {
     /* It can be anything like a player or enemy */
 
-    [SerializeField] private int currentHealth = 10;
+    [SerializeField] private float currentHealth = 10;
     //[SerializeField] private FloatingText floatingText;
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
 

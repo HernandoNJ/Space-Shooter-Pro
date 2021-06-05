@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using ScriptableObjects.Inventory.Weapon;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
-public enum EnemyType { Default, Basic, DoubleShooter, Chaser, Aggressive, ShotAvoider, Shielded, Boss }
-
+namespace SO
+{
 [CreateAssetMenu(fileName = "EnemyData", menuName = "ScriptableObject/EnemySO/EnemyData", order = 0)]
 public class EnemyData : ScriptableObject
 {
@@ -18,4 +20,11 @@ public class EnemyData : ScriptableObject
     public GameObject weapon;
     public List<WeaponData> weapons = new List<WeaponData>();
     public GameObject explosionPrefab;
+    
+}
+
+public enum EnemyType
+{
+    Default, Basic, DoubleShooter, Chaser, Aggressive, ShotAvoider, Shielded, Boss
+}
 }

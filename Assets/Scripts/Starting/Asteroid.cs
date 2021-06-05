@@ -30,7 +30,7 @@ public class Asteroid : MonoBehaviour
             Destroy(other.gameObject);
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
             //GetComponent<SpriteRenderer>().enabled = false;
-            spawnManager.StartSpawnning();
+            spawnManager.StartSpawning();
             Destroy(gameObject, 0.1f);
         }
     }

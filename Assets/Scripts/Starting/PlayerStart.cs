@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
-using Weapon;
+using Interfaces;
 using Managers;
 using UnityEngine;
+using Weapon.Lasers;
 using static UnityEngine.Debug;
-using GameObject = UnityEngine.GameObject;
 
 namespace Starting
 {
@@ -16,29 +16,25 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
     [SerializeField] private GameObject shield;
     [SerializeField] private GameObject leftEngine;
     [SerializeField] private GameObject rightEngine;
-    [SerializeField] private Transform firePoint0;
-    [SerializeField] private Transform firePoint1;
-    [SerializeField] private Transform firePoint2;
-
 
     [SerializeField] private bool hasAmmo;
     [SerializeField] private bool isTripleLaserActive;
     [SerializeField] private bool isSpeedBoostActive;
     [SerializeField] private bool isShieldActive;
-    [SerializeField] private float canFire = 0f;
+    [SerializeField] private float canFire;
     [SerializeField] private float playerSpeed = 5f;
     [SerializeField] private float speedUpSpeed = 2f;
     [SerializeField] private float leftShiftSpeedMult = 1.5f;
     [SerializeField] private float totalSpeed;
     [SerializeField] private float fireRate = 2.0f;
-    [SerializeField] private int health = 3;
+    [SerializeField] private int lives = 3;
     [SerializeField] private int score;
     [SerializeField] private int ammoAvailable;
     [SerializeField] private int ammoMax;
 
     private UIManager uiManager;
     private SpawnManager spawnManager;
-    private LasersManager lasersManager;
+    private LasersPoolManager lasersPoolManager;
 
     public static Action<int> onAddScore;
     public static Action<int> onScoreUpdated;
@@ -63,7 +59,7 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
     {
         spawnManager = SpawnManager.Instance;
         uiManager = UIManager.Instance;
-        lasersManager = LasersManager.Instance;
+        lasersPoolManager = LasersPoolManager.Instance;
 
         transform.position = new Vector2(0f, -3.0f);
 
@@ -82,7 +78,7 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
 
         Vector2 moveDirection = new Vector2(horizontal, vertical).normalized;
 
-        // Increase speed with powerup
+        // Increase speed with powerUp
         if (isSpeedBoostActive)
         {
             totalSpeed = playerSpeed * speedUpSpeed;
@@ -138,7 +134,7 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
         else
         {
             canFire = Time.time + fireRate;
-            lasersManager.GetOneBullet();
+            lasersPoolManager.GetOneBullet();
             Debug.Break();
         }
 
@@ -148,35 +144,34 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
         UpdateAmmo();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        health -= damage;
-        UpdatePlayerState(health);
+        lives -= (int)damage;
+        UpdatePlayerState();
 
-        if (health <= 0) Destroy(gameObject);
+        if (lives <= 0) Destroy(gameObject);
     }
 
-    private void UpdatePlayerState(int playerLives)
+    private void UpdatePlayerState()
     {
-        uiManager.UpdateLives(health);
+        uiManager.UpdateLives(lives);
 
         if (isShieldActive) ChangeShieldColor();
 
-        if (health == 3)
+        switch (lives)
         {
-            leftEngine.SetActive(false);
-            rightEngine.SetActive(false);
-        }
-
-        if (health == 2)
-        {
-            leftEngine.SetActive(true);
-            rightEngine.SetActive(false);
-        }
-        else if (health == 1)
-        {
-            leftEngine.SetActive(true);
-            rightEngine.SetActive(true);
+            case 3:
+                leftEngine.SetActive(false);
+                rightEngine.SetActive(false);
+                break;
+            case 2:
+                leftEngine.SetActive(true);
+                rightEngine.SetActive(false);
+                break;
+            case 1:
+                leftEngine.SetActive(true);
+                rightEngine.SetActive(true);
+                break;
         }
     }
 
@@ -215,7 +210,7 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
 
     public void ActivateMultipleShot()
     {
-        Transform objParent = (lasersManager.firePoints[0]);
+        Transform objParent = (lasersPoolManager.firePoints[0]);
         objParent.transform.position = Vector3.up * 2;
         Instantiate(multipleShotPrefab, objParent);
         Destroy(multipleShotPrefab, 3);
@@ -237,13 +232,13 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
     {
         isShieldActive = true;
         shield.SetActive(true);
-        health = 3;
-        UpdatePlayerState(health);
+        lives = 3;
+        UpdatePlayerState();
     }
 
     private void ChangeShieldColor()
     {
-        switch (health)
+        switch (lives)
         {
             case 3:
                 shield.GetComponent<SpriteRenderer>().color = new Color(0.337f, 0.906f, 0.374f, 1f);
@@ -265,7 +260,7 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
     {
         if (ammoAvailable > ammoMax) ammoAvailable = ammoMax;
         onAmmoUpdated?.Invoke(ammoAvailable, ammoMax);
-        hasAmmo = (ammoAvailable >= 1) ? true : false;
+        hasAmmo = ammoAvailable >= 1;
         if (hasAmmo) return;
         onAmmoUpdated?.Invoke(ammoAvailable, ammoMax);
     }
@@ -279,9 +274,9 @@ public class PlayerStart : MonoBehaviour, ITakeDamage
 
     public void RecoverHealth()
     {
-        if (health >= 3) return;
-        health++;
-        UpdatePlayerState(health);
+        if (lives >= 3) return;
+        lives++;
+        UpdatePlayerState();
     }
 
     #endregion

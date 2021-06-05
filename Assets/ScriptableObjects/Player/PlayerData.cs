@@ -9,6 +9,7 @@ public class PlayerData : ScriptableObject
    public string description;
    public int collisionDamage;
    public int maxHealth;
+   public float speed;
    
 }
 }

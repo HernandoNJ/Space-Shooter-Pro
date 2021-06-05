@@ -24,8 +24,14 @@ public class SpawnManager : SingletonBP<SpawnManager>
 
     private void OnEnable()
     {
-        Enemy.Enemy.onEnemyDestroyed += DecreaseEnemiesAmount;
+        Enemy.EnemyBase.onEnemyDestroyed += DecreaseEnemiesAmount;
         PlayerStart.onPlayerDestroyed += PlayerIsDeath;
+    }
+    
+    private void OnDisable()
+    {
+        Enemy.EnemyBase.onEnemyDestroyed -= DecreaseEnemiesAmount;
+        PlayerStart.onPlayerDestroyed -= PlayerIsDeath;
     }
 
     private void Start()
@@ -43,23 +49,24 @@ public class SpawnManager : SingletonBP<SpawnManager>
         }
     }
 
-    private void OnDisable()
+    public void StartSpawning()
     {
-        Enemy.Enemy.onEnemyDestroyed -= DecreaseEnemiesAmount;
-        PlayerStart.onPlayerDestroyed -= PlayerIsDeath;
+        StartCoroutine(SpawnEnemiesWaveRoutine());
+        StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(SpawnMultipleShotRoutine());
     }
-
+    
     private void DecreaseEnemiesAmount()
     {
         enemiesAmount--;
     }
-
+    
     public void PlayerIsDeath()
     {
         isPlayerAlive = false;
     }
 
-    IEnumerator SpawnEnemiesWaveRoutine()
+    private IEnumerator SpawnEnemiesWaveRoutine()
     {
         startTime = Time.time;
 
@@ -67,10 +74,10 @@ public class SpawnManager : SingletonBP<SpawnManager>
         {
             Log("Time - startTime " + (Time.time - startTime));
 
-            float xRandomPos = Random.Range(-9.5f, 9.5f);
-            Vector2 enemySpawnPos = new Vector2(xRandomPos, 5f);
+            var xRandomPos = Random.Range(-9.5f, 9.5f);
+            var enemySpawnPos = new Vector2(xRandomPos, 5f);
 
-            GameObject newEnemy = Instantiate(enemyPrefab, enemySpawnPos, Quaternion.identity);
+            var newEnemy = Instantiate(enemyPrefab, enemySpawnPos, Quaternion.identity);
             newEnemy.transform.parent = enemySpawner.transform;
 
             enemiesAmount++;
@@ -92,34 +99,27 @@ public class SpawnManager : SingletonBP<SpawnManager>
             //int randomPowerup = Random.Range(0, 6);
             randomPowerup = Random.Range(0, 6);
 
-            if (randomPowerup != 5)
-            {
-                Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
+            if (randomPowerup == 5) continue;
+            Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
 
-                yield return new WaitForSeconds(Random.Range(2, 4));
-            }
+            yield return new WaitForSeconds(Random.Range(2, 4));
         }
     }
 
-    IEnumerator SpawnMultipleShot()
+    private IEnumerator SpawnMultipleShotRoutine()
     {
-        yield return new WaitForSeconds(20);
+        var waitTime = Random.Range(20,30);
+        yield return new WaitForSeconds(waitTime);
 
         while (isPlayerAlive)
         {
-            Log("multishot time: " + Time.time);
-            Vector2 powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
+            var powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
             Instantiate(powerups[5], powerupPos, Quaternion.identity);
 
             yield return new WaitForSeconds(20);
         }
     }
 
-    public void StartSpawnning()
-    {
-        StartCoroutine(SpawnEnemiesWaveRoutine());
-        StartCoroutine(SpawnPowerupRoutine());
-        StartCoroutine(SpawnMultipleShot());
-    }
+    
 }
 }

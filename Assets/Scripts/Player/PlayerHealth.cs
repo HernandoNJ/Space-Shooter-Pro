@@ -1,4 +1,5 @@
 ﻿using System;
+using Interfaces;
 using ScriptableObjects.Player;
 using UnityEngine;
 
@@ -9,25 +10,32 @@ public class PlayerHealth : MonoBehaviour, ITakeDamage
     public PlayerData playerData;
     [SerializeField] private int collisionDamage;
     [SerializeField] private int maxHealth = 10;
-    [SerializeField] private int health;
+    [SerializeField] private float health;
 
-    public event Action OnDie;
+    public event Action OnPlayerDie;
 
     private void OnEnable()
     {
+        GetComponent<Player>().onCollisionPlayer += PlayerCollision;
+    
         playerData = GetComponent<Player>().playerData;
         collisionDamage = playerData.collisionDamage;
         maxHealth = playerData.maxHealth;
         health = maxHealth;
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnDisable()
     {
-        var iDamage = other.collider.GetComponent<ITakeDamage>();
-        iDamage?.TakeDamage(collisionDamage);
+        GetComponent<Player>().onCollisionPlayer -= PlayerCollision;
     }
 
-    public void TakeDamage(int damage)
+    private void PlayerCollision(Collision2D other)
+    {
+        var iDamage = other.collider.GetComponent<ITakeDamage>();
+        iDamage?.TakeDamage(collisionDamage); 
+    }
+
+    public void TakeDamage(float damage)
     {
         health -= damage;
         if (health <= 0) Die();
@@ -35,7 +43,7 @@ public class PlayerHealth : MonoBehaviour, ITakeDamage
 
     private void Die()
     {
-        OnDie?.Invoke();
+        OnPlayerDie?.Invoke();
         Destroy(gameObject);
     }
 }

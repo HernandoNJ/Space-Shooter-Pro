@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelName: PlayerModel
   description: 
-  model: {fileID: 21300000, guid: 82d834970b387ed4da0e25ee4a3ff45d, type: 3}
+  model: {fileID: 21300000, guid: c853bd09a371419469029de8f1a45b41, type: 3}

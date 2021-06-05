@@ -1,5 +1,7 @@
-﻿public interface ITakeDamage
+﻿namespace Interfaces
 {
-    void TakeDamage(int damage);
-
+public interface ITakeDamage
+{
+    void TakeDamage(float damage);
+}
 }
