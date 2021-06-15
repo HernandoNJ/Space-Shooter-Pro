@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Interfaces;
-using ScriptableObjects.Inventory.Weapon;
-using SO;
 using Starting;
 using UnityEngine;
+using Weapon;
 
 namespace Enemy
 {
-public abstract class EnemyBase : MonoBehaviour, ITakeDamage, IMove, IShoot
+public abstract class EnemyBase : MonoBehaviour, IShootable, IMove, IWeaponShooter
 {
     public EnemyData enemyData;
     private Animator animator;
@@ -16,7 +15,7 @@ public abstract class EnemyBase : MonoBehaviour, ITakeDamage, IMove, IShoot
     private EnemyType enemyType;
     private GameObject explosionPrefab;
     private GameObject weapon;
-    private GameObject firePoint;
+    private Transform firePoint;
     private bool isAlive;
     private float speed;
     private float fireRate;
@@ -42,7 +41,7 @@ public abstract class EnemyBase : MonoBehaviour, ITakeDamage, IMove, IShoot
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
-        other.GetComponent<ITakeDamage>().TakeDamage(collisionDamage);
+        other.GetComponent<IShootable>().TakeDamage(collisionDamage);
         TakeDamage(collisionDamage);
     }
 
@@ -55,7 +54,7 @@ public abstract class EnemyBase : MonoBehaviour, ITakeDamage, IMove, IShoot
         scorePoints = _data.scorePoints;
         enemyType = _data.enemyType;
         explosionPrefab = _data.explosionPrefab;
-        firePoint = gameObject.transform.Find("FirePoint").gameObject;
+        firePoint = gameObject.transform.Find("FirePoint").transform;
         fireRate = _data.fireRate;
         isAlive = true;
         speed = _data.speed;
@@ -103,10 +102,9 @@ public abstract class EnemyBase : MonoBehaviour, ITakeDamage, IMove, IShoot
         animator.SetTrigger("OnEnemyDestroyed");
         audioSource.Play();
         Destroy(GetComponent<Collider2D>());
-        gameObject.SetActive(false); // added because enemy was hitting the player twice
+        gameObject.SetActive(false); // TODO fix: added because enemy was hitting the player twice
         Destroy(gameObject, 2.0f);
     }
-
 }
 }
 

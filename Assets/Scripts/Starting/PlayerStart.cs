@@ -8,7 +8,7 @@ using static UnityEngine.Debug;
 
 namespace Starting
 {
-public class PlayerStart : MonoBehaviour, ITakeDamage
+public class PlayerStart : MonoBehaviour, IShootable
 {
     #region Variables
 

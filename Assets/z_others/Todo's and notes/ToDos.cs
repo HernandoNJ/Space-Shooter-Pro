@@ -3,9 +3,15 @@
 public class ToDos : MonoBehaviour { }
 
 /*
+ *
+ * TEXT OR CS SCRIPT WITH INFO 
+ * FOR EXAMPLE, THE NAME OF A SCENE
+ * TO BE CREATED, CHANGED AND ACCESSED FROM THAT DOC
+ * ADDRESS FOR OBJECTS, FOR EXAMPLE, PREFAB RESOURCES IN PHOTON 
+ * 
  * PLAYER
  * Set laser firePoint parent
- *Set up multipleShotPrefab
+ * Set up multipleShotPrefab
  * Create laser prefabs pool
  * Play audio in laser
  *

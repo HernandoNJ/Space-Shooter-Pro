@@ -1,4 +1,4 @@
-﻿using Player;
+﻿using PlayerNS;
 using UnityEngine;
 
 namespace Others
@@ -14,7 +14,7 @@ public class PlayerParticlesManager : MonoBehaviour
         
         // If player has not PlayerHealth, it will be invulnerable
         if (GetComponent<PlayerHealth>() != null)
-            GetComponent<Player.PlayerHealth>().OnPlayerDie += PlayerDeathHandler;
+            GetComponent<PlayerNS.PlayerHealth>().OnPlayerDie += PlayerDeathHandler;
     }
 
     private void OnDisable()

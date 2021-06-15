@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelName: Rocker
   description: 
-  model: {fileID: 21300000, guid: b898ea5772028f7488248f55f972fe82, type: 3}
+  model: {fileID: 21300000, guid: 790932ea382ec0d4b89555313a2d8827, type: 3}

@@ -4,7 +4,7 @@ using static UnityEngine.Debug;
 
 namespace Training.Patterns.Prototype
 {
-public class Target : MonoBehaviour, ITakeDamage
+public class Target : MonoBehaviour, IShootable
 {
     /* It can be anything like a player or enemy */
 

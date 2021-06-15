@@ -1,12 +1,13 @@
 ﻿using Interfaces;
-using ScriptableObjects.Inventory.Weapon;
 using UnityEngine;
 
 namespace Weapon.Lasers
 {
+#region Required components
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(AudioSource))]
+#endregion 
 public class WeaponBase : MonoBehaviour
 {
     /* Notes:
@@ -31,13 +32,14 @@ public class WeaponBase : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var iDamage = other.GetComponent<ITakeDamage>();
-        if (iDamage == null || other.CompareTag(parentName))
+        var iShoot = other.GetComponent<IShootable>();
+        if (iShoot == null || other.CompareTag(parentName))
         {
-            Debug.LogWarning("iDamage is null or other.tag == parent tag");  return;
+            Debug.LogWarning("iShootable is null or other.tag == parent tag");  
+            return;
         }
         
-        iDamage.TakeDamage(damage);
+        iShoot.TakeDamage(damage);
         Destroy(gameObject);
     }
 }

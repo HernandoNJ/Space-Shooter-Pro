@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+namespace Training.Patterns.CommandPattern
+{
 public class PlayerInput : MonoBehaviour
 {
     /* Steps to create commands
@@ -50,4 +52,5 @@ public class PlayerInput : MonoBehaviour
         CommandManager.Instance.AddCommand(iCommand);
     }
 
+}
 }

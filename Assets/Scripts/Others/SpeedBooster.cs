@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Others
 {
-[RequireComponent(typeof(Player.PlayerInput))]
+[RequireComponent(typeof(PlayerNS.PlayerInput))]
 public class SpeedBooster : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
     [SerializeField] private float turnSpeed = 5f;
     
-    private Player.PlayerInput playerInput;
+    private PlayerNS.PlayerInput playerInput;
     
     private float lastThrust = float.MinValue;
     
@@ -17,7 +17,7 @@ public class SpeedBooster : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = GetComponent<Player.PlayerInput>();
+        playerInput = GetComponent<PlayerNS.PlayerInput>();
     }
 
     private void Update()

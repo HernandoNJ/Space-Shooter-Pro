@@ -1,4 +1,4 @@
-﻿using SO;
+﻿using Enemy;
 using UnityEngine;
 
 namespace Training.Patterns.Prototype
