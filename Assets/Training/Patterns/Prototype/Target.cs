@@ -4,7 +4,7 @@ using static UnityEngine.Debug;
 
 namespace Training.Patterns.Prototype
 {
-public class Target : MonoBehaviour, IShootable
+public class Target : MonoBehaviour, IDamageable
 {
     /* It can be anything like a player or enemy */
 
@@ -30,5 +30,9 @@ public class Target : MonoBehaviour, IShootable
 
     }
 
+    public void TakeDamage(int damage)
+    {
+
+    }
 }
 }

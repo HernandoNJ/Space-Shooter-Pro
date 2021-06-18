@@ -36,7 +36,7 @@ public class LaserStart : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var iDamage = other.GetComponent<IShootable>();
+        var iDamage = other.GetComponent<IDamageable>();
 
         if (iDamage == null)
         {

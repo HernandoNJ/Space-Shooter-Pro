@@ -8,7 +8,7 @@ using static UnityEngine.Debug;
 
 namespace Starting
 {
-public class PlayerStart : MonoBehaviour, IShootable
+public class PlayerStart : MonoBehaviour, IDamageable
 {
     #region Variables
 
@@ -144,9 +144,9 @@ public class PlayerStart : MonoBehaviour, IShootable
         UpdateAmmo();
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
-        lives -= (int)damage;
+        lives -= damage;
         UpdatePlayerState();
 
         if (lives <= 0) Destroy(gameObject);

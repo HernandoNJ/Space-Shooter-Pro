@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 2802712885769818538}
   - component: {fileID: 3646285265595247340}
   - component: {fileID: 8501354970885908732}
-  - component: {fileID: 4803622032383531063}
   - component: {fileID: -1180434433170018289}
-  - component: {fileID: 1673975436826581330}
+  - component: {fileID: 7829361761342528363}
   m_Layer: 0
   m_Name: PowerupShield
   m_TagString: Untagged
@@ -104,21 +103,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4803622032383531063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8436756374531474028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5949d67c25539a74d907205da2dbf6c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerupSound: {fileID: 0}
-  speed: 3
-  powerupID: 2
 --- !u!61 &-1180434433170018289
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -145,24 +129,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.3, y: 3.4}
   m_EdgeRadius: 0
---- !u!50 &1673975436826581330
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &7829361761342528363
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8436756374531474028}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c590ed66c5a69d40ab73758efd5fa83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerupSound: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+  powerupType: 3
+  speed: 2.5

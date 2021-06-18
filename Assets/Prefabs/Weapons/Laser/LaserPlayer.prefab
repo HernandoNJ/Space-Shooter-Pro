@@ -12,14 +12,14 @@ GameObject:
   - component: {fileID: 1172529897533836956}
   - component: {fileID: 2991681272385991756}
   - component: {fileID: 191189974423482612}
-  - component: {fileID: 1151367600382702042}
+  - component: {fileID: -6324400852909266312}
   m_Layer: 0
   m_Name: LaserPlayer
   m_TagString: Laser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5563257730369900450
 Transform:
   m_ObjectHideFlags: 0
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6550928832410618429}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -1, w: 0.000000011924881}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0}
   m_Children:
@@ -89,7 +89,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6550928832410618429}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
@@ -178,7 +178,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1151367600382702042
+--- !u!114 &-6324400852909266312
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,8 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 881709a562eff544e91525fc2f663e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 084f70554b3a7f7489027df202ad91e1, type: 2}
-  damage: 0
+  weaponData: {fileID: 11400000, guid: 07fab6ad2224f2f469464d213cb394cb, type: 2}
   parentName: 
 --- !u!1 &6733944318285147536
 GameObject:

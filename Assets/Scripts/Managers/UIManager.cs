@@ -1,7 +1,8 @@
 ﻿using System.Collections;
-using Starting;
+using PlayerNS;
 using UnityEngine;
 using UnityEngine.UI;
+using Weapon;
 using static UnityEngine.Debug;
 
 namespace Managers
@@ -36,14 +37,15 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerStart.onAmmoUpdated += UpdateAmmo;
-        PlayerStart.onScoreUpdated += UpdateScore;
+        WeaponsManager.OnAmmoChanged += UpdateAmmo;
+        PlayerHealth.OnHealthChanged += UpdateLives;
+        //PlayerStart.onScoreUpdated += UpdateScore; // todo fix score update
     }
 
     private void OnDisable()
     {
-        PlayerStart.onAmmoUpdated -= UpdateAmmo;
-        PlayerStart.onScoreUpdated -= UpdateScore;
+        WeaponsManager.OnAmmoChanged -= UpdateAmmo;
+        PlayerHealth.OnHealthChanged -= UpdateLives;
     }
 
     private void Start()
@@ -56,6 +58,7 @@ public class UIManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
 
+        UpdateLives(3);
         OnFullAmmo();
         thrusterBar.fillAmount = 0.5f;
     }

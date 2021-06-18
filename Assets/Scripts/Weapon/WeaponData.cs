@@ -9,9 +9,8 @@ public class WeaponData : ScriptableObject
     public string description;
     public float fireForce;
     public float fireRate;
-    public float damage;
+    public int damage;
     public float timeAlive;
-    public string parentName;
     
 }
 }

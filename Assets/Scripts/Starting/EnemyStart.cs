@@ -1,19 +1,19 @@
-﻿using System;
-using Managers;
-using Starting;
+﻿using Managers;
 using UnityEngine;
 using static UnityEngine.Debug;
 
+namespace Starting
+{
 public class EnemyStart : MonoBehaviour
 {
-    enum EnemyType
+    public enum EnemyType
     {
         BasicEnemy, DoubleShotEnemy, ShieldedEnemy, AggressiveEnemy, ChaserEnemy, BackShootEnemy, AvoidShotEnemy,
         BossEnemy, Null
     }
 
-    enum EnemyWeapon { Laser, DoubleLaser, Rocket, BackwardLaser, Null }
-    enum EnemyMove { Normal, ZigZag, ChasePlayer, AvoidShot, Null };
+    private enum EnemyWeapon { Laser, DoubleLaser, Rocket, BackwardLaser, Null }
+    private enum EnemyMove { Normal, ZigZag, ChasePlayer, AvoidShot, Null };
 
     [SerializeField] private Animator anim;
     [SerializeField] private AudioSource audioSource;
@@ -132,4 +132,5 @@ public class EnemyStart : MonoBehaviour
         Destroy(GetComponent<Collider2D>());
         Destroy(gameObject, 2.0f);
     }
+}
 }

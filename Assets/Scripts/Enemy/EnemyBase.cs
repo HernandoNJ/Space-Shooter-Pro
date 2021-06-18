@@ -7,7 +7,7 @@ using Weapon;
 
 namespace Enemy
 {
-public abstract class EnemyBase : MonoBehaviour, IShootable, IMove, IWeaponShooter
+public abstract class EnemyBase : MonoBehaviour, IDamageable, IMove, IWeaponShooter, ICollisionable
 {
     public EnemyData enemyData;
     private Animator animator;
@@ -25,6 +25,8 @@ public abstract class EnemyBase : MonoBehaviour, IShootable, IMove, IWeaponShoot
     private int scorePoints;
     protected List<WeaponData> weapons = new List<WeaponData>();
 
+    public int ColDamage{ get; set; }
+
     public static Action onEnemyDestroyed;
 
     private void Start()
@@ -41,7 +43,7 @@ public abstract class EnemyBase : MonoBehaviour, IShootable, IMove, IWeaponShoot
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
-        other.GetComponent<IShootable>().TakeDamage(collisionDamage);
+        other.GetComponent<IDamageable>().TakeDamage(collisionDamage);
         TakeDamage(collisionDamage);
     }
 
@@ -59,6 +61,8 @@ public abstract class EnemyBase : MonoBehaviour, IShootable, IMove, IWeaponShoot
         isAlive = true;
         speed = _data.speed;
         weapon = _data.weapon;
+
+        ColDamage = 1;
     }
 
     public virtual void MoveEnemy(float speed)
@@ -74,17 +78,16 @@ public abstract class EnemyBase : MonoBehaviour, IShootable, IMove, IWeaponShoot
             transform.position = new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), 5.0f);
     }
 
-    public virtual void FireWeapon(float fireRate)
+    public virtual void FireWeapon(float fireRateArg)
     {
-        if (Time.time > timeToFire && isAlive)
-        {
-            Instantiate(weapon, firePoint.transform.position, Quaternion.identity);
-            fireRate = UnityEngine.Random.Range(2f, 5f);
-            timeToFire = Time.time + fireRate;
-        }
+        if (!((Time.time > timeToFire) && isAlive)) return;
+
+        Instantiate(weapon, firePoint.transform.position, Quaternion.identity);
+        fireRateArg = UnityEngine.Random.Range(2f, 5f);
+        timeToFire = Time.time + fireRateArg;
     }
 
-    public virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(int damage)
     {
         currentHealth -= damage;
         if (currentHealth > 0) return;
@@ -105,6 +108,16 @@ public abstract class EnemyBase : MonoBehaviour, IShootable, IMove, IWeaponShoot
         gameObject.SetActive(false); // TODO fix: added because enemy was hitting the player twice
         Destroy(gameObject, 2.0f);
     }
-}
-}
 
+    private void OnCollisionEnter(Collision other)
+    {
+        var iCollision = other.gameObject.GetComponent<ICollisionable>();
+        iCollision?.CollisionDamage(ColDamage);
+    }
+
+    public void CollisionDamage(int colDamage)
+    {
+        currentHealth -= colDamage;
+    }
+}
+}

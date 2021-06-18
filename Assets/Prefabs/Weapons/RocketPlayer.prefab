@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6402692924173323355}
   - component: {fileID: 6997415919064774283}
   - component: {fileID: 5348157275588866611}
-  - component: {fileID: 785712618}
   m_Layer: 0
   m_Name: RocketPlayer
   m_TagString: Laser
@@ -178,21 +177,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &785712618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1330485900348918010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5456f14f71f4814cb1859524d7a7b07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: aef8294db5006ec40809e9dac266413e, type: 2}
-  damage: 0
-  parentName: 
 --- !u!1 &1579778710194679639
 GameObject:
   m_ObjectHideFlags: 0

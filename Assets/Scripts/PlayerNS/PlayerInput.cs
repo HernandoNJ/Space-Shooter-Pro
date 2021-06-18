@@ -1,23 +1,54 @@
 ﻿using System;
+using System.Collections;
+using Powerups;
 using UnityEngine;
 
-namespace PlayerNS
-{
-public class PlayerInput : MonoBehaviour
-{
-    public float Horizontal{ get; private set; }
-    public float Vertical{ get; private set; }
-    public bool FireIsActive{ get; private set; }
+namespace PlayerNS{
+public class PlayerInput : MonoBehaviour{
 
-    public static event Action OnFireActive;
+	[SerializeField] private float speed;
+	[SerializeField] private float speedMultiplier;
+	
+	public static event Action OnFireActive;
 
-    private void Update()
-    {
-        Horizontal = Input.GetAxis("Horizontal");
-        Vertical = Input.GetAxis("Vertical");
-        FireIsActive = Input.GetKeyDown(KeyCode.Space);
+	private void OnEnable()
+	{
+		Powerup.OnMovementPowerupCollected += UpdateSpeed;
+		speed = GetComponent<Player>().playerData.speed;
+	}
 
-        if (FireIsActive) OnFireActive?.Invoke();
-    }
+	private void Update()
+	{
+		MovePlayer();
+		Fire();
+	}
+
+	private void MovePlayer()
+	{
+		var moveH = Input.GetAxis("Horizontal");
+		var moveV = Input.GetAxis("Vertical");
+		transform.Translate(new Vector3(moveH,moveV) * (speed * Time.deltaTime));
+		//transform.position += new Vector3(moveH,moveV,0) * (speed * Time.deltaTime);
+	}
+
+	private void Fire()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+			OnFireActive?.Invoke();
+	}
+
+	private void UpdateSpeed(float speedMultiplierArg)
+	{
+		speedMultiplier = speedMultiplierArg;
+		speed *= speedMultiplier;
+		StartCoroutine(SpeedMultiplierRoutine());
+	}
+
+	private IEnumerator SpeedMultiplierRoutine()
+	{
+		yield return new WaitForSeconds(3);
+		speed /= speedMultiplier;
+	}
+
 }
 }
