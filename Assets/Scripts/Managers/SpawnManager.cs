@@ -1,13 +1,14 @@
 ﻿using System.Collections;
+using PlayerNS;
 using Starting;
 using UnityEngine;
-using static UnityEngine.Debug;
+using EnemyNS;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Managers
 {
 public class SpawnManager : SingletonBP<SpawnManager>
 {
-
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject enemySpawner;
     [SerializeField] private GameObject[] powerups;
@@ -15,8 +16,6 @@ public class SpawnManager : SingletonBP<SpawnManager>
     [SerializeField] private int waveNumber;
     [SerializeField] private int enemiesAmount;
     [SerializeField] private float startTime;
-
-    [SerializeField] private bool isMultiShotActive;
     [SerializeField] private int randomPowerup;
 
     private bool isPlayerAlive;
@@ -24,13 +23,15 @@ public class SpawnManager : SingletonBP<SpawnManager>
 
     private void OnEnable()
     {
-        Enemy.EnemyBase.onEnemyDestroyed += DecreaseEnemiesAmount;
+        EnemyBase.OnEnemyDestroyed += DecreaseEnemiesAmount;
+        PlayerHealth.OnPlayerDestroyed += PlayerIsDeath;
         PlayerStart.onPlayerDestroyed += PlayerIsDeath;
     }
-    
+
     private void OnDisable()
     {
-        Enemy.EnemyBase.onEnemyDestroyed -= DecreaseEnemiesAmount;
+        EnemyNS.EnemyBase.OnEnemyDestroyed -= DecreaseEnemiesAmount;
+        PlayerHealth.OnPlayerDestroyed -= PlayerIsDeath;
         PlayerStart.onPlayerDestroyed -= PlayerIsDeath;
     }
 
@@ -55,12 +56,12 @@ public class SpawnManager : SingletonBP<SpawnManager>
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnMultipleShotRoutine());
     }
-    
+
     private void DecreaseEnemiesAmount()
     {
         enemiesAmount--;
     }
-    
+
     public void PlayerIsDeath()
     {
         isPlayerAlive = false;
@@ -69,19 +70,13 @@ public class SpawnManager : SingletonBP<SpawnManager>
     private IEnumerator SpawnEnemiesWaveRoutine()
     {
         startTime = Time.time;
-
         while (Time.time - startTime < (waveNumber * 5f))
         {
-            Log("Time - startTime " + (Time.time - startTime));
-
             var xRandomPos = Random.Range(-9.5f, 9.5f);
             var enemySpawnPos = new Vector2(xRandomPos, 5f);
-
             var newEnemy = Instantiate(enemyPrefab, enemySpawnPos, Quaternion.identity);
             newEnemy.transform.parent = enemySpawner.transform;
-
             enemiesAmount++;
-
             yield return new WaitForSeconds(2f);
         }
 
@@ -92,34 +87,23 @@ public class SpawnManager : SingletonBP<SpawnManager>
     IEnumerator SpawnPowerupRoutine()
     {
         yield return new WaitForSeconds(3f);
-
         while (isPlayerAlive)
         {
             var powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
-            //int randomPowerup = Random.Range(0, 6);
-            randomPowerup = Random.Range(0, 6);
-
-            if (randomPowerup == 5) continue;
+            randomPowerup = Random.Range(0, 5);
             Instantiate(powerups[randomPowerup], powerupPos, Quaternion.identity);
-
             yield return new WaitForSeconds(Random.Range(2, 4));
         }
     }
 
     private IEnumerator SpawnMultipleShotRoutine()
     {
-        var waitTime = Random.Range(20,30);
-        yield return new WaitForSeconds(waitTime);
-
+        yield return new WaitForSeconds(30);
         while (isPlayerAlive)
         {
             var powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
             Instantiate(powerups[5], powerupPos, Quaternion.identity);
-
-            yield return new WaitForSeconds(20);
         }
     }
-
-    
 }
 }

@@ -1,4 +1,4 @@
-﻿using Enemy;
+﻿using EnemyNS;
 using UnityEngine;
 
 namespace Training.Patterns.Prototype

@@ -9,16 +9,18 @@ namespace PlayerNS
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
     public PlayerData playerData;
+    [SerializeField] private PlayerShield playerShield;
+    [SerializeField] private bool shieldActive;
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private int currentHealth;
-    [SerializeField] private PlayerShield playerShield;
 
-    public static event Action OnPlayerDie; // todo send to UIManager and game manager for game over
     public static event Action<int> OnHealthChanged;
+    public static event Action OnPlayerDestroyed;
 
     private void OnEnable()
     {
         Powerup.OnHealthPowerupCollected += PowerupHealth;
+        PlayerShield.OnShieldActiveChanged += CheckShieldActive;
 
         playerShield = GetComponent<PlayerShield>();
         playerData = GetComponent<Player>().playerData;
@@ -29,6 +31,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private void OnDisable()
     {
         Powerup.OnHealthPowerupCollected -= PowerupHealth;
+        PlayerShield.OnShieldActiveChanged -= CheckShieldActive;
     }
 
     private void PowerupHealth(PowerupType powerUpArg)
@@ -40,7 +43,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
                 HealthChanged();
                 break;
             case DamagePickup:
-                currentHealth -= 2;
+                TakeDamage(2); // damage = 2
                 HealthChanged();
                 break;
         }
@@ -48,35 +51,49 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(int damage)
     {
-        if (playerShield.IsShieldActive())
+        if (shieldActive)
         {
-            playerShield.DamageShield(1);
-            return;
+            if (playerShield.CheckShieldStrength() >= damage)
+                playerShield.DamageShield(damage);
+            else
+            {
+                playerShield.DamageShield(1);
+                currentHealth -= damage - 1;
+            }
         }
-
-        currentHealth -= damage;
-        if(currentHealth >0) HealthChanged();
-        else Die();
+        else
+        {
+            currentHealth -= damage;
+            HealthChanged();
+        }
     }
 
-    private void Die()
+    private void PlayerDestroyed()
     {
-        OnPlayerDie?.Invoke();
+        OnPlayerDestroyed?.Invoke();
         Destroy(gameObject);
     }
 
     private void HealthChanged()
     {
         if (currentHealth > maxHealth) currentHealth = maxHealth;
+        if (currentHealth < 0) currentHealth = 0;
         OnHealthChanged?.Invoke(currentHealth);
+        if (currentHealth == 0) PlayerDestroyed();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        var iDamage = other.GetComponent<IDamageable>();
-        if (iDamage == null || !other.CompareTag("Enemy")) return;
+        var iDamage = other.gameObject.GetComponent<IDamageable>();
+        if (iDamage == null) return; // || !other.gameObject.CompareTag("Enemy")
         iDamage.TakeDamage(1);
         TakeDamage(1);
+    }
+
+    private void CheckShieldActive(bool checkShield)
+    {
+        shieldActive = checkShield;
+        Debug.Log($"{shieldActive}... shield ");
     }
 }
 }

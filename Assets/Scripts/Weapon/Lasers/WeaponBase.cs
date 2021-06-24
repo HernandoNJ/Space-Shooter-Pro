@@ -14,6 +14,8 @@ public class WeaponBase : MonoBehaviour
 {
     public WeaponData weaponData;
     [SerializeField] protected string parentName;
+    [SerializeField] protected Vector3 directionToMove;
+
 
     protected virtual void OnEnable()
     {
@@ -33,20 +35,24 @@ public class WeaponBase : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector3.up * (weaponData.fireForce * Time.deltaTime));
+        MoveWeapon(directionToMove);
+    }
+
+    private void MoveWeapon(Vector3 moveDirection)
+    {
+        transform.Translate(moveDirection * (weaponData.fireForce * Time.deltaTime));
     }
 
     public virtual void OnTriggerEnter2D(Collider2D other)
     {
-        var iShoot = other.GetComponent<IDamageable>();
-        if (iShoot == null || other.CompareTag(parentName))
+        var iDamage = other.GetComponent<IDamageable>();
+        if (iDamage == null || other.CompareTag(parentName))
         {
-            Debug.LogWarning(
-                $"IShootable in ... {other.name} is null or other tag is... {other.tag}");
+            Debug.LogWarning($"IShootable in ... {other.name} is null or other tag is... {other.tag}");
             return;
         }
 
-        iShoot.TakeDamage(weaponData.damage);
+        iDamage.TakeDamage(weaponData.damage);
         Destroy(gameObject);
     }
 }

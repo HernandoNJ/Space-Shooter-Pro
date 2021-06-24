@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Weapon;
 
-namespace Enemy
+namespace EnemyNS
 {
 [CreateAssetMenu(fileName = "EnemyData", menuName = "ScriptableObject/Enemy/EnemyData", order = 0)]
 public class EnemyData : ScriptableObject
@@ -13,9 +13,7 @@ public class EnemyData : ScriptableObject
     public int scorePoints;
     public float speed;
     public float fireRate;
-    public int collisionDamage;
     public int maxHealth;
-    public GameObject weapon;
     public List<WeaponData> weapons = new List<WeaponData>();
     public GameObject explosionPrefab;
     

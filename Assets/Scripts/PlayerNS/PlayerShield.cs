@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using System;
+using Interfaces;
 using Powerups;
 using UnityEngine;
 
@@ -7,15 +8,16 @@ namespace PlayerNS
 public class PlayerShield : MonoBehaviour, IShieldable
 {
     [SerializeField] private GameObject shield;
+    [SerializeField] private GameObject shieldPrefab;
+    [SerializeField] private Transform shieldPoint;
     [SerializeField] private int shieldStrength;
-    [SerializeField] private bool shieldActive;
-    [SerializeField] private Color shieldColor;
+    // public int ShieldStrength{get;private set;} to access the value from outside
+
+    public static event Action<bool> OnShieldActiveChanged;
 
     private void OnEnable()
     {
         Powerup.OnShieldPowerupCollected += ShieldObject;
-        shield.SetActive(false);
-        shieldColor = GetComponent<Renderer>().material.color;
     }
 
     private void OnDisable()
@@ -23,27 +25,59 @@ public class PlayerShield : MonoBehaviour, IShieldable
         Powerup.OnShieldPowerupCollected -= ShieldObject;
     }
 
+    private void Start()
+    {
+        shield = Instantiate(shieldPrefab, shieldPoint.transform);
+        EnableShield(false);
+    }
+
     public void ShieldObject()
     {
         shieldStrength = 3;
-        shield.SetActive(true);
-        shieldActive = true;
-        shieldColor = Color.green;
+        EnableShield(true);
     }
 
     public void DamageShield(int damageValue)
     {
         shieldStrength -= damageValue;
-        if (shieldStrength == 2) shieldColor = Color.blue;
-        if (shieldStrength == 1) shieldColor = Color.red;
-        if (shieldStrength > 0) return;
-        shield.SetActive(false);
-        shieldActive = false;
+        SetShieldColor(shieldStrength);
     }
 
-    public bool IsShieldActive()
+    private void SetShieldColor(int strength)
     {
-        return shieldActive;
+        switch (strength)
+        {
+            case 3:
+                shield.GetComponent<SpriteRenderer>().material.color = Color.green;
+                break;
+            case 2:
+                shield.GetComponent<SpriteRenderer>().material.color = Color.blue;
+                break;
+            case 1:
+                shield.GetComponent<SpriteRenderer>().material.color = Color.red;
+                break;
+            default:
+                if (strength <= 0)
+                {
+                    EnableShield(false);
+                    Debug.Log("default value in ShieldColor");
+                }
+
+                break;
+        }
+    }
+
+    private void EnableShield(bool isShieldEnabled)
+    {
+        OnShieldActiveChanged?.Invoke(isShieldEnabled);
+        shield.SetActive(isShieldEnabled);
+        shield.GetComponent<SpriteRenderer>().enabled = isShieldEnabled;
+        if (isShieldEnabled) SetShieldColor(shieldStrength);
+    }
+
+    public int CheckShieldStrength()
+    {
+        return shieldStrength;
     }
 }
 }

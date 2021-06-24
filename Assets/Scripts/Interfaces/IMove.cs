@@ -1,4 +1,4 @@
 ﻿public interface IMove
 {
-    void MoveEnemy(float speed);
+    void MoveEnemy(float speedArg);
 }

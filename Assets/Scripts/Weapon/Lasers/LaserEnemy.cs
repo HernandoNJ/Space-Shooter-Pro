@@ -1,10 +1,15 @@
-﻿namespace Weapon.Lasers{
-public class LaserEnemy : WeaponBase{
+﻿using UnityEngine;
 
-	private void Start()
-	{
-		parentName = "Enemy";
-	}
+namespace Weapon.Lasers
+{
+public class LaserEnemy : WeaponBase
+{
+    protected override void SetAdditionalValues()
+    {
+        parentName = "Enemy";
+        directionToMove = Vector3.down;
+        Destroy(gameObject, weaponData.timeAlive);
+    }
 
 }
 }

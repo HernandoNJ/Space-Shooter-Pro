@@ -2,6 +2,6 @@
 {
 public interface IWeaponShooter
 {
-    void FireWeapon(float fireRateArg);
+    void FireWeapon();
 }
 }
