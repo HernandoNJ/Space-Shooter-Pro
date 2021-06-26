@@ -8,6 +8,7 @@ namespace ScriptableObjects.Waves
 [CreateAssetMenu(menuName = "ScriptableObject/Wave/WaveData", fileName = "WaveData", order = 0)]
 public class WaveData : ScriptableObject
 {
-    public List<GameObject> sequence;
+    public int currentWave;
+    public List<GameObject> waveGameObjects;
 }
 }

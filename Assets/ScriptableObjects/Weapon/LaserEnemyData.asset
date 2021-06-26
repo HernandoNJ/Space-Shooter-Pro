@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85ba41b5ddc7c1b4e82bfda93ebffce5, type: 3}
-  m_Name: RocketData
+  m_Name: LaserEnemyData
   m_EditorClassIdentifier: 
-  weaponName: Rocket
+  weaponName: Laser
   description: 
-  fireForce: 2.5
-  fireRate: 0
-  damage: 3
-  timeAlive: 4
+  parentName: Enemy
+  fireForce: 5
+  fireRate: 0.5
+  damage: 1
+  timeAlive: 2

@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: EnemyAggresiveData
   m_EditorClassIdentifier: 
   enemyName: Aggressive
-  description: Rams the player
-  speed: 3
-  fireRate: 0.1
-  collisionDamage: 0
-  maxHealth: 0
-  updatedHealth: 0
-  enemyType: 0
-  modelData: {fileID: 0}
-  weaponData: {fileID: 0}
-  weapons: []
-  explosionPrefab: {fileID: 0}
+  enemyType: 4
+  description: Rocket - move zig zag
+  scorePoints: 1
+  speed: 6.5
+  fireRate: 100
+  maxHealth: 1
+  weapons:
+  - {fileID: 5093660989372135529, guid: 6ab4ce6d246e5c0419fb2c9d8741bc1c, type: 3}
+  explosionPrefab: {fileID: 4009486786716279570, guid: 1f31b95f6730ae94090726e549c29218,
+    type: 3}

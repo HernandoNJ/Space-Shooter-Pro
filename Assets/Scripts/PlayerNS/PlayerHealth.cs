@@ -19,19 +19,26 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
+        Player.OnPlayerEnterTrigger += PlayerEnterTrigger;
         Powerup.OnHealthPowerupCollected += PowerupHealth;
         PlayerShield.OnShieldActiveChanged += CheckShieldActive;
 
-        playerShield = GetComponent<PlayerShield>();
-        playerData = GetComponent<Player>().playerData;
-        maxHealth = playerData.maxHealth;
-        currentHealth = maxHealth;
+        SetPlayerHealthValues();
     }
 
     private void OnDisable()
     {
+        Player.OnPlayerEnterTrigger -= PlayerEnterTrigger;
         Powerup.OnHealthPowerupCollected -= PowerupHealth;
         PlayerShield.OnShieldActiveChanged -= CheckShieldActive;
+    }
+
+    private void SetPlayerHealthValues()
+    {
+        playerShield = GetComponent<PlayerShield>();
+        playerData = GetComponent<Player>().playerData;
+        maxHealth = playerData.maxHealth;
+        currentHealth = maxHealth;
     }
 
     private void PowerupHealth(PowerupType powerUpArg)
@@ -47,6 +54,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
                 HealthChanged();
                 break;
         }
+    }
+
+    private void PlayerEnterTrigger(Collider2D other)
+    {
+        var iDamage = other.gameObject.GetComponent<IDamageable>();
+        if (iDamage == null) return; // || !other.gameObject.CompareTag("Enemy")
+        iDamage.TakeDamage(1);
+        TakeDamage(1);
     }
 
     public void TakeDamage(int damage)
@@ -68,12 +83,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
-    private void PlayerDestroyed()
-    {
-        OnPlayerDestroyed?.Invoke();
-        Destroy(gameObject);
-    }
-
     private void HealthChanged()
     {
         if (currentHealth > maxHealth) currentHealth = maxHealth;
@@ -82,18 +91,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (currentHealth == 0) PlayerDestroyed();
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        var iDamage = other.gameObject.GetComponent<IDamageable>();
-        if (iDamage == null) return; // || !other.gameObject.CompareTag("Enemy")
-        iDamage.TakeDamage(1);
-        TakeDamage(1);
-    }
-
     private void CheckShieldActive(bool checkShield)
     {
         shieldActive = checkShield;
         Debug.Log($"{shieldActive}... shield ");
+    }
+
+    private void PlayerDestroyed()
+    {
+        OnPlayerDestroyed?.Invoke();
+        Destroy(gameObject);
     }
 }
 }

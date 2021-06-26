@@ -7,6 +7,7 @@ public class WeaponData : ScriptableObject
 {
     public string weaponName;
     public string description;
+    public string parentName;
     public float fireForce;
     public float fireRate;
     public int damage;

@@ -120,7 +120,7 @@ public class UIManager : MonoBehaviour
         gameOverText.gameObject.SetActive(true);
         restartText.gameObject.SetActive(true);
         StartCoroutine(GameOverFlickerRoutine());
-        gameManager.OnGameOver();
+        gameManager.SetGameOver();
     }
 
     private IEnumerator GameOverFlickerRoutine()

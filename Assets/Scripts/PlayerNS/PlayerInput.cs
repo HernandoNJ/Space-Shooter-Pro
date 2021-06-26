@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections;
+using Managers;
 using Powerups;
 using UnityEngine;
 
 namespace PlayerNS{
 public class PlayerInput : MonoBehaviour{
 
-	[SerializeField] private float speed;
+	[SerializeField] private float playerSpeed;
 	[SerializeField] private float speedMultiplier;
-	
+
 	public static event Action OnFireActive;
 
 	private void OnEnable()
 	{
+		SpawnManager.OnWaveStarted += IncreasePlayerSpeed;
 		Powerup.OnMovementPowerupCollected += UpdateSpeed;
-		speed = GetComponent<Player>().playerData.speed;
+		playerSpeed = GetComponent<Player>().playerData.speed;
+	}
+
+	private void OnDisable()
+	{
+		SpawnManager.OnWaveStarted -= IncreasePlayerSpeed;
+		Powerup.OnMovementPowerupCollected -= UpdateSpeed;
 	}
 
 	private void Update()
@@ -25,10 +33,15 @@ public class PlayerInput : MonoBehaviour{
 
 	private void MovePlayer()
 	{
-		var moveH = Input.GetAxis("Horizontal");
-		var moveV = Input.GetAxis("Vertical");
-		transform.Translate(new Vector3(moveH,moveV) * (speed * Time.deltaTime));
-		//transform.position += new Vector3(moveH,moveV,0) * (speed * Time.deltaTime);
+		var xPos = transform.position.x + Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime;
+		var yPos = transform.position.y +Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime;
+
+		xPos = xPos > 9.5f ? -9.5f : xPos;
+		xPos = xPos < -9.5f ? 9.5f : xPos;
+
+		var yMove = Mathf.Clamp(yPos, -4,4);
+
+		transform.position = new Vector3(xPos, yMove, 0);
 	}
 
 	private void Fire()
@@ -37,18 +50,23 @@ public class PlayerInput : MonoBehaviour{
 			OnFireActive?.Invoke();
 	}
 
+	private void IncreasePlayerSpeed(int speedBooster)
+	{
+		playerSpeed += speedBooster * 1.2f;
+	}
+
 	private void UpdateSpeed(float speedMultiplierArg)
 	{
 		speedMultiplier = speedMultiplierArg;
-		speed *= speedMultiplier;
+		playerSpeed *= speedMultiplier;
 		StartCoroutine(SpeedMultiplierRoutine());
 	}
 
 	private IEnumerator SpeedMultiplierRoutine()
 	{
 		yield return new WaitForSeconds(3);
-		speed /= speedMultiplier;
+		playerSpeed /= speedMultiplier;
+		speedMultiplier = 0;
 	}
-
 }
 }

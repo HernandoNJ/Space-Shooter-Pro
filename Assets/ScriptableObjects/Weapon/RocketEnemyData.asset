@@ -9,10 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32dba5dccb77d5246894b047be64e9d2, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: 85ba41b5ddc7c1b4e82bfda93ebffce5, type: 3}
+  m_Name: RocketEnemyData
   m_EditorClassIdentifier: 
-  playerName: Player1
+  weaponName: Rocket
   description: 
-  maxHealth: 3
-  speed: 3
+  parentName: Enemy
+  fireForce: 1.7
+  fireRate: 3
+  damage: 3
+  timeAlive: 7

@@ -29,7 +29,7 @@ public class SpawnManager : MonoBehaviour
              * When all waves are done, we are finished!
              */
 
-            var currentWave = waves[currentWaveIndex].sequence;
+            var currentWave = waves[currentWaveIndex].waveGameObjects;
 
             // Create a new parent GO to hold wave gameObjects
             var previousWaveParent = new GameObject("PreviousWaveParent");

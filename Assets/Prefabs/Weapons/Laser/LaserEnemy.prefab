@@ -285,6 +285,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e4e20f37ff649445939f4291cfa69d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 07fab6ad2224f2f469464d213cb394cb, type: 2}
-  damage: 0
+  weaponData: {fileID: 11400000, guid: a19db6dbf4bba524fbc6fd10d30d81e5, type: 2}
   parentName: 
+  directionToMove: {x: 0, y: 0, z: 0}

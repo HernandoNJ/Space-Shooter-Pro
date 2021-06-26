@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85ba41b5ddc7c1b4e82bfda93ebffce5, type: 3}
-  m_Name: LaserData
+  m_Name: LaserPlayerData
   m_EditorClassIdentifier: 
   weaponName: Laser
   description: 
+  parentName: Player
   fireForce: 5
   fireRate: 0.5
   damage: 1

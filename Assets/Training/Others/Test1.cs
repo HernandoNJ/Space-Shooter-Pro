@@ -1,7 +1,7 @@
 ﻿using Training.Others;
 using UnityEngine;
 
-public class Test : MonoBehaviour{
+public class Test1 : MonoBehaviour{
 
     private void Update()
     {

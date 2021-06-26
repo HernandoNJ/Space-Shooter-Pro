@@ -1,37 +1,31 @@
-﻿using Managers;
+﻿using System;
+using Interfaces;
 using UnityEngine;
-using static UnityEngine.Debug;
 
-public class Asteroid : MonoBehaviour
+namespace Starting
 {
-    [SerializeField] private float rotateSpeeed = 10f;
+public class Asteroid : MonoBehaviour, IDamageable
+{
+    [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private GameObject explosionPrefab;
-    [SerializeField] private SpawnManager spawnManager;
+
+    public static event Action OnAsteroidDestroyed;
 
     private void Start()
     {
-        spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        if (spawnManager == null) LogError("SpawnManager is null in Asteroid");
-
-        if (explosionPrefab == null) LogError("Explosion prefab is null in Asteroid");
-
         transform.position = Vector3.up * 3f;
     }
 
-    void Update()
+    private void Update()
     {
-        transform.Rotate(0, 0, rotateSpeeed * Time.deltaTime, Space.Self);
+        transform.Rotate(0, 0, rotateSpeed * Time.deltaTime, Space.Self);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void TakeDamage(int damage)
     {
-        if (other.CompareTag("Laser"))
-        {
-            Destroy(other.gameObject);
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            //GetComponent<SpriteRenderer>().enabled = false;
-            spawnManager.StartSpawning();
-            Destroy(gameObject, 0.1f);
-        }
+        OnAsteroidDestroyed?.Invoke();
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject, 0.1f);
     }
+}
 }

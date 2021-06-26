@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1aef5a227ca62479dcecfae192ab71, type: 3}
   m_Name: Wave1
   m_EditorClassIdentifier: 
-  sequence:
-  - {fileID: 2912072537734311936, guid: 8e1e365159b901f45bb9a0fc58a913be, type: 3}
-  - {fileID: 2912072537734311936, guid: 8e1e365159b901f45bb9a0fc58a913be, type: 3}
-  - {fileID: 2912072537734311936, guid: 8e1e365159b901f45bb9a0fc58a913be, type: 3}
+  currentWave: 1
+  waveGameObjects:
+  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
+  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
+  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}

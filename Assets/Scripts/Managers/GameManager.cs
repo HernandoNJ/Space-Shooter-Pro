@@ -1,10 +1,23 @@
-﻿using UnityEngine;
+﻿using PlayerNS;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
+namespace Managers
+{
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private bool isGameOver;
     [SerializeField] private GameObject asteroidPrefab;
+
+    private void OnEnable()
+    {
+        PlayerHealth.OnPlayerDestroyed += SetGameOver;
+    }
+
+    private void OnDisable()
+    {
+        PlayerHealth.OnPlayerDestroyed -= SetGameOver;
+    }
 
     private void Start()
     {
@@ -21,9 +34,10 @@ public class GameManager : MonoBehaviour
             Application.Quit();
     }
 
-    public void OnGameOver()
+    public void SetGameOver()
     {
         isGameOver = true;
-        Time.timeScale = 0.21f;
+        Time.timeScale = 0.14f;
     }
+}
 }

@@ -6,7 +6,7 @@ Clase abstracta
 Se utiliza para indicar que una clase está incompleta y que sólo se va a utilizar como una clase base. No se podrá definir un nuevo objeto directamente de ella. Todas las clases que hereden de esta clase abstracta tomarán como base su comportamiento, formando parte de su esqueleto, lo podríamos definir como «ES».
 
 Interfaces
-Por definición, es una serie de métodos, propiedades, índices y eventos, que podemos definir, y que la clase que herede de ellos debe cumplir. Esto significa que clases que implementen esta interfaz pueden ser diferentes casi por completo, pero contener todo lo que la interfaz define. Por esto mismo, podemos decir que es un «PUEDE».
+Por definición, es una serie de métodos, propiedades, índices y eventos, que podemos definir, y que la clase que herede de ellos debe cumplir. Esto significa que clases que implementen esta interfaz pueden ser diferentes casi por completo, pero contener lo que la interfaz define. Por esto mismo, podemos decir que es un «PUEDE».
 
 Ser o Poder
 Queremos definir una serie de animales: un pato, un tiburón, un gorrión y un mono . Si lo pensamos, todos SON animales, por lo tanto esta será nuestra clase abstracta.

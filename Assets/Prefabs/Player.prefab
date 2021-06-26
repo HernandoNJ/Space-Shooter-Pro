@@ -82,21 +82,23 @@ MonoBehaviour:
   - {fileID: 6550928832410618429, guid: e2325ce3f1f891245a62a5eb8a6293be, type: 3}
   - {fileID: 4983060501222526291, guid: 7c8a30e0458ca2c47a9d5a9256cef50a, type: 3}
   hasAmmo: 0
-  fireRate: 0
-  laserFireRate: 0
-  tripleLaserFireRate: 0
-  multiShotFireRate: 0
   ammoMax: 0
   ammoCount: 0
   ammoRefill: 0
-  time_Time: 0
-  timeToNextShoot: 0
+  fireRate: 0
+  fireBonus: 0
+  laserFireRate: 0
+  tripleLaserFireRate: 0
+  multiShotFireRate: 0
   laserIndex: 0
   tripleLaserIndex: 0
   multishotIndex: 0
   laserIsActive: 0
   tripleLaserIsActive: 0
   multipleShotIsActive: 0
+  timeToNextShoot: 0
+  time_Time: 0
+  currentWaveValue: 0
 --- !u!1 &7186179239445883309
 GameObject:
   m_ObjectHideFlags: 0

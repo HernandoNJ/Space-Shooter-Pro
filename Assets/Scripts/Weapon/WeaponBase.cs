@@ -1,7 +1,7 @@
 ﻿using Interfaces;
 using UnityEngine;
 
-namespace Weapon.Lasers
+namespace Weapon
 {
 #region Required components
 
@@ -16,11 +16,11 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] protected string parentName;
     [SerializeField] protected Vector3 directionToMove;
 
-
     protected virtual void OnEnable()
     {
         GetComponent<BoxCollider2D>().isTrigger = true;
         GetComponent<Rigidbody2D>().gravityScale = 0f;
+        parentName = weaponData.parentName;
     }
 
     private void Start()
@@ -30,15 +30,15 @@ public class WeaponBase : MonoBehaviour
 
     protected virtual void SetAdditionalValues()
     {
-        // Set parent name and time to destroy gameObject
+        // Set time to destroy gameObject
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         MoveWeapon(directionToMove);
     }
 
-    private void MoveWeapon(Vector3 moveDirection)
+    protected virtual void MoveWeapon(Vector3 moveDirection)
     {
         transform.Translate(moveDirection * (weaponData.fireForce * Time.deltaTime));
     }

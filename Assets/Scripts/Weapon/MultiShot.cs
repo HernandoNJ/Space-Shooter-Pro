@@ -8,17 +8,16 @@ public class MultiShot : MonoBehaviour
 
     private void Start()
     {
-        for (int shotPosition = 0; shotPosition < 360; shotPosition+=12)
+        for (int shotPosition = 0; shotPosition < 360; shotPosition += 12)
         {
-            // laserPrefab.GetComponent<AudioSource>().enabled = false; // todo ask Austin
-            // Instantiate(laserPrefab, transform.position, Quaternion.identity);
-            // laserPrefab.transform.eulerAngles += Vector3.forward * shotPosition; // rotate in z axis
-
-            var newShot = Instantiate(laserPrefab, transform.position, Quaternion.identity);
+            var newShot = Instantiate(laserPrefab, transform.position + Vector3.up * 2f, Quaternion.identity);
             newShot.GetComponent<AudioSource>().enabled = false;
             newShot.transform.eulerAngles += Vector3.forward * shotPosition; // rotate in z axis
+            newShot.transform.position += Vector3.up * 5f;  // todo ask Austin how to move lasers a bit up when  instantiating
+            Debug.Break();
         }
-        Destroy(gameObject,2.5f);
+
+        Destroy(gameObject, 2.5f);
     }
 }
 }

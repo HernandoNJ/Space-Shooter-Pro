@@ -804,6 +804,56 @@ public class RaycastIntoScene : MonoBehaviour
         }
     }
 
+    ***************** --------------- **********************
+
+    CODE EG How to stop a coroutine if needed *****************
+
+        StartCoroutine(EnemyWaveRoutine());
+        var wave2 = StartCoroutine(EnemyWaveRoutine());
+        StopCoroutine(wave2); // stops just the 2nd EnemyWaveRoutine instance
+        StopCoroutine("EnemyWaveRoutine"); // it will stop all EnemyWaveRoutine instances like GameObject.Find
+
+    ***************** --------------- **********************
+
+    CODE EG Set Direction and movement towards a target ********
+
+    Move(){
+    // this way the initial move will be very fast and later very slow...
+    Vector3 moveDir = player.position - enemy.position;
+    // this way the move will be constant
+    Vector3 moveDir = (player.position - enemy.position).normalized;
+
+    enemy.position += moveDir * speed * Time.deltaTime;
+    }
+
+
+    ***************** --------------- **********************
+
+    CODE EG improved code to check bounds (mathf.clamp)*****
+
+    float xPos = transform.position.x;
+    float yPos = transform.position.y;
+
+    if (yPos >= 0f) transform.position = new Vector2(xPos, 0f);
+    else if (yPos <= -3.5f) transform.position = new Vector2(xPos, -3.5f);
+
+    if (xPos >= 10.4f) transform.position = new Vector2(-10.4f, yPos);
+    else if (xPos <= -10.4f) transform.position = new Vector2(10.4f, yPos);
+
+    --------------
+
+    var xPos = transform.position.x + Input.GetAxis("Horizontal") * playerSpeed * Time.deltaTime;
+	var yPos = transform.position.y +Input.GetAxis("Vertical") * playerSpeed * Time.deltaTime;
+
+	xPos = xPos > 9.5f ? -9.5f : xPos;
+	xPos = xPos < -9.5f ? 9.5f : xPos;
+
+	var yMove = Mathf.Clamp(yPos, -4,4);
+
+	transform.position = new Vector3(xPos, yMove, 0);
+
+    ***************** --------------- **********************
+
+    CODE EG
+
 */
-
-

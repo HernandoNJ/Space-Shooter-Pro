@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using Powerups;
 using UnityEngine;
 using Weapon.Lasers;
@@ -22,68 +23,92 @@ public class WeaponsManager : MonoBehaviour
 {
     [SerializeField] private Transform[] firePoints;
     [SerializeField] private List<GameObject> weapons;
-    //[SerializeField] private bool[] activeWeapons;
     [SerializeField] private bool hasAmmo;
-    [SerializeField] private float fireRate;
-    [SerializeField] private float laserFireRate;
-    [SerializeField] private float tripleLaserFireRate;
-    [SerializeField] private float multiShotFireRate;
     [SerializeField] private int ammoMax;
     [SerializeField] private int ammoCount;
     [SerializeField] private int ammoRefill;
-    [SerializeField] private float time_Time;
-    [SerializeField] private float timeToNextShoot;
+    [SerializeField] private float fireRate;
+    [SerializeField] private float fireBonus;
+    [SerializeField] private float laserFireRate;
+    [SerializeField] private float tripleLaserFireRate;
+    [SerializeField] private float multiShotFireRate;
     [SerializeField] private int laserIndex;
     [SerializeField] private int tripleLaserIndex;
     [SerializeField] private int multishotIndex;
     [SerializeField] private bool laserIsActive;
     [SerializeField] private bool tripleLaserIsActive;
     [SerializeField] private bool multipleShotIsActive;
+    [SerializeField] private float timeToNextShoot;
+    [SerializeField] private float time_Time;
+    [SerializeField] private int currentWaveValue;
 
-    public static event Action<int,int> OnAmmoChanged;
+    public static event Action<int, int> OnAmmoChanged;
 
     private void OnEnable()
     {
         Powerup.OnWeaponPowerupCollected += PowerupUpdate;
         PlayerInput.OnFireActive += FireWeapon;
-
-        // activeWeapons[0] = laserIsActive;
-        // activeWeapons[1] = tripleLaserIsActive;
-        // activeWeapons[2] = multipleShotIsActive;
+        //SpawnManager.OnWaveStarted += SetFireBonus;
     }
 
     private void OnDisable()
     {
         Powerup.OnWeaponPowerupCollected -= PowerupUpdate;
+        PlayerInput.OnFireActive -= FireWeapon;
+        //SpawnManager.OnWaveStarted -= SetFireBonus;
         StopAllCoroutines();
     }
 
     private void Start()
+    {
+        SetWeaponsValues();
+    }
+
+    private void Update()
+    {
+        time_Time = Time.time;
+
+    }
+
+    private void SetWeaponsValues()
     {
         laserIndex = 0;
         tripleLaserIndex = 1;
         multishotIndex = 2;
 
         laserFireRate = weapons[laserIndex].gameObject.GetComponent<LaserPlayer>().weaponData.fireRate;
-        //laserIsActive = true;
-        //SetActiveWeapon(laserIsActive); // todo ask Austin
-
-        //SetActiveWeapon2(laserIndex);
-
         tripleLaserFireRate = laserFireRate;
         multiShotFireRate = 5;
 
-        SetActiveWeapon3(laserIndex);
+        SetActiveWeapon(laserIndex);
         ammoMax = 15;
         ammoRefill = 15;
 
         UpdateAmmo(15);
     }
 
-    private void Update()
-    {
-        time_Time = Time.time;
-    }
+    // private void SetFireBonus(int currentWave)
+    // {
+    //     currentWaveValue = currentWave;
+    //     // fireBonus = 0.27f * currentWave;
+    //     // fireRate -= fireBonus; // todo ask Austin is there another way to avoid negative values?
+    //
+    //     // check if positive value. If negative, it crashes the editor
+    //     if (fireRate - fireBonus > 0.2f)
+    //     {
+    //         fireBonus = currentWaveValue/14f;
+    //         /*
+    //          * 1 0.5    0.0714  0.4286
+    //          * 2 0.4286 0.1333  0.2953
+    //          * 3 0.2953 0.2     0.0953
+    //          */
+    //     }
+    //
+    //     ammoMax = 15 * currentWave;
+    //     ammoCount = ammoMax;
+    //     OnAmmoChanged?.Invoke(ammoCount, ammoMax);
+    //     Debug.Log("Fire rate: " + fireRate + "Fire bonus: " + fireBonus + "wave: " + currentWaveValue + "time: " + time_Time);
+    // }
 
     private void UpdateAmmo(int newAmmoAmount)
     {
@@ -102,38 +127,14 @@ public class WeaponsManager : MonoBehaviour
                 break;
             case TripleLaser:
                 StartCoroutine(TripleLaserRoutine());
-                //SetActiveWeapon(tripleLaserIsActive);
                 break;
             case MultipleShot:
-                SetActiveWeapon3(multishotIndex);
-                //SetActiveWeapon(multipleShotIsActive);
+                SetActiveWeapon(multishotIndex);
                 break;
         }
     }
 
-    // private void SetActiveWeapon(bool weaponToActivate)
-    // {
-    // 	var weaponsArray = new bool[3];
-    // 	weaponsArray[0] = laserIsActive;
-    // 	weaponsArray[1] = tripleLaserIsActive;
-    // 	weaponsArray[2] = multipleShotIsActive;
-    //
-    // 	for (int i = 0; i < weaponsArray.Length; i++) // todo ask Austin
-    // 	{
-    // 		if (weaponsArray[i] != weaponToActivate)
-    // 			weaponsArray[i] = false;
-    // 	}
-    // }
-
-    // private void SetActiveWeapon2(int weaponIndex)
-    // {
-    // 	for (int i = 0; i < activeWeapons.Length; i++)
-    // 	{
-    // 		if (i != weaponIndex) activeWeapons[i] = false;
-    // 	}
-    // }
-
-    private void SetActiveWeapon3(int weaponIndex)
+    private void SetActiveWeapon(int weaponIndex)
     {
         switch (weaponIndex)
         {
@@ -177,7 +178,7 @@ public class WeaponsManager : MonoBehaviour
 
     private void FireLaser(float fireRateArg)
     {
-        fireRate = fireRateArg;
+        fireRate = fireRateArg - fireBonus;
         Instantiate(weapons[laserIndex], firePoints[0].position, Quaternion.identity);
         UpdateAmmo(-1);
     }
@@ -185,32 +186,28 @@ public class WeaponsManager : MonoBehaviour
     private void FireTripleLaser(float fireRateArg)
     {
         StartCoroutine(TripleLaserRoutine());
-        fireRate = fireRateArg;
+
+        fireRate = fireRateArg - fireBonus;
         var laser = weapons[tripleLaserIndex];
         var lasers = new GameObject[3];
-        for (int i = 0; i < lasers.Length; i++)
-        {
-            Instantiate(laser, firePoints[i].position, Quaternion.identity);
-        }
+
+        for (int i = 0; i < lasers.Length; i++) { Instantiate(laser, firePoints[i].position, Quaternion.identity); }
 
         UpdateAmmo(-1);
     }
 
     private IEnumerator TripleLaserRoutine()
     {
-        SetActiveWeapon3(tripleLaserIndex);
+        SetActiveWeapon(tripleLaserIndex);
         yield return new WaitForSeconds(5);
-        SetActiveWeapon3(laserIndex);
-        // StopCoroutine(tripleLaserRoutine()); // todo ask Austin
-        //SetActiveWeapon(laserIsActive);
+        SetActiveWeapon(laserIndex);
     }
 
     private void FireMultiShot(float fireRateArg)
     {
         fireRate = fireRateArg;
         Instantiate(weapons[multishotIndex], firePoints[0].transform.position, Quaternion.identity);
-        SetActiveWeapon3(laserIndex);
-        //SetActiveWeapon(laserIsActive);
+        SetActiveWeapon(laserIndex);
     }
 }
 }

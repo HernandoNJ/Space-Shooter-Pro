@@ -12,15 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357e4750eebf4d6418799afcc6b63e55, type: 3}
   m_Name: EnemyBasicData
   m_EditorClassIdentifier: 
-  enemyName: Basic
+  enemyName: EnemyBasic
   enemyType: 1
   description: Normal move and shot
-  scorePoints: 10
+  scorePoints: 1
   speed: 2
-  fireRate: 3
-  collisionDamage: 1
+  fireRate: 2.5
   maxHealth: 1
-  weapon: {fileID: 3815105630944310345, guid: f227efa7392a574428573c99eebe0294, type: 3}
-  weapons: []
-  explosionPrefab: {fileID: 4009486786716279570, guid: 6a96c45d6a4a5bf4ea32127b409524e5,
+  weapons:
+  - {fileID: 3815105630944310345, guid: 3f553c57793678041999530d22b73524, type: 3}
+  explosionPrefab: {fileID: 4009486786716279570, guid: 1f31b95f6730ae94090726e549c29218,
     type: 3}

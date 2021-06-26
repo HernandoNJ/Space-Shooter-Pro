@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 881709a562eff544e91525fc2f663e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 07fab6ad2224f2f469464d213cb394cb, type: 2}
+  weaponData: {fileID: 11400000, guid: 7159d85c860cf9e4c9cdf110aea834ec, type: 2}
   parentName: 
   directionToMove: {x: 0, y: 0, z: 0}
 --- !u!1 &6733944318285147536

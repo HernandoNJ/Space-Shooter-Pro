@@ -250,7 +250,7 @@ public class PlayerStart : MonoBehaviour, IDamageable
                 shield.GetComponent<SpriteRenderer>().color = new Color(1f, 0.2f, 0f, 0.6f);
                 break;
             case 0:
-                spawnManager.PlayerIsDeath();
+                spawnManager.SetPlayerDestroyed();
                 Destroy(gameObject);
                 break;
         }
