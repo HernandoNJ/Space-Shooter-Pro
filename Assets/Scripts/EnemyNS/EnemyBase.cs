@@ -62,7 +62,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
             transform.position = new Vector2(UnityEngine.Random.Range(-8.0f, 8.0f), 5.0f); // Reuse enemy in random pos.x
     }
 
-    private void FireWeapon()
+    protected virtual void FireWeapon()
     {
         if (!(Time.time > timeToFire) || !isAlive) return;
 

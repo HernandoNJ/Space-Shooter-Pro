@@ -23,8 +23,8 @@ TagManager:
   - Capsule
   - Cylinder
   - Sphere
-  - 
-  - 
+  - EnemyAttack
+  - LaserPlayer
   - 
   - 
   - 

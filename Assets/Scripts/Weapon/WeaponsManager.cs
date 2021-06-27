@@ -87,29 +87,6 @@ public class WeaponsManager : MonoBehaviour
         UpdateAmmo(15);
     }
 
-    // private void SetFireBonus(int currentWave)
-    // {
-    //     currentWaveValue = currentWave;
-    //     // fireBonus = 0.27f * currentWave;
-    //     // fireRate -= fireBonus; // todo ask Austin is there another way to avoid negative values?
-    //
-    //     // check if positive value. If negative, it crashes the editor
-    //     if (fireRate - fireBonus > 0.2f)
-    //     {
-    //         fireBonus = currentWaveValue/14f;
-    //         /*
-    //          * 1 0.5    0.0714  0.4286
-    //          * 2 0.4286 0.1333  0.2953
-    //          * 3 0.2953 0.2     0.0953
-    //          */
-    //     }
-    //
-    //     ammoMax = 15 * currentWave;
-    //     ammoCount = ammoMax;
-    //     OnAmmoChanged?.Invoke(ammoCount, ammoMax);
-    //     Debug.Log("Fire rate: " + fireRate + "Fire bonus: " + fireBonus + "wave: " + currentWaveValue + "time: " + time_Time);
-    // }
-
     private void UpdateAmmo(int newAmmoAmount)
     {
         ammoCount += newAmmoAmount;

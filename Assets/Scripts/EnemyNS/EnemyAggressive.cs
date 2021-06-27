@@ -19,6 +19,7 @@ public class EnemyAggressive : EnemyBase
         detectionArea = 4f;
     }
 
+    // todo: ask a coach about line 25
     protected override void MoveEnemy()
     {
         //RamWithRaycast();

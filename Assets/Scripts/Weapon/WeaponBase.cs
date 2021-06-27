@@ -30,7 +30,7 @@ public class WeaponBase : MonoBehaviour
 
     protected virtual void SetAdditionalValues()
     {
-        // Set time to destroy gameObject
+        // Set direction to move
     }
 
     protected virtual void Update()
