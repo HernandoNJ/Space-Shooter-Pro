@@ -706,6 +706,13 @@ public class RaycastIntoScene : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit raycastHit))
             raycastHit.collider.GetComponent<Renderer>().material.color = Color.cyan;
     }
+
+    //**** another example
+     void OnDrawGizmos(){
+     Gizmos.matrix = this.transform.localToWorldMatrix;
+     Gizmos.color = Color.red;
+     Gizmos.DrawCube(Vector3.zero, Vector3.one);
+     }
     
     ***************** --------------- **********************
     

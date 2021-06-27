@@ -16,7 +16,7 @@ MonoBehaviour:
   enemyType: 4
   description: Rocket - move zig zag
   scorePoints: 1
-  speed: 6.5
+  speed: 3
   fireRate: 100
   maxHealth: 1
   weapons:

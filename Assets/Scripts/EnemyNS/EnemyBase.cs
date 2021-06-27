@@ -14,7 +14,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private Transform firePoint;
     [SerializeField] private bool isAlive;
-    [SerializeField] private float currentHealth;
+    [SerializeField] protected float currentHealth;
     [SerializeField] private float fireRate;
     [SerializeField] protected float enemySpeed;
     [SerializeField] private float timeToFire;
@@ -35,7 +35,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         FireWeapon();
     }
 
-    private void ConfigureEnemy(EnemyData _data)
+    protected virtual void ConfigureEnemy(EnemyData _data)
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();

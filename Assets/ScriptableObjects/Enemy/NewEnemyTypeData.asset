@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 357e4750eebf4d6418799afcc6b63e55, type: 3}
-  m_Name: EnemyShieldedData
+  m_Name: NewEnemyTypeData
   m_EditorClassIdentifier: 
-  enemyName: Shielded
-  enemyType: 6
-  description: Enemy with shield
+  enemyName: NewEnemyType
+  enemyType: 1
+  description: Rocket - move zig zag
   scorePoints: 1
-  speed: 2
-  fireRate: 2.5
-  maxHealth: 2
+  speed: 3
+  fireRate: 100
+  maxHealth: 1
   weapons:
-  - {fileID: 3815105630944310345, guid: 3f553c57793678041999530d22b73524, type: 3}
+  - {fileID: 5093660989372135529, guid: 6ab4ce6d246e5c0419fb2c9d8741bc1c, type: 3}
   explosionPrefab: {fileID: 4009486786716279570, guid: 1f31b95f6730ae94090726e549c29218,
     type: 3}

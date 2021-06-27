@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: EnemyChaserData
   m_EditorClassIdentifier: 
   enemyName: Chaser
+  enemyType: 3
   description: Chases the player
+  scorePoints: 1
   speed: 2
-  fireRate: 0.1
-  collisionDamage: 0
-  maxHealth: 0
-  updatedHealth: 0
-  enemyType: 0
-  modelData: {fileID: 0}
-  weaponData: {fileID: 0}
-  weapons: []
-  explosionPrefab: {fileID: 0}
+  fireRate: 2
+  maxHealth: 1
+  weapons:
+  - {fileID: 3815105630944310345, guid: 3f553c57793678041999530d22b73524, type: 3}
+  explosionPrefab: {fileID: 4009486786716279570, guid: 1f31b95f6730ae94090726e549c29218,
+    type: 3}
