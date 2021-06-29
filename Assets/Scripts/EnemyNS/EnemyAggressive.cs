@@ -1,5 +1,4 @@
-﻿using PlayerNS;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EnemyNS
 {
@@ -7,61 +6,88 @@ public class EnemyAggressive : EnemyBase
 {
     [SerializeField] private Transform target;
     [SerializeField] private int xFlip = 1;
-    [SerializeField] private float rotationSpeed = 1;
-    [SerializeField] private float maxRotation = 60f;
-    [SerializeField] private float detectionArea;
-    [SerializeField] private Player player;
+    [SerializeField] private float rotateValue = 1;
+    [SerializeField] private float maxRotation = 40f;
+    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private bool playerFound;
+
+    /* Physics Raycast Unity
+     https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
+     */
 
     protected override void ConfigureEnemy(EnemyData _data)
     {
         base.ConfigureEnemy(_data);
-        player = GameObject.Find("Player").GetComponent<Player>();
-        detectionArea = 4f;
+        playerMask = 1 << 14;
     }
 
-    // todo: ask a coach about line 25
     protected override void MoveEnemy()
     {
-        //RamWithRaycast();
-        RamTarget();
-        CheckBottomPosition();
-    }
-
-    private void RamTarget()
-    {
-        if (Vector3.Distance(transform.position, player.transform.position) < detectionArea)
-        {
-            transform.position =
-                Vector3.MoveTowards(transform.position, player.transform.position, enemySpeed * Time.deltaTime);
-        }
-        else
-            transform.Translate(Vector3.down * (enemySpeed * Time.deltaTime));
+        RamWithRaycast();
     }
 
     private void RamWithRaycast()
     {
-        rotationSpeed += xFlip;
-        if (rotationSpeed > maxRotation) xFlip = -1;
-        if (rotationSpeed < -maxRotation) xFlip = 1;
-        transform.rotation = Quaternion.Euler(0, 0, rotationSpeed);
+        ScanForPlayer();
 
-        var origin = transform.position;
-        var direction = transform.rotation * Vector3.down; // for rotating draw gizmo
-        Debug.DrawRay(origin, direction * 3f, Color.cyan);
-        bool objectHit = Physics.Raycast(new Ray(origin, direction), out RaycastHit hitInfo);
-        if (objectHit)
+        if (playerFound)
         {
-            Debug.Log("object hit: " + hitInfo.collider.tag);
-            if (hitInfo.collider.CompareTag("Player"))
-                transform.position = hitInfo.transform.position - transform.position;
+            LookAtTarget();
+            MoveToTarget();
         }
-        else transform.position += Vector3.down * (enemySpeed * Time.deltaTime);
+        else
+        {
+            MoveDownGlobal();
+            RotateEnemy();
+        }
+
+        CheckBottomPosition();
     }
 
-    private void OnDrawGizmosSelected()
+    private void ScanForPlayer()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionArea);
+        var position = transform.position;
+
+        var playerHit2D = Physics2D.OverlapCircle(position, 3f, playerMask);
+
+        if (playerHit2D != null)
+        {
+            playerFound = true;
+            target = playerHit2D.transform;
+
+            Debug.DrawRay(position, target.position - position, Color.yellow);
+        }
+        else
+        {
+            playerFound = false;
+            var drawRayDir = transform.TransformDirection(Vector2.down);
+            Debug.DrawRay(position, drawRayDir * 7f, Color.white);
+            Debug.Log(" did not hit");
+        }
+    }
+
+    private void RotateEnemy()
+    {
+        rotateValue += xFlip;
+        if (rotateValue > maxRotation) xFlip = -1;
+        if (rotateValue < -maxRotation) xFlip = 1;
+        transform.rotation = Quaternion.Euler(0, 0, rotateValue);
+    }
+
+    private void MoveDownGlobal()
+    {
+        var moveDown = transform.InverseTransformDirection(Vector2.down);
+        transform.Translate(moveDown * enemySpeed * Time.deltaTime);
+    }
+
+    private void MoveToTarget()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, target.position, enemySpeed * Time.deltaTime);
+    }
+
+    private void LookAtTarget()
+    {
+        transform.up = -(target.position - transform.position);
     }
 }
 }

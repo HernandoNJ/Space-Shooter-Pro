@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace EnemyNS
@@ -44,17 +45,29 @@ public class EnemyShotAvoider : EnemyBase
 
     private void ScanForAttacks()
     {
-        var hitInfo = Physics2D.CircleCast(transform.position, 2,transform.TransformDirection(Vector2.down), laserplayerLayermask);
-        var hitCol = hitInfo.collider;
-        if (hitCol == null || !hitCol.CompareTag("Laser")) return;
-        StartCoroutine(AvoidPlayerLaserRoutine(hitInfo.point));
+        Debug.Log("entering scan for attacks");
+
+        var origin = transform.position;
+        var direction = Vector2.down;
+        // transform.v2.down
+        var y = transform.TransformDirection(Vector2.up); // move towards gameobject's up position
+        var hitInfoArray = Physics2D.OverlapCircleAll(origin, 2);
+
+        foreach (var col in hitInfoArray)
+        {
+            if (col.gameObject.layer.Equals(laserplayerLayermask))
+            {
+                Debug.Log("hitCol: " + col.name);
+                StartCoroutine(AvoidPlayerLaserRoutine(col.transform.position));
+            }
+        }
     }
 
     private IEnumerator AvoidPlayerLaserRoutine(Vector3 hitPoint)
     {
         var pos = transform.position;
-        if (pos.y < hitPoint.y + 1)
-            transform.Translate(pos.x += 1 * 3*Time.deltaTime,0,0);
+        if (pos.y > hitPoint.y - 1)
+            transform.Translate(pos.x += 2 * Time.deltaTime, 0, 0);
         yield break;
     }
 }

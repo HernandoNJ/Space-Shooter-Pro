@@ -9,12 +9,12 @@ public class EnemyShotBackwards : EnemyBase
 {
     [SerializeField] private bool shootBackActive;
     [SerializeField] private GameObject backwardsLaser;
-    [SerializeField] private int enemyAttackLayer;
+    [SerializeField] private int playerMask;
 
     protected override void ConfigureEnemy(EnemyData _data)
     {
         base.ConfigureEnemy(_data);
-        enemyAttackLayer = 13;
+        playerMask = 13;
         shootBackActive = false;
     }
 
@@ -24,17 +24,14 @@ public class EnemyShotBackwards : EnemyBase
         ShootBackwards();
     }
 
-    // todo Ask to a coach
     private void ShootBackwards()
     {
-        // var rayHit = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.up), 10f,
-        //     enemyAttackLayer);
         Debug.DrawRay(transform.position, Vector3.up * 3f, Color.red);
 
         var rayHit = Physics2D.Raycast(transform.position, transform.up, 10f);
         var rayHitCol = rayHit.collider;
 
-        if (!rayHitCol.CompareTag("Player")) return;
+        if (!rayHitCol.gameObject.layer.Equals(playerMask)) return;
 
         Debug.Log("hit found. tag: " + rayHitCol.tag);
         shootBackActive = true;

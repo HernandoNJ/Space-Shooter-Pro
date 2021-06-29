@@ -56,10 +56,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
+    // todo: check out why the player is not being destroyed... check out laser ontriggerenter
     private void PlayerEnterTrigger(Collider2D other)
     {
         var iDamage = other.gameObject.GetComponent<IDamageable>();
-        if (iDamage == null) return; // || !other.gameObject.CompareTag("Enemy")
+        if (iDamage == null) return;
         iDamage.TakeDamage(1);
         TakeDamage(1);
     }
