@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 namespace EnemyNS
 {
 public class EnemyShotAvoider : EnemyBase
 {
-    [SerializeField] private int laserplayerLayermask;
-    [SerializeField] private bool avoidlaserActive;
-
-    // todo: enemy shot avoider
+    [SerializeField] private GameObject scannerBox;
+    [SerializeField] private LayerMask laserplayerLayer;
+    [SerializeField] private bool isAvoidingLaser;
+    [SerializeField] private bool scanningPlayerLaser;
+    [SerializeField] private float distance;
 
     /*Layermask blog:
      http://gyanendushekhar.com/2017/06/29/understanding-layer-mask-unity-5-tutorial
@@ -31,10 +33,11 @@ public class EnemyShotAvoider : EnemyBase
      * https://lukeduckett.medium.com/phase-ii-progress-report-new-functionality-dodging-399e526c6255
      */
 
-    protected override void ConfigureEnemy(EnemyData _data)
+    protected override void SetInitialEnemyValues(EnemyData _data)
     {
-        base.ConfigureEnemy(_data);
-        laserplayerLayermask = LayerMask.NameToLayer("LaserPlayer");
+        base.SetInitialEnemyValues(_data);
+        scanningPlayerLaser = true;
+        isAvoidingLaser = false;
     }
 
     protected override void MoveEnemy()
@@ -47,28 +50,60 @@ public class EnemyShotAvoider : EnemyBase
     {
         Debug.Log("entering scan for attacks");
 
-        var origin = transform.position;
-        var direction = Vector2.down;
-        // transform.v2.down
-        var y = transform.TransformDirection(Vector2.up); // move towards gameobject's up position
-        var hitInfoArray = Physics2D.OverlapCircleAll(origin, 2);
+        var boxPosition = scannerBox.transform.position;
+        var boxSize = new Vector2(1, 1);
+        var downDirection = Vector2.down;
 
-        foreach (var col in hitInfoArray)
+        var hitInfo = Physics2D.BoxCast(boxPosition, boxSize, 0, downDirection, distance, laserplayerLayer);
+
+        if (hitInfo)
         {
-            if (col.gameObject.layer.Equals(laserplayerLayermask))
+            if (scanningPlayerLaser)
             {
-                Debug.Log("hitCol: " + col.name);
-                StartCoroutine(AvoidPlayerLaserRoutine(col.transform.position));
+                scanningPlayerLaser = false;
+                StartCoroutine(AvoidPlayerLaserRoutine());
+            }
+        }
+
+        // for blog: if not checking avoidLaserActive, it executes several routines
+    }
+
+    private IEnumerator AvoidPlayerLaserRoutine()
+    {
+        Debug.Log("entering routine");
+        isAvoidingLaser = true;
+        float timePassedCounter = 0;
+        float timeToWait1 = 0.35f;
+        float timeToWait2 = 0.7f;
+
+        while (isAvoidingLaser && scanningPlayerLaser == false)
+        {
+            while (timePassedCounter < timeToWait1)
+            {
+                transform.Translate((Vector2.right * 6f * Time.deltaTime));
+                yield return new WaitForEndOfFrame();
+                timePassedCounter += Time.deltaTime;
+            }
+
+            while (timePassedCounter > timeToWait1 && timePassedCounter < timeToWait2)
+            {
+                transform.Translate((Vector2.left * 6f * Time.deltaTime));
+                yield return new WaitForEndOfFrame();
+                timePassedCounter += Time.deltaTime;
+
+                if (timePassedCounter > timeToWait2)
+                {
+                    isAvoidingLaser = false;
+                    yield return new WaitForSeconds(1);
+                    scanningPlayerLaser = true;
+                }
             }
         }
     }
 
-    private IEnumerator AvoidPlayerLaserRoutine(Vector3 hitPoint)
+    private void OnDrawGizmos()
     {
-        var pos = transform.position;
-        if (pos.y > hitPoint.y - 1)
-            transform.Translate(pos.x += 2 * Time.deltaTime, 0, 0);
-        yield break;
+        Gizmos.DrawWireCube(scannerBox.transform.position, new Vector2(1, 1));
     }
 }
 }

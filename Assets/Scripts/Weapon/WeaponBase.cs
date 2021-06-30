@@ -1,5 +1,4 @@
 ﻿using Interfaces;
-using UnityEditor.Timeline;
 using UnityEngine;
 
 namespace Weapon
@@ -49,7 +48,7 @@ public class WeaponBase : MonoBehaviour
         var iDamage = other.GetComponent<IDamageable>();
         if (iDamage == null || other.CompareTag(parentName))
         {
-            Debug.LogWarning($"IShootable in ... {other.name} is null or other tag is... {other.tag}");
+            Debug.LogWarning($"IDamageable in ... {other.name} is null or other tag is... {other.tag}");
             return;
         }
 

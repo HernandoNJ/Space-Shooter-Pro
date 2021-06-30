@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         OnPlayerActive?.Invoke();
-        //transform.position = new Vector3(0, -3);  // Set default position
+        transform.position = new Vector3(0, -3); // Set default position
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -38,6 +38,4 @@ public class Player : MonoBehaviour
         OnPlayerEnterTrigger?.Invoke(other);
     }
 }
-
-
 }

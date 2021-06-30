@@ -26,7 +26,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        ConfigureEnemy(enemyData);
+        SetInitialEnemyValues(enemyData);
     }
 
     private void Update()
@@ -35,7 +35,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         FireWeapon();
     }
 
-    protected virtual void ConfigureEnemy(EnemyData _data)
+    protected virtual void SetInitialEnemyValues(EnemyData _data)
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
@@ -89,6 +89,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         audioSource.Play();
         Destroy(GetComponent<Collider2D>());
         gameObject.SetActive(false); // TODO: fix added because enemy was hitting the player twice
+        StopAllCoroutines();
         Destroy(gameObject, 2.0f);
     }
 }

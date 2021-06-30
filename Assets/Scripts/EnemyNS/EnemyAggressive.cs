@@ -15,9 +15,9 @@ public class EnemyAggressive : EnemyBase
      https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
      */
 
-    protected override void ConfigureEnemy(EnemyData _data)
+    protected override void SetInitialEnemyValues(EnemyData _data)
     {
-        base.ConfigureEnemy(_data);
+        base.SetInitialEnemyValues(_data);
         playerMask = 1 << 14;
     }
 

@@ -11,9 +11,9 @@ public class PlayerShield : MonoBehaviour, IShieldable
     [SerializeField] private GameObject shieldPrefab;
     [SerializeField] private Transform shieldPoint;
     [SerializeField] private int shieldStrength;
-    // public int ShieldStrength{get;private set;} to access the value from outside
+    [SerializeField] private bool isShieldEnabled;
 
-    public static event Action<bool> OnShieldActiveChanged;
+    public static event Action<bool> OnShieldActive;
 
     private void OnEnable()
     {
@@ -28,13 +28,13 @@ public class PlayerShield : MonoBehaviour, IShieldable
     private void Start()
     {
         shield = Instantiate(shieldPrefab, shieldPoint.transform);
-        EnableShield(false);
+        DisableShield();
     }
 
     public void ShieldObject()
     {
         shieldStrength = 3;
-        EnableShield(true);
+        EnableShield();
     }
 
     public void DamageShield(int damageValue)
@@ -59,7 +59,7 @@ public class PlayerShield : MonoBehaviour, IShieldable
             default:
                 if (strength <= 0)
                 {
-                    EnableShield(false);
+                    DisableShield();
                     Debug.Log("default value in ShieldColor");
                 }
 
@@ -67,12 +67,21 @@ public class PlayerShield : MonoBehaviour, IShieldable
         }
     }
 
-    private void EnableShield(bool isShieldEnabled)
+    private void EnableShield()
     {
-        OnShieldActiveChanged?.Invoke(isShieldEnabled);
-        shield.SetActive(isShieldEnabled);
-        shield.GetComponent<SpriteRenderer>().enabled = isShieldEnabled;
-        if (isShieldEnabled) SetShieldColor(shieldStrength);
+        isShieldEnabled = true;
+        OnShieldActive?.Invoke(isShieldEnabled);
+        shield.SetActive(true);
+        shield.GetComponent<SpriteRenderer>().enabled = true;
+        SetShieldColor(shieldStrength);
+    }
+
+    private void DisableShield()
+    {
+        isShieldEnabled = false;
+        OnShieldActive?.Invoke(isShieldEnabled);
+        shield.SetActive(false);
+        shield.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     public int CheckShieldStrength()

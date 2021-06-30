@@ -10,9 +10,9 @@ public class EnemyShotBackwards : EnemyBase
     [SerializeField] private Transform scannerPoint;
     [SerializeField] private LayerMask playerMask;
 
-    protected override void ConfigureEnemy(EnemyData _data)
+    protected override void SetInitialEnemyValues(EnemyData _data)
     {
-        base.ConfigureEnemy(_data);
+        base.SetInitialEnemyValues(_data);
         shootBackActive = true;
     }
 

@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         Player.OnPlayerEnterTrigger += PlayerEnterTrigger;
         Powerup.OnHealthPowerupCollected += PowerupHealth;
-        PlayerShield.OnShieldActiveChanged += CheckShieldActive;
+        PlayerShield.OnShieldActive += SetShieldStatus;
 
         SetPlayerHealthValues();
     }
@@ -30,7 +30,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         Player.OnPlayerEnterTrigger -= PlayerEnterTrigger;
         Powerup.OnHealthPowerupCollected -= PowerupHealth;
-        PlayerShield.OnShieldActiveChanged -= CheckShieldActive;
+        PlayerShield.OnShieldActive -= SetShieldStatus;
     }
 
     private void SetPlayerHealthValues()
@@ -91,14 +91,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         OnHealthChanged?.Invoke(currentHealth);
     }
 
-    private void CheckShieldActive(bool checkShield)
+    private void SetShieldStatus(bool isShieldEnabled)
     {
-        shieldActive = checkShield;
-        Debug.Log($"{shieldActive}... shield ");
+        shieldActive = isShieldEnabled;
     }
 
     private void PlayerDestroyed()
     {
+        StopAllCoroutines();
         Destroy(gameObject);
         OnPlayerDestroyed?.Invoke();
     }
