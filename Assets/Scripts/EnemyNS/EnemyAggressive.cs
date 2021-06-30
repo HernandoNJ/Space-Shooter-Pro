@@ -77,7 +77,7 @@ public class EnemyAggressive : EnemyBase
     private void MoveDownGlobal()
     {
         var moveDown = transform.InverseTransformDirection(Vector2.down);
-        transform.Translate(moveDown * enemySpeed * Time.deltaTime);
+        transform.Translate(moveDown * (enemySpeed * Time.deltaTime));
     }
 
     private void MoveToTarget()

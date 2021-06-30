@@ -56,7 +56,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
-    // todo: check out why the player is not being destroyed... check out laser ontriggerenter
     private void PlayerEnterTrigger(Collider2D other)
     {
         var iDamage = other.gameObject.GetComponent<IDamageable>();
@@ -87,9 +86,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private void HealthChanged()
     {
         if (currentHealth > maxHealth) currentHealth = maxHealth;
-        if (currentHealth < 0) currentHealth = 0;
+        else if (currentHealth < 0) currentHealth = 0;
+        else if (currentHealth == 0) PlayerDestroyed();
         OnHealthChanged?.Invoke(currentHealth);
-        if (currentHealth == 0) PlayerDestroyed();
     }
 
     private void CheckShieldActive(bool checkShield)
@@ -100,8 +99,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void PlayerDestroyed()
     {
-        OnPlayerDestroyed?.Invoke();
         Destroy(gameObject);
+        OnPlayerDestroyed?.Invoke();
     }
 }
 }

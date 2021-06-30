@@ -74,8 +74,6 @@ public class UIManager : MonoBehaviour
     public void UpdateLives(int currentLives)
     {
         livesImage.sprite = livesSprites[currentLives];
-        if (currentLives > 0) return;
-        livesImage.sprite = livesSprites[0];
     }
 
     private void SetAmmoValues(int ammoAvailable, int ammoTotal)

@@ -89,7 +89,7 @@ SphereCollider:
   m_GameObject: {fileID: 1356288271}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -321,11 +321,12 @@ MonoBehaviour:
   weaponIndex: 0
   target: {fileID: 0}
   xFlip: 1
-  rotationSpeed: 1
+  rotateValue: 1
   maxRotation: 60
   playerMask:
     serializedVersion: 2
     m_Bits: 0
+  playerFound: 0
 --- !u!1 &2346268989392038655
 GameObject:
   m_ObjectHideFlags: 0
