@@ -80,14 +80,14 @@ public class EnemyShotAvoider : EnemyBase
         {
             while (timePassedCounter < timeToWait1)
             {
-                transform.Translate((Vector2.right * 6f * Time.deltaTime));
+                transform.Translate((Vector2.right * (6f * Time.deltaTime)));
                 yield return new WaitForEndOfFrame();
                 timePassedCounter += Time.deltaTime;
             }
 
             while (timePassedCounter > timeToWait1 && timePassedCounter < timeToWait2)
             {
-                transform.Translate((Vector2.left * 6f * Time.deltaTime));
+                transform.Translate((Vector2.left * (6f * Time.deltaTime)));
                 yield return new WaitForEndOfFrame();
                 timePassedCounter += Time.deltaTime;
 

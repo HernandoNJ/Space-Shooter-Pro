@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using static PowerupType;
 
@@ -21,7 +22,9 @@ public class Powerup : MonoBehaviour
 {
     [SerializeField] private AudioClip powerupSound;
     [SerializeField] private PowerupType powerupType;
-    [SerializeField] private float speed = 2.5f;
+    [SerializeField] private float speed;
+    [SerializeField] private bool isMagnetActive;
+    [SerializeField] private GameObject player;
 
     public static event Action<PowerupType> OnWeaponPowerupCollected;
     public static event Action<PowerupType> OnHealthPowerupCollected;
@@ -29,17 +32,52 @@ public class Powerup : MonoBehaviour
     public static event Action<float> OnMovementPowerupCollected;
     public static event Action OnShieldPowerupCollected;
 
+    private void Start()
+    {
+        player = GameObject.Find("Player");
+        Debug.Log("Set powerup speed in inspector");
+    }
+
     private void Update()
     {
         Move();
 
-        if (transform.position.y < -5f)
-            Destroy(gameObject);
+        if (Input.GetKeyDown(KeyCode.C)) { StartCoroutine(BringPowerupCloserRoutine()); }
+
+        CheckBottom();
     }
 
     private void Move()
     {
         transform.Translate(speed * Time.deltaTime * Vector2.down);
+    }
+
+    private void CheckBottom()
+    {
+        if (transform.position.y < -5f)
+        {
+            StopAllCoroutines();
+            Destroy(gameObject);
+        }
+    }
+
+    private IEnumerator BringPowerupCloserRoutine()
+    {
+        var waitTime = 0f;
+        isMagnetActive = true;
+
+        while (isMagnetActive)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, 3f* Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+
+            waitTime += Time.deltaTime;
+
+            if (waitTime> 1f)
+            {
+                isMagnetActive = false;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -66,8 +104,8 @@ public class Powerup : MonoBehaviour
                 OnHealthPowerupCollected?.Invoke(powerupInfo);
                 break;
             case Shield:
-                    OnShieldPowerupCollected?.Invoke();
-                    break;
+                OnShieldPowerupCollected?.Invoke();
+                break;
             case SpeedBoost:
                 OnMovementPowerupCollected?.Invoke(1.5f);
                 break;
