@@ -1,4 +1,5 @@
 ﻿using System;
+using EnemyNS;
 using Interfaces;
 using Powerups;
 using static PowerupType;
@@ -11,6 +12,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public PlayerData playerData;
     [SerializeField] private PlayerShield playerShield;
     [SerializeField] private bool shieldActive;
+    [SerializeField] private bool bossActive;
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private int currentHealth;
 
@@ -22,6 +24,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         Player.OnPlayerEnterTrigger += PlayerEnterTrigger;
         Powerup.OnHealthPowerupCollected += PowerupHealth;
         PlayerShield.OnShieldActive += SetShieldStatus;
+        EnemyBoss.OnBossStarted += SetHealthForBossWave;
 
         SetPlayerHealthValues();
     }
@@ -31,6 +34,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         Player.OnPlayerEnterTrigger -= PlayerEnterTrigger;
         Powerup.OnHealthPowerupCollected -= PowerupHealth;
         PlayerShield.OnShieldActive -= SetShieldStatus;
+        EnemyBoss.OnBossStarted -= SetHealthForBossWave;
     }
 
     private void SetPlayerHealthValues()
@@ -39,6 +43,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         playerData = GetComponent<Player>().playerData;
         maxHealth = playerData.maxHealth;
         currentHealth = maxHealth;
+    }
+
+    private void SetHealthForBossWave(int obj)
+    {
+        bossActive = true;
+        maxHealth = 100;
+        currentHealth = maxHealth;
+        HealthChanged();
     }
 
     private void PowerupHealth(PowerupType powerUpArg)

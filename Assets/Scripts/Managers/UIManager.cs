@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using EnemyNS;
 using PlayerNS;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Weapon;
@@ -16,10 +18,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image thrusterBar;
     [SerializeField] private Text ammoText;
     [SerializeField] private Text scoreText;
+    [SerializeField] private Text bossHealthText;
+    [SerializeField] private Text playerHealthForBossText;
     [SerializeField] private Text gameOverText;
     [SerializeField] private Text restartText;
     [SerializeField] private Sprite[] livesSprites;
     [SerializeField] private int playerScore;
+    [SerializeField] private int playerHealthValue;
+    [SerializeField] private int bossHealthValue;
+    [SerializeField] private bool bossActive;
 
     private static UIManager _instance;
 
@@ -37,17 +44,31 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         WeaponsManager.OnAmmoChanged += UpdateAmmoCounter;
-        PlayerHealth.OnHealthChanged += UpdateLives;
+
+        PlayerHealth.OnHealthChanged += SetPlayerHealthSprites;
         PlayerHealth.OnPlayerDestroyed += GameOverSequence;
+
         EnemyBase.OnEnemyDestroyed += UpdateScore;
+
+        EnemyBoss.OnBossStarted += SetUIForBossWave;
+        EnemyBoss.OnBossStarted += SetPlayerForBossWaveHealth;
+        EnemyBoss.OnBossDamaged += UpdateBossHealth;
+        EnemyBoss.OnBossDestroyed += PlayerWins;
     }
 
     private void OnDisable()
     {
         WeaponsManager.OnAmmoChanged -= UpdateAmmoCounter;
-        PlayerHealth.OnHealthChanged -= UpdateLives;
+
+        PlayerHealth.OnHealthChanged -= SetPlayerHealthSprites;
         PlayerHealth.OnPlayerDestroyed -= GameOverSequence;
+
         EnemyBase.OnEnemyDestroyed -= UpdateScore;
+
+        EnemyBoss.OnBossStarted -= SetUIForBossWave;
+        EnemyBoss.OnBossStarted -= SetPlayerForBossWaveHealth;
+        EnemyBoss.OnBossDamaged -= UpdateBossHealth;
+        EnemyBoss.OnBossDestroyed -= PlayerWins;
     }
 
     private void Start()
@@ -57,10 +78,14 @@ public class UIManager : MonoBehaviour
 
         playerScore = 0;
         scoreText.text = "Score: " + playerScore;
+
+        bossHealthText.gameObject.SetActive(false);
+        playerHealthForBossText.gameObject.SetActive(false);
+
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
 
-        UpdateLives(3);
+        SetPlayerHealthSprites(3);
         OnFullAmmo();
         thrusterBar.fillAmount = 0.5f;
     }
@@ -71,9 +96,40 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: " + playerScore;
     }
 
-    public void UpdateLives(int currentLives)
+    public void SetPlayerHealthSprites(int currentLives)
     {
-        livesImage.sprite = livesSprites[currentLives];
+        playerHealthValue--;
+        playerHealthForBossText.text = "Player health: " + playerHealthValue;
+        if (playerHealthValue <= 3 && playerHealthValue >= 0 && currentLives >=0)
+            livesImage.sprite = livesSprites[currentLives];
+    }
+
+    private void SetPlayerForBossWaveHealth(int intValue)
+    {
+        playerHealthValue = 100;
+        playerHealthForBossText.gameObject.SetActive(true);
+        UpdatePlayerForBossWaveHealth(playerHealthValue);
+        livesImage.gameObject.SetActive(false);
+        thrusterBar.gameObject.SetActive(false);
+    }
+
+    private void UpdatePlayerForBossWaveHealth(int newHealth)
+    {
+        playerHealthForBossText.text = "Player health: " + newHealth;
+    }
+
+    private void SetUIForBossWave(int bossInitialHealth)
+    {
+        bossActive = true;
+        bossHealthValue = bossInitialHealth;
+        bossHealthText.text = "Boss health: " + bossHealthValue;
+        bossHealthText.gameObject.SetActive(true);
+    }
+
+    private void UpdateBossHealth(int bossHealth)
+    {
+        bossHealthText.text = "Boss health: " + bossHealth;
+        UpdateScore();
     }
 
     private void SetAmmoValues(int ammoAvailable, int ammoTotal)
@@ -113,20 +169,27 @@ public class UIManager : MonoBehaviour
         thrusterBar.fillAmount -= emptyAmount;
     }
 
+    private void PlayerWins()
+    {
+        gameOverText.gameObject.SetActive(true);
+        StartCoroutine(GameOverFlickerRoutine("Player Wins !!!"));
+        gameManager.SetGameOver();
+    }
+
     private void GameOverSequence()
     {
         gameOverText.gameObject.SetActive(true);
         restartText.gameObject.SetActive(true);
-        StartCoroutine(GameOverFlickerRoutine());
+        StartCoroutine(GameOverFlickerRoutine("Game Over"));
         gameManager.SetGameOver();
     }
 
-    private IEnumerator GameOverFlickerRoutine()
+    private IEnumerator GameOverFlickerRoutine(string gameOverMessage)
     {
         var showMessageTime = Time.time + 5f;
         while (showMessageTime > Time.time)
         {
-            gameOverText.text = "Game Over";
+            gameOverText.text = gameOverMessage;
             yield return new WaitForSeconds(0.35f);
             gameOverText.text = "";
             yield return new WaitForSeconds(0.35f);

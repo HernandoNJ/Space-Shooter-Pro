@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using EnemyNS;
 using Managers;
 using Powerups;
 using UnityEngine;
@@ -9,6 +11,7 @@ public class PlayerInput : MonoBehaviour{
 
 	[SerializeField] private float playerSpeed;
 	[SerializeField] private float speedMultiplier;
+	[SerializeField] private bool bossActive;
 
 	public static event Action OnFireActive;
 
@@ -17,13 +20,32 @@ public class PlayerInput : MonoBehaviour{
 		SpawnManager.OnWaveStarted += IncreasePlayerSpeed;
 		Powerup.OnMovementPowerupCollected += UpdateSpeed;
 		playerSpeed = GetComponent<Player>().playerData.speed;
+		EnemyBoss.OnBossStarted += SetBossActive;
+		EnemyBoss.OnBossDestroyed += SetBossInactive;
 	}
 
 	private void OnDisable()
 	{
 		SpawnManager.OnWaveStarted -= IncreasePlayerSpeed;
 		Powerup.OnMovementPowerupCollected -= UpdateSpeed;
+		EnemyBoss.OnBossStarted -= SetBossActive;
+		EnemyBoss.OnBossDestroyed -= SetBossInactive;
+
 	}
+
+	private void SetBossActive(int intArg)
+	{
+		bossActive = true;
+		StartCoroutine(SpeedForBossWaveRoutine());
+	}
+
+	private void SetBossInactive()
+	{
+		bossActive = false;
+		Debug.Log("Stopping SpeedForBossWaveRoutine");
+		StopCoroutine(SpeedForBossWaveRoutine());
+	}
+
 
 	private void Update()
 	{
@@ -67,6 +89,17 @@ public class PlayerInput : MonoBehaviour{
 		yield return new WaitForSeconds(3);
 		playerSpeed /= speedMultiplier;
 		speedMultiplier = 0;
+	}
+
+	private IEnumerator SpeedForBossWaveRoutine()
+	{
+		while (bossActive)
+		{
+			playerSpeed *= 3;
+			yield return new WaitForSeconds(3);
+			playerSpeed /= 3;
+			yield return new WaitForSeconds(2);
+		}
 	}
 }
 }

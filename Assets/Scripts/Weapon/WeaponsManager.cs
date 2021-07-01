@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using EnemyNS;
 using Powerups;
 using UnityEngine;
 using Weapon.Lasers;
@@ -34,6 +35,8 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] private float timeToNextShoot;
     [SerializeField] private float time_Time;
     [SerializeField] private int currentWaveValue;
+    [SerializeField] private bool bossActive;
+
 
     public static event Action<int, int> OnAmmoChanged;
 
@@ -41,8 +44,11 @@ public class WeaponsManager : MonoBehaviour
     {
         Powerup.OnWeaponPowerupCollected += PowerupUpdate;
         Powerup.OnLaserMultiSeekPowerupCollected += PowerupUpdate;
+
         PlayerInput.OnFireActive += FireWeapon;
-        //SpawnManager.OnWaveStarted += SetFireBonus;
+
+        EnemyBoss.OnBossStarted += SetBossActive;
+        EnemyBoss.OnBossDestroyed += SetBossInactive;
     }
 
     private void OnDisable()
@@ -51,7 +57,9 @@ public class WeaponsManager : MonoBehaviour
         Powerup.OnLaserMultiSeekPowerupCollected -= PowerupUpdate;
 
         PlayerInput.OnFireActive -= FireWeapon;
-        //SpawnManager.OnWaveStarted -= SetFireBonus;
+
+        EnemyBoss.OnBossStarted += SetBossActive;
+        EnemyBoss.OnBossDestroyed += SetBossInactive;
         StopAllCoroutines();
     }
 
@@ -64,6 +72,15 @@ public class WeaponsManager : MonoBehaviour
     {
         time_Time = Time.time;
     }
+
+    private void SetBossActive(int intArg)
+    {
+        bossActive = true;
+        ammoMax = 1000;
+        UpdateAmmo(1000);
+    }
+
+    private void SetBossInactive() => bossActive = false;
 
     private void SetWeaponsValues()
     {

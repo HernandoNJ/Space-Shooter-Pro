@@ -13,16 +13,14 @@ MonoBehaviour:
   m_Name: EnemyBossData
   m_EditorClassIdentifier: 
   enemyName: Boss
-  enemyType: 0
+  enemyType: 7
   description: Enemy Boss
-  scorePoints: 0
-  speed: 0
-  fireRate: 0
-  collisionDamage: 0
-  maxHealth: 0
-  weapon: {fileID: 0}
+  scorePoints: 100
+  speed: 3
+  fireRate: 0.1
+  maxHealth: 100
   weapons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  explosionPrefab: {fileID: 0}
+  - {fileID: 3815105630944310345, guid: 3f553c57793678041999530d22b73524, type: 3}
+  - {fileID: 5093660989372135529, guid: 6ab4ce6d246e5c0419fb2c9d8741bc1c, type: 3}
+  explosionPrefab: {fileID: 4009486786716279570, guid: 1f31b95f6730ae94090726e549c29218,
+    type: 3}

@@ -154,7 +154,7 @@ public class PlayerStart : MonoBehaviour, IDamageable
 
     private void UpdatePlayerState()
     {
-        uiManager.UpdateLives(lives);
+        uiManager.SetPlayerHealthSprites(lives);
 
         if (isShieldActive) ChangeShieldColor();
 

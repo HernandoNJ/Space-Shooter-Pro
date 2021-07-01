@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEditor;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace EnemyNS
@@ -64,8 +62,6 @@ public class EnemyShotAvoider : EnemyBase
                 StartCoroutine(AvoidPlayerLaserRoutine());
             }
         }
-
-        // for blog: if not checking avoidLaserActive, it executes several routines
     }
 
     private IEnumerator AvoidPlayerLaserRoutine()
