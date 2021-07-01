@@ -35,6 +35,7 @@ public class SpawnManager : SingletonBP<SpawnManager>
         Player.OnPlayerActive -= SetPlayerAlive;
         PlayerHealth.OnPlayerDestroyed -= SetPlayerDestroyed;
         PlayerStart.onPlayerDestroyed -= SetPlayerDestroyed;
+        StopAllCoroutines();
     }
 
     private void StartSpawning()
@@ -42,6 +43,7 @@ public class SpawnManager : SingletonBP<SpawnManager>
         StartCoroutine(EnemyWaveRoutine());
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnMultipleShotRoutine());
+
     }
 
     private void SetPlayerAlive()
@@ -81,12 +83,23 @@ public class SpawnManager : SingletonBP<SpawnManager>
 
     private IEnumerator SpawnMultipleShotRoutine()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(Random.Range(20,40));
         while (isPlayerAlive)
         {
             var powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
             Instantiate(powerups[6], powerupPos, Quaternion.identity);
-            yield return new WaitForSeconds(7);
+            yield return new WaitForSeconds(Random.Range(20,40));
+        }
+    }
+
+    private IEnumerator SpawnLaserMultiSeekRoutine()
+    {
+        yield return new WaitForSeconds(Random.Range(20,40));
+        while (isPlayerAlive)
+        {
+            var powerupPos = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
+            Instantiate(powerups[7], powerupPos, Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(20,40));
         }
     }
 

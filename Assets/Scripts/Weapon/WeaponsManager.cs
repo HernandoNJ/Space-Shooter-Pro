@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Managers;
 using Powerups;
 using UnityEngine;
 using Weapon.Lasers;
 using static PowerupType;
 using PlayerInput = PlayerNS.PlayerInput;
-
-// **** todo increase fireRate with wave value
-// **** todo OnAmmoChanged to ui manager
-/* SPAWN MANAGER
-* raise event for wave number
-* listen to event here
-* create a variable weaponsSpeedMultiplier
-* set its value to waveNumber
-*/
 
 namespace Weapon
 {
@@ -32,12 +22,15 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] private float laserFireRate;
     [SerializeField] private float tripleLaserFireRate;
     [SerializeField] private float multiShotFireRate;
+    [SerializeField] private float laserMultiSeekFireRate;
     [SerializeField] private int laserIndex;
     [SerializeField] private int tripleLaserIndex;
     [SerializeField] private int multishotIndex;
+    [SerializeField] private int laserMultiSeekIndex;
     [SerializeField] private bool laserIsActive;
     [SerializeField] private bool tripleLaserIsActive;
     [SerializeField] private bool multipleShotIsActive;
+    [SerializeField] private bool laserMultiSeekIsActive;
     [SerializeField] private float timeToNextShoot;
     [SerializeField] private float time_Time;
     [SerializeField] private int currentWaveValue;
@@ -47,6 +40,7 @@ public class WeaponsManager : MonoBehaviour
     private void OnEnable()
     {
         Powerup.OnWeaponPowerupCollected += PowerupUpdate;
+        Powerup.OnLaserMultiSeekPowerupCollected += PowerupUpdate;
         PlayerInput.OnFireActive += FireWeapon;
         //SpawnManager.OnWaveStarted += SetFireBonus;
     }
@@ -54,6 +48,8 @@ public class WeaponsManager : MonoBehaviour
     private void OnDisable()
     {
         Powerup.OnWeaponPowerupCollected -= PowerupUpdate;
+        Powerup.OnLaserMultiSeekPowerupCollected -= PowerupUpdate;
+
         PlayerInput.OnFireActive -= FireWeapon;
         //SpawnManager.OnWaveStarted -= SetFireBonus;
         StopAllCoroutines();
@@ -67,7 +63,6 @@ public class WeaponsManager : MonoBehaviour
     private void Update()
     {
         time_Time = Time.time;
-
     }
 
     private void SetWeaponsValues()
@@ -75,10 +70,12 @@ public class WeaponsManager : MonoBehaviour
         laserIndex = 0;
         tripleLaserIndex = 1;
         multishotIndex = 2;
+        laserMultiSeekIndex = 3;
 
         laserFireRate = weapons[laserIndex].gameObject.GetComponent<LaserPlayer>().weaponData.fireRate;
         tripleLaserFireRate = laserFireRate;
         multiShotFireRate = 5;
+        laserMultiSeekFireRate = 5;
 
         SetActiveWeapon(laserIndex);
         ammoMax = 15;
@@ -108,6 +105,9 @@ public class WeaponsManager : MonoBehaviour
             case MultipleShot:
                 SetActiveWeapon(multishotIndex);
                 break;
+            case LaserMultiSeekPickup:
+                SetActiveWeapon(laserMultiSeekIndex);
+                break;
         }
     }
 
@@ -119,16 +119,25 @@ public class WeaponsManager : MonoBehaviour
                 laserIsActive = true;
                 tripleLaserIsActive = false;
                 multipleShotIsActive = false;
+                laserMultiSeekIsActive = false;
                 break;
             case 1:
                 laserIsActive = false;
                 tripleLaserIsActive = true;
                 multipleShotIsActive = false;
+                laserMultiSeekIsActive = false;
                 break;
             case 2:
                 laserIsActive = false;
                 tripleLaserIsActive = false;
                 multipleShotIsActive = true;
+                laserMultiSeekIsActive = false;
+                break;
+            case 3:
+                laserIsActive = false;
+                tripleLaserIsActive = false;
+                multipleShotIsActive = false;
+                laserMultiSeekIsActive = true;
                 break;
             default:
                 Debug.Log("Configure weapon Index");
@@ -150,6 +159,7 @@ public class WeaponsManager : MonoBehaviour
         if (laserIsActive) FireLaser(laserFireRate);
         else if (tripleLaserIsActive) FireTripleLaser(laserFireRate);
         else if (multipleShotIsActive) FireMultiShot(multiShotFireRate);
+        else if (laserMultiSeekIsActive) FireLaserMultiSeek(laserMultiSeekFireRate);
         else Debug.Log("configure weapon to be fired");
     }
 
@@ -184,6 +194,13 @@ public class WeaponsManager : MonoBehaviour
     {
         fireRate = fireRateArg;
         Instantiate(weapons[multishotIndex], firePoints[0].transform.position, Quaternion.identity);
+        SetActiveWeapon(laserIndex);
+    }
+
+    private void FireLaserMultiSeek(float fireRateArg)
+    {
+        fireRate = fireRateArg;
+        Instantiate(weapons[laserMultiSeekIndex], firePoints[0].transform.position, Quaternion.identity);
         SetActiveWeapon(laserIndex);
     }
 }

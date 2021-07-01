@@ -16,7 +16,7 @@ MonoBehaviour:
   enemyType: 1
   description: Normal move and shot
   scorePoints: 1
-  speed: 2
+  speed: 0.2
   fireRate: 2.5
   maxHealth: 1
   weapons:

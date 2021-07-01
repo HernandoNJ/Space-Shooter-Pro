@@ -26,6 +26,7 @@ public class WeaponBase : MonoBehaviour
     private void Start()
     {
         SetAdditionalValues();
+        Destroy(gameObject, weaponData.timeAlive);
     }
 
     protected virtual void SetAdditionalValues()
@@ -35,12 +36,12 @@ public class WeaponBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        MoveWeapon(directionToMove);
+        MoveWeapon();
     }
 
-    protected virtual void MoveWeapon(Vector3 moveDirection)
+    protected virtual void MoveWeapon()
     {
-        transform.Translate(moveDirection * (weaponData.fireForce * Time.deltaTime));
+        transform.Translate(directionToMove * (weaponData.fireForce * Time.deltaTime));
     }
 
     public virtual void OnTriggerEnter2D(Collider2D other)

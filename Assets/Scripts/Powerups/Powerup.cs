@@ -11,7 +11,8 @@ public enum PowerupType
     RefillAmmo,
     RecoverHealth,
     MultipleShot,
-    DamagePickup
+    DamagePickup,
+    LaserMultiSeekPickup
 }
 
 namespace Powerups
@@ -24,6 +25,7 @@ public class Powerup : MonoBehaviour
 
     public static event Action<PowerupType> OnWeaponPowerupCollected;
     public static event Action<PowerupType> OnHealthPowerupCollected;
+    public static event Action<PowerupType> OnLaserMultiSeekPowerupCollected;
     public static event Action<float> OnMovementPowerupCollected;
     public static event Action OnShieldPowerupCollected;
 
@@ -68,6 +70,9 @@ public class Powerup : MonoBehaviour
                     break;
             case SpeedBoost:
                 OnMovementPowerupCollected?.Invoke(1.5f);
+                break;
+            case LaserMultiSeekPickup:
+                OnLaserMultiSeekPowerupCollected?.Invoke(powerupInfo);
                 break;
             default:
                 Debug.Log("Configure powerup");
