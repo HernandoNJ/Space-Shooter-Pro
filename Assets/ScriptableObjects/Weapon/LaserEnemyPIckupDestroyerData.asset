@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: Laser Pickup destoyer
   description: Destroys player pickups
   parentName: Enemy
-  fireForce: 3
+  fireForce: 5
   fireRate: 3
   damage: 1
   timeAlive: 2

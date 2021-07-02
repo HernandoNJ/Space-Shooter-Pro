@@ -103,6 +103,7 @@ MonoBehaviour:
   timeToNextShoot: 0
   time_Time: 0
   currentWaveValue: 0
+  bossActive: 0
 --- !u!1 &7186179239445883309
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +281,7 @@ MonoBehaviour:
   playerData: {fileID: 0}
   playerShield: {fileID: 0}
   shieldActive: 0
+  bossActive: 0
   maxHealth: 0
   currentHealth: 0
 --- !u!114 &7186179239804200715
@@ -296,6 +298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 0
   speedMultiplier: 0
+  bossActive: 0
 --- !u!114 &7186179239804200712
 MonoBehaviour:
   m_ObjectHideFlags: 0

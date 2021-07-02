@@ -108,9 +108,9 @@ GameObject:
   - component: {fileID: 1634810870644788599}
   - component: {fileID: 4437078984045038031}
   - component: {fileID: 1599766962513717416}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: LaserEnemyBack
-  m_TagString: Laser
+  m_TagString: LaserEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -287,4 +287,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: a19db6dbf4bba524fbc6fd10d30d81e5, type: 2}
   parentName: 
-  directionToMove: {x: 0, y: 0, z: 0}

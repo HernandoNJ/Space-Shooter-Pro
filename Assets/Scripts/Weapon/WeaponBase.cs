@@ -14,7 +14,6 @@ public class WeaponBase : MonoBehaviour
 {
     public WeaponData weaponData;
     [SerializeField] protected string parentName;
-    [SerializeField] protected Vector3 directionToMove;
 
     protected virtual void OnEnable()
     {
@@ -25,13 +24,12 @@ public class WeaponBase : MonoBehaviour
 
     private void Start()
     {
-        SetAdditionalValues();
-        Destroy(gameObject, weaponData.timeAlive);
+        SetEnemyInitialValues();
     }
 
-    protected virtual void SetAdditionalValues()
+    protected virtual void SetEnemyInitialValues()
     {
-        // Set direction to move
+        Destroy(gameObject, weaponData.timeAlive);
     }
 
     protected virtual void Update()
@@ -41,7 +39,7 @@ public class WeaponBase : MonoBehaviour
 
     protected virtual void MoveWeapon()
     {
-        transform.Translate(directionToMove * (weaponData.fireForce * Time.deltaTime));
+        transform.Translate(Vector3.up * (weaponData.fireForce * Time.deltaTime), Space.Self);
     }
 
     public virtual void OnTriggerEnter2D(Collider2D other)
@@ -50,6 +48,7 @@ public class WeaponBase : MonoBehaviour
         if (iDamage == null || other.CompareTag(parentName))
         {
             Debug.LogWarning($"IDamageable in ... {other.name} is null or other tag is... {other.tag}");
+            Debug.Log("this object: "+ gameObject.name+ "... has parent name: " + parentName);
             return;
         }
 

@@ -108,9 +108,9 @@ GameObject:
   - component: {fileID: 5160279715037399608}
   - component: {fileID: 7836077602670677632}
   - component: {fileID: 2038783189}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LaserMultiSeek
-  m_TagString: Laser
+  m_TagString: LaserPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -287,4 +287,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: 4072f0b219da0b64b9598b4fe41d6460, type: 2}
   parentName: 
-  directionToMove: {x: 0, y: 0, z: 0}

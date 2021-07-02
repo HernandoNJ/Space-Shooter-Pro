@@ -17,7 +17,7 @@ MonoBehaviour:
   description: shoots pickup destroyer lasers
   scorePoints: 1
   speed: 2
-  fireRate: 2
+  fireRate: 3
   maxHealth: 1
   weapons:
   - {fileID: 8040156394465898705, guid: eca6aa6839d1bca41956de5b1b7e7186, type: 3}

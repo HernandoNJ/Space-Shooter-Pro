@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -6324400852909266312}
   m_Layer: 13
   m_Name: LaserPlayer
-  m_TagString: Laser
+  m_TagString: LaserPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -192,7 +192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: 7159d85c860cf9e4c9cdf110aea834ec, type: 2}
   parentName: 
-  directionToMove: {x: 0, y: 0, z: 0}
 --- !u!1 &6733944318285147536
 GameObject:
   m_ObjectHideFlags: 0

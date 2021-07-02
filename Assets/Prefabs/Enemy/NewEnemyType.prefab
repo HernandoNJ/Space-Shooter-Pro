@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3808992949451072680}
   - component: {fileID: 1758778082279464183}
   m_Layer: 0
-  m_Name: EnemyAggressive
+  m_Name: NewEnemyType
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 977ee3980b8c7c740bf4c08a0d511c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 9b71283e1a4461b42b935b6a0105bea0, type: 2}
+  enemyData: {fileID: 11400000, guid: 35a2b7da95c31fe44967750d82963107, type: 2}
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   enemyType: 0
@@ -220,12 +220,11 @@ MonoBehaviour:
   isAlive: 0
   currentHealth: 0
   fireRate: 0
-  moveSpeed: 0
+  enemySpeed: 0
   timeToFire: 0
   scorePoints: 0
   weapon: {fileID: 0}
   weaponIndex: 0
-  maxXMove: 7
   flipXMove: 1
 --- !u!1 &2363375755993774849
 GameObject:
@@ -331,10 +330,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6682033806291226667}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7769291842453939820}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}

@@ -66,7 +66,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     {
         if (!(Time.time > timeToFire) || !isAlive) return;
 
-        Instantiate(weapon, firePoint.transform.position, Quaternion.identity);
+        Instantiate(weapon, firePoint.transform.position, firePoint.rotation);
         timeToFire = Time.time + fireRate;
     }
 

@@ -3,12 +3,16 @@ using Interfaces;
 using UnityEngine;
 using Player = PlayerNS.Player;
 
+/*Vector3.RotateTowards - Unity
+ https://docs.unity3d.com/ScriptReference/Vector3.RotateTowards.html
+ */
+
 namespace Weapon
 {
-public class RocketEnemy : WeaponBase, IDamageable
+public class RocketEnemy : WeaponBase
 {
     [SerializeField] private Transform target;
-    [SerializeField] private Rigidbody2D rb;
+    //[SerializeField] private LayerMask laserplayerMask;
 
     public static event Action OnLookingForPlayer;
 
@@ -17,7 +21,6 @@ public class RocketEnemy : WeaponBase, IDamageable
         Player.OnSendPlayerPosition += SetTargetPosition;
         OnLookingForPlayer?.Invoke();
 
-        rb = GetComponent<Rigidbody2D>();
         GetComponent<BoxCollider2D>().isTrigger = true;
         GetComponent<Rigidbody2D>().gravityScale = 0f;
 
@@ -29,30 +32,43 @@ public class RocketEnemy : WeaponBase, IDamageable
         Player.OnSendPlayerPosition -= SetTargetPosition;
     }
 
-    protected override void SetAdditionalValues()
-    {
-        transform.Rotate(0,0,180);
-        Destroy(gameObject, weaponData.timeAlive);
-    }
-
     private void SetTargetPosition(Transform targetTransform)
     {
         target = targetTransform;
+        //laserplayerMask = 13;
     }
 
-    protected override void Update()
+    protected override void MoveWeapon()
     {
-        directionToMove = (target.position - transform.position);
-        directionToMove.Normalize();
-        var rotationValue = Vector3.Cross(directionToMove, transform.up).z;
-        rb.angularVelocity = -rotationValue * 500;
-        rb.velocity = transform.up * weaponData.fireForce;
+        if (target == null) base.MoveWeapon();
+        else
+        {
+            var targetPos = target.position;
+            var targetDirection = targetPos - transform.position;
+            var reachSpeed = weaponData.fireForce * Time.deltaTime; // calculate distance to move
+
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, reachSpeed); // it works without pos = v3.moveTowards
+            transform.up = targetDirection; // Look at target with transform.up
+        }
     }
 
-    public void TakeDamage(int damage)
+    public override void OnTriggerEnter2D(Collider2D other)
     {
-        Destroy(gameObject);
-    }
+        if (other.CompareTag(parentName) || other.CompareTag("LaserEnemy"))
+        {
+            Debug.LogWarning($"IDamageable in ... {other.name} is null or other tag is... {other.tag}");
+            Debug.Log("this object: " + gameObject.name + "... has parent name: " + parentName);
+            return;
+        }
 
+        if (other.CompareTag("Player") || other.CompareTag("LaserPlayer"))
+        {
+            var iDamage = other.GetComponent<IDamageable>();
+            iDamage?.TakeDamage(weaponData.damage);
+
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+        }
+    }
 }
 }

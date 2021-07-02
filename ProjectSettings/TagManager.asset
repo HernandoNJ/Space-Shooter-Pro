@@ -9,6 +9,8 @@ TagManager:
   - EnemyLaser
   - Cube
   - Powerup
+  - LaserEnemy
+  - LaserPlayer
   layers:
   - Default
   - TransparentFX
@@ -25,7 +27,7 @@ TagManager:
   - Sphere
   - LaserPlayerMask
   - PlayerMask
-  - 
+  - LaserEnemyMask
   - 
   - 
   - 

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6402692924173323355}
   - component: {fileID: 6997415919064774283}
   - component: {fileID: 5348157275588866611}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: RocketPlayer
-  m_TagString: Laser
+  m_TagString: LaserPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
