@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using EnemyNS;
 using PlayerNS;
 using Starting;
 using UnityEngine;
@@ -49,7 +50,6 @@ public class SpawnManager : SingletonBP<SpawnManager>
     [SerializeField] private int currentWaveIndex;
     [SerializeField] private int currentWaveNumber;
     [SerializeField] private int currentWaveNumIndex;
-    [SerializeField] private int currentWaveNumValue;
     [SerializeField] private bool isPlayerAlive;
 
     public GameObject thisNewEnemy;
@@ -110,20 +110,21 @@ public class SpawnManager : SingletonBP<SpawnManager>
         // See notes above this script's name
         var newRandNum = Random.Range(1, 101);
         randEnemyNumber = newRandNum; // for testing
-        var randTable = new[] {5, 40, 15, 20, 5, 10, 5};//run from left to right in the for loop
+        var randTable = new[] {5, 40, 15, 20, 5, 10, 5}; //run from left to right in the for loop
 
         for (int i = 0; i < randTable.Length; i++)
         {
             if (newRandNum < randTable[i])
             {
-                Debug.Log("randNum; "+newRandNum);
+                Debug.Log("randNum; " + newRandNum);
                 Debug.Log("randTable - i  " + randTable[i]);
-                Debug.Log("enemy returned: " + enemies[i].name);
+                Debug.Log("enemy returned: " + enemies[i]
+                    .name);
                 thisNewEnemy = enemies[i]; // for testing
                 return enemies[i];
             }
 
-            Debug.Log("randNum; "+newRandNum);
+            Debug.Log("randNum; " + newRandNum);
             Debug.Log("randTable - i  " + randTable[i]);
             newRandNum -= randTable[i];
             Debug.Log("new randNum: " + newRandNum);
@@ -151,7 +152,7 @@ public class SpawnManager : SingletonBP<SpawnManager>
     {
         yield return new WaitForSeconds(3);
 
-        while(isPlayerAlive)
+        while (isPlayerAlive)
         {
             currentWaveNumber = currentWaveIndex + 1;
             OnWaveStarted?.Invoke(currentWaveNumber);
@@ -164,11 +165,22 @@ public class SpawnManager : SingletonBP<SpawnManager>
             foreach (var obj in currentWave)
             {
                 var newEnemy = Instantiate(obj, previousWave.transform); // Instantiate obj in PreviousWave
-                newEnemy.transform.position = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
-                yield return new WaitForSeconds(Random.Range(2, 5));
+                if (newEnemy.gameObject.name == "EnemyBoss(Clone)")
+                {
+                    //newEnemy.transform.position = new Vector2(0, 0);
+                    yield return new WaitForSeconds(60);
+                }
+                else
+                {
+                    newEnemy.transform.position = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
+                    //yield return new WaitForSeconds(Random.Range(2, 5));
+                    yield return new WaitForSeconds(1);
+                }
             }
 
-            yield return new WaitForSeconds(5); // wait 5 seconds after wave is done
+            //yield return new WaitForSeconds(5); // wait 5 seconds after wave is done
+            yield return new WaitForSeconds(3); // wait 5 seconds after wave is done
+
             Destroy(previousWave); // clear up wave objects
             currentWaveIndex++;
 
@@ -192,7 +204,7 @@ public class SpawnManager : SingletonBP<SpawnManager>
                 new GameObject("PreviousWave"); // Create a new parent to be removed after wave is finished
             previousWave.transform.SetParent(enemySpawner);
 
-            for (int i = objAmount; i >0 ; i--)
+            for (int i = objAmount; i > 0; i--)
             {
                 var randEnemy = SetNewEnemy();
 
@@ -210,5 +222,6 @@ public class SpawnManager : SingletonBP<SpawnManager>
             break; // get out from while loop
         }
     }
+
 }
 }

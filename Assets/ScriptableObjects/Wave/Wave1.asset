@@ -16,6 +16,4 @@ MonoBehaviour:
   waveGameObjects:
   - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
   - {fileID: 6026674046465623300, guid: 63d1ecaa4b8505043a16265d073b49b8, type: 3}
-  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
-  - {fileID: 3480350289254709054, guid: a28b5ed9f0c932c49a3b790a9cfc3dda, type: 3}
-  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
+  - {fileID: 8320666312058923569, guid: bafbf3a23af16254999d1c0eb5b266a1, type: 3}

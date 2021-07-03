@@ -13,14 +13,11 @@ MonoBehaviour:
   m_Name: EnemyDoubleShooterData
   m_EditorClassIdentifier: 
   enemyName: DoubleShooter
-  description: Fires 2 lasers at a time
-  speed: 2.5
-  fireRate: 0.1
-  collisionDamage: 0
-  maxHealth: 0
-  updatedHealth: 0
   enemyType: 0
-  modelData: {fileID: 0}
-  weaponData: {fileID: 0}
+  description: Fires 2 lasers at a time
+  scorePoints: 0
+  speed: 2
+  fireRate: 0.1
+  maxHealth: 0
   weapons: []
   explosionPrefab: {fileID: 0}

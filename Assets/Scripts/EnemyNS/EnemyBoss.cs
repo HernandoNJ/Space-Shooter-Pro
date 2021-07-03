@@ -77,6 +77,7 @@ public class EnemyBoss : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        if (currentHealth < 0) currentHealth = 0;
         OnBossDamaged?.Invoke(currentHealth);
         if (currentHealth > 0) return;
         BossDestroyed();

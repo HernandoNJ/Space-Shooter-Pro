@@ -116,8 +116,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerupSound: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
-  powerupType: 2
+  powerupType: 1
   speed: 2.5
+  isMagnetActive: 0
+  player: {fileID: 0}
 --- !u!61 &2344347214032429510
 BoxCollider2D:
   m_ObjectHideFlags: 0

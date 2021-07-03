@@ -8,7 +8,6 @@ public class LaserMultiSeek : WeaponBase
     protected override void MoveWeapon()
     {
         transform.position += transform.up * (weaponData.fireForce *3 * Time.deltaTime);
-        CheckBounds();
     }
 
     private float CalculateRotationAngle(Transform target)
@@ -56,12 +55,6 @@ public class LaserMultiSeek : WeaponBase
 
             iDamage?.TakeDamage(weaponData.damage);
         }
-    }
-
-    private void CheckBounds()
-    {
-        var pos = transform.position;
-        if(pos.x > 10f || pos.x < -10f || pos.y > 5 || pos.y < -5 ) Destroy(gameObject);
     }
 
     private void OnDrawGizmos()

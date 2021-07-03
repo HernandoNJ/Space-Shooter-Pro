@@ -61,11 +61,15 @@ public class RocketEnemy : WeaponBase
             return;
         }
 
-        if (other.CompareTag("Player") || other.CompareTag("LaserPlayer"))
+        if (other.CompareTag("Player"))
         {
             var iDamage = other.GetComponent<IDamageable>();
             iDamage?.TakeDamage(weaponData.damage);
+            Destroy(gameObject);
+        }
 
+        if (other.CompareTag("LaserPlayer"))
+        {
             Destroy(other.gameObject);
             Destroy(gameObject);
         }

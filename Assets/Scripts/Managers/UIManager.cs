@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using EnemyNS;
+using JetBrains.Annotations;
 using PlayerNS;
 using UnityEditor;
 using UnityEngine;
@@ -45,7 +46,7 @@ public class UIManager : MonoBehaviour
     {
         WeaponsManager.OnAmmoChanged += UpdateAmmoCounter;
 
-        PlayerHealth.OnHealthChanged += SetPlayerHealthSprites;
+        PlayerHealth.OnHealthChanged += SetPlayerHealth;
         PlayerHealth.OnPlayerDestroyed += GameOverSequence;
 
         EnemyBase.OnEnemyDestroyed += UpdateScore;
@@ -60,7 +61,7 @@ public class UIManager : MonoBehaviour
     {
         WeaponsManager.OnAmmoChanged -= UpdateAmmoCounter;
 
-        PlayerHealth.OnHealthChanged -= SetPlayerHealthSprites;
+        PlayerHealth.OnHealthChanged -= SetPlayerHealth;
         PlayerHealth.OnPlayerDestroyed -= GameOverSequence;
 
         EnemyBase.OnEnemyDestroyed -= UpdateScore;
@@ -73,7 +74,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager")
+            .GetComponent<GameManager>();
         if (gameManager == null) Debug.LogError("gameManager in UI Manager is null");
 
         playerScore = 0;
@@ -85,7 +87,7 @@ public class UIManager : MonoBehaviour
         gameOverText.gameObject.SetActive(false);
         restartText.gameObject.SetActive(false);
 
-        SetPlayerHealthSprites(3);
+        SetPlayerHealth(3);
         OnFullAmmo();
         thrusterBar.fillAmount = 0.5f;
     }
@@ -96,26 +98,29 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: " + playerScore;
     }
 
-    public void SetPlayerHealthSprites(int currentLives)
+    public void SetPlayerHealth(int currentHealth)
     {
-        playerHealthValue--;
-        playerHealthForBossText.text = "Player health: " + playerHealthValue;
-        if (playerHealthValue <= 3 && playerHealthValue >= 0 && currentLives >=0)
-            livesImage.sprite = livesSprites[currentLives];
+        if (playerHealthForBossText.gameObject.activeInHierarchy)
+            playerHealthForBossText.text = "Player health: " + currentHealth;
+
+        if (livesImage.gameObject.activeInHierarchy)
+        {
+            if (currentHealth <= 3 && currentHealth >= 0)
+                SetLivesSprites(currentHealth);
+        }
+    }
+
+    private void SetLivesSprites(int currentHealth)
+    {
+        livesImage.sprite = livesSprites[currentHealth];
     }
 
     private void SetPlayerForBossWaveHealth(int intValue)
     {
-        playerHealthValue = 100;
         playerHealthForBossText.gameObject.SetActive(true);
-        UpdatePlayerForBossWaveHealth(playerHealthValue);
+        SetPlayerHealth(100);
         livesImage.gameObject.SetActive(false);
         thrusterBar.gameObject.SetActive(false);
-    }
-
-    private void UpdatePlayerForBossWaveHealth(int newHealth)
-    {
-        playerHealthForBossText.text = "Player health: " + newHealth;
     }
 
     private void SetUIForBossWave(int bossInitialHealth)
@@ -147,7 +152,8 @@ public class UIManager : MonoBehaviour
     private void OnEmptyAmmo()
     {
         emptyAmmoImage.SetActive(true);
-        emptyAmmoImage.GetComponent<Animator>().SetBool("isAmmoEmpty", true);
+        emptyAmmoImage.GetComponent<Animator>()
+            .SetBool("isAmmoEmpty", true);
         ammoImage.SetActive(false);
     }
 

@@ -71,9 +71,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private void PlayerEnterTrigger(Collider2D other)
     {
         var iDamage = other.gameObject.GetComponent<IDamageable>();
-        if (iDamage == null) return;
-        iDamage.TakeDamage(1);
-        TakeDamage(1);
+        iDamage?.TakeDamage(1);
+        if(other.CompareTag("Enemy")) TakeDamage(1);
     }
 
     public void TakeDamage(int damage)

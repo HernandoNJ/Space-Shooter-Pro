@@ -95,9 +95,9 @@ public class PlayerInput : MonoBehaviour{
 	{
 		while (bossActive)
 		{
-			playerSpeed *= 3;
+			playerSpeed *= 1.5f;
 			yield return new WaitForSeconds(3);
-			playerSpeed /= 3;
+			playerSpeed /= 1.5f;
 			yield return new WaitForSeconds(2);
 		}
 	}
