@@ -33,7 +33,6 @@ public class PowerUpStart : MonoBehaviour
 
         if (player != null)
         {   
-            // TODO set powerups as enum
             switch (powerupID)
             {
                 case 0:

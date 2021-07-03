@@ -1,7 +1,7 @@
 ﻿using System;
 using EnemyNS;
 using Interfaces;
-using Powerups;
+using PowerupNS;
 using static PowerupType;
 using UnityEngine;
 

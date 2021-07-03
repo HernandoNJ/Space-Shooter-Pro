@@ -5,7 +5,6 @@ using static PowerupType;
 
 public enum PowerupType
 {
-    Default,
     TripleLaser,
     SpeedBoost,
     Shield,
@@ -13,10 +12,11 @@ public enum PowerupType
     RecoverHealth,
     MultipleShot,
     DamagePickup,
-    LaserMultiSeekPickup
+    LaserMultiSeekPickup,
+    Default,
 }
 
-namespace Powerups
+namespace PowerupNS
 {
 public class Powerup : MonoBehaviour
 {

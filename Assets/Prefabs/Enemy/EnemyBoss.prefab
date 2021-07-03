@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2629799369269680348
 Transform:
   m_ObjectHideFlags: 0
@@ -219,6 +219,7 @@ MonoBehaviour:
   randomPos: 0
   speed: 0
   bossActive: 0
+  rotateActive: 0
 --- !u!114 &4241801205996303806
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 ﻿using System;
 using Interfaces;
-using Powerups;
+using PowerupNS;
 using UnityEngine;
 
 namespace PlayerNS

@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentWave: 3
   waveGameObjects:
-  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
-  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
-  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
-  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
-  - {fileID: 4959365891905810629, guid: a5c2c413ebbbd3f49b39157c7a3a4d90, type: 3}
+  - {fileID: 3480350289254709054, guid: a28b5ed9f0c932c49a3b790a9cfc3dda, type: 3}
+  - {fileID: 1758778082279464182, guid: 0cdb58d3d971cee4ea373b0050432bb5, type: 3}
+  - {fileID: 1741650420754795784, guid: 61a00543d422d014ea15861fc41ca9c4, type: 3}
+  - {fileID: 6026674046465623300, guid: 63d1ecaa4b8505043a16265d073b49b8, type: 3}
+  - {fileID: 1428162832741862180, guid: a3bef108b17cbe94b9451c1904b09236, type: 3}
+  - {fileID: 1741650420754795784, guid: 61a00543d422d014ea15861fc41ca9c4, type: 3}
+  - {fileID: 1758778082279464182, guid: 0cdb58d3d971cee4ea373b0050432bb5, type: 3}

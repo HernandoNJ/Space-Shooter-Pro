@@ -4,15 +4,4 @@
 Disabling this lets you skip the GUI layout phase
 => public bool useGUILayout { get; set; }
 
-
-
-
-
-
-
-
-
-
-
-
-
+If you create a while loop in a Coroutine, that loop MUST return a yield (seconds, frame, etc.)

@@ -2,6 +2,8 @@
 using static UnityEngine.Debug;
 
 // Singleton Blue Print
+namespace Managers
+{
 public abstract class SingletonBP<T> : MonoBehaviour where T : SingletonBP<T>
 {
     private static T instance;
@@ -21,4 +23,5 @@ public abstract class SingletonBP<T> : MonoBehaviour where T : SingletonBP<T>
     }
 
     protected virtual void Init() => Log($"{typeof(T).ToString()} initialized");
+}
 }

@@ -3,6 +3,11 @@ using Interfaces;
 using Starting;
 using UnityEngine;
 
+public enum EnemyType
+{
+    Aggressive, Basic, Boss, PickupDestroyer, Shielded, ShotAvoider, ShotBackwards, ZigZagMove, Default
+}
+
 namespace EnemyNS
 {
 public abstract class EnemyBase : MonoBehaviour, IDamageable

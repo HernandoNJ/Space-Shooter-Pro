@@ -2,7 +2,7 @@
 
 namespace EnemyNS
 {
-public class NewEnemyType : EnemyBase
+public class EnemyZigZag : EnemyBase
 {
     [SerializeField] private int flipXMove = 1;
 

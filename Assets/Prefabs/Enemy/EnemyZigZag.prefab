@@ -15,12 +15,12 @@ GameObject:
   - component: {fileID: 3808992949451072680}
   - component: {fileID: 1758778082279464183}
   m_Layer: 0
-  m_Name: NewEnemyType
+  m_Name: EnemyZigZag
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7769291842453939820
 Transform:
   m_ObjectHideFlags: 0
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 977ee3980b8c7c740bf4c08a0d511c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 35a2b7da95c31fe44967750d82963107, type: 2}
+  enemyData: {fileID: 0}
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   enemyType: 0

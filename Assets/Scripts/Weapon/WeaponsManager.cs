@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using EnemyNS;
-using Powerups;
+using PowerupNS;
 using UnityEngine;
 using Weapon.Lasers;
 using static PowerupType;

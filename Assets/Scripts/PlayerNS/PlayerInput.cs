@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using EnemyNS;
 using Managers;
-using Powerups;
+using PowerupNS;
 using UnityEngine;
 
 namespace PlayerNS{

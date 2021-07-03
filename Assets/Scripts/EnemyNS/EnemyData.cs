@@ -18,7 +18,4 @@ public class EnemyData : ScriptableObject
     public GameObject explosionPrefab;
     
 }
-
-public enum EnemyType { Default, Basic, DoubleShooter, Chaser, Aggressive, 
-ShotAvoider, Shielded, Boss }
 }
