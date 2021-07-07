@@ -47,14 +47,11 @@ public class EnemyAggressive : EnemyBase
     private void ScanForPlayer()
     {
         var position = transform.position;
-
         var playerHit2D = Physics2D.OverlapCircle(position, 3f, playerMask);
-
         if (playerHit2D != null)
         {
             playerFound = true;
             target = playerHit2D.transform;
-
             Debug.DrawRay(position, target.position - position, Color.yellow);
         }
         else

@@ -16,7 +16,7 @@ MonoBehaviour:
   enemyType: 3
   description: Chases the player
   scorePoints: 1
-  speed: 2
+  speed: 0.5
   fireRate: 2
   maxHealth: 1
   weapons:

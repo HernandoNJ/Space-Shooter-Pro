@@ -47,7 +47,6 @@ public class EnemyBoss : MonoBehaviour, IDamageable
         point1 = GameObject.Find("BossPoint1").transform;
         point2 = GameObject.Find("BossPoint2").transform;
         point3 = GameObject.Find("BossPoint3").transform;
-
         moveTo = point1;
 
         transform.position = new Vector3(0, 2.5f, 0);
