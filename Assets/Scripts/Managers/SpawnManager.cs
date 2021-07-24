@@ -144,7 +144,7 @@ public class SpawnManager : SingletonBP<SpawnManager>
             var newPowerup = SetNewPowerup();
 
             Instantiate(newPowerup, powerupPos, Quaternion.identity);
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2);
         }
     }
 
@@ -174,12 +174,12 @@ public class SpawnManager : SingletonBP<SpawnManager>
                 {
                     newEnemy.transform.position = new Vector2(Random.Range(-9.5f, 9.5f), 5f);
                     //yield return new WaitForSeconds(Random.Range(2, 5));
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(2);
                 }
             }
 
             //yield return new WaitForSeconds(5); // wait 5 seconds after wave is done
-            yield return new WaitForSeconds(3); // wait 5 seconds after wave is done
+            yield return new WaitForSeconds(10); // wait 5 seconds after wave is done
 
             Destroy(previousWave); // clear up wave objects
             currentWaveIndex++;

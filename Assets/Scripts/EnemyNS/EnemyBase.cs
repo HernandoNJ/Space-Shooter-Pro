@@ -37,7 +37,7 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     private void Update()
     {
         MoveEnemy();
-        //FireWeapon();
+        FireWeapon();
     }
 
     protected virtual void SetInitialEnemyValues(EnemyData _data)

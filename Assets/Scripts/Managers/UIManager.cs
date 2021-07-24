@@ -1,9 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using EnemyNS;
-using JetBrains.Annotations;
 using PlayerNS;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using Weapon;
