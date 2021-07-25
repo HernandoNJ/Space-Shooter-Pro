@@ -151,7 +151,7 @@ public class SpawnManager : SingletonBP<SpawnManager>
     private IEnumerator EnemyWaveRoutine1()
     {
         yield return new WaitForSeconds(3);
-
+        
         while (isPlayerAlive)
         {
             currentWaveNumber = currentWaveIndex + 1;
@@ -179,7 +179,7 @@ public class SpawnManager : SingletonBP<SpawnManager>
             }
 
             //yield return new WaitForSeconds(5); // wait 5 seconds after wave is done
-            yield return new WaitForSeconds(10); // wait 5 seconds after wave is done
+            yield return new WaitForSeconds(5); // wait 5 seconds after wave is done
 
             Destroy(previousWave); // clear up wave objects
             currentWaveIndex++;
